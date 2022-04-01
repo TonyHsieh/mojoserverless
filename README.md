@@ -1,5 +1,5 @@
 <!--
-title: more Serverless '
+title: mojo Serverless '
 description: 'This makes HTTP API with Node.js running on AWS Lambda, API Gateway and DynamoDB using the Serverless Framework.'
 layout: Doc
 framework: v3
