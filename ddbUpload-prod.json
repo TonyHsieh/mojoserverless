@@ -1,0 +1,2004 @@
+{
+  "aws-api-mojoTable-prod": [
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoSoSoRoFoe"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/1"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m1.png"
+          },
+          "dna": {
+            "S": "0:12:6:18:0.5"
+          },
+          "uuid": {
+            "S": "1"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MT01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH20"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB18"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0019_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoRoPoMoFloRo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/2"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m2.png"
+          },
+          "dna": {
+            "S": "1:6:5:16:0.45"
+          },
+          "uuid": {
+            "S": "2"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PT00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH08"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB08"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0017_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoOhCoFloRo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/3"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m3.png"
+          },
+          "dna": {
+            "S": "2:2:5:4:0.37"
+          },
+          "uuid": {
+            "S": "3"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "ST01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH08"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB03"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0007_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoLoJoFoeSoCo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/4"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m4.png"
+          },
+          "dna": {
+            "S": "1:7:6:16:0.47"
+          },
+          "uuid": {
+            "S": "4"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PT00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH20"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB11"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0017_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoRoCoKoLoFoe"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/5"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m5.png"
+          },
+          "dna": {
+            "S": "2:0:6:16:0.33"
+          },
+          "uuid": {
+            "S": "5"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "ST01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH20"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MB02"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0017_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoJoSoSoFloRoKo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/6"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m6.png"
+          },
+          "dna": {
+            "S": "0:8:6:8:0.10"
+          },
+          "uuid": {
+            "S": "6"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MT01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH20"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB12"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0009_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoKoLoSoSoFoeJo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/7"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m7.png"
+          },
+          "dna": {
+            "S": "1:9:5:4:0.8"
+          },
+          "uuid": {
+            "S": "7"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PT00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH08"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB13"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0007_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoCoSoJoMoLo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/8"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m8.png"
+          },
+          "dna": {
+            "S": "1:6:6:2:0.19"
+          },
+          "uuid": {
+            "S": "8"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PT00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH20"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB08"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_5ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoCoOhLo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/9"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m9.png"
+          },
+          "dna": {
+            "S": "0:9:3:18:0.16"
+          },
+          "uuid": {
+            "S": "9"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MT01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB13"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0019_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoPoOhLo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/10"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m10.png"
+          },
+          "dna": {
+            "S": "2:13:3:18:0.41"
+          },
+          "uuid": {
+            "S": "10"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "ST01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB20"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0019_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoKoOhJoFoeRo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/11"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m11.png"
+          },
+          "dna": {
+            "S": "2:9:5:12:0.59"
+          },
+          "uuid": {
+            "S": "11"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "ST01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH08"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB13"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0013_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoPoFoeCoRoJoCo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/12"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m12.png"
+          },
+          "dna": {
+            "S": "1:11:5:13:0.39"
+          },
+          "uuid": {
+            "S": "12"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PT00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH08"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB16"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0014_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoRoLoPo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/13"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m13.png"
+          },
+          "dna": {
+            "S": "1:8:1:15:0.51"
+          },
+          "uuid": {
+            "S": "13"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PT00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "FH04"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB12"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0016_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoLoKoJoOh"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/14"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m14.png"
+          },
+          "dna": {
+            "S": "0:8:3:10:0.16"
+          },
+          "uuid": {
+            "S": "14"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MT01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB12"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0011_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoOhFloJoCoMo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/15"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m15.png"
+          },
+          "dna": {
+            "S": "0:1:5:2:0.59"
+          },
+          "uuid": {
+            "S": "15"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MT01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH08"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_5ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoCoCoJoKoKo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/16"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m16.png"
+          },
+          "dna": {
+            "S": "0:0:4:10:0.1"
+          },
+          "uuid": {
+            "S": "16"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MT01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH03"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MB02"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0011_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoMoLoPoRo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/17"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m17.png"
+          },
+          "dna": {
+            "S": "2:7:1:6:0.35"
+          },
+          "uuid": {
+            "S": "17"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "ST01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "FH04"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB11"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0008_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoSoSoKoRoFoe"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/18"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m18.png"
+          },
+          "dna": {
+            "S": "0:6:1:11:0.28"
+          },
+          "uuid": {
+            "S": "18"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MT01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "FH04"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB08"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0012_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoMoPoRoOhOhOh"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/19"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m19.png"
+          },
+          "dna": {
+            "S": "0:9:6:16:0.59"
+          },
+          "uuid": {
+            "S": "19"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MT01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH20"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB13"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0017_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoFoeCoRoLoFoeMo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/20"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m20.png"
+          },
+          "dna": {
+            "S": "2:2:5:4:0.18"
+          },
+          "uuid": {
+            "S": "20"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "ST01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH08"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB03"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0007_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoSoKoCoPo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/21"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m21.png"
+          },
+          "dna": {
+            "S": "1:1:4:4:0.32"
+          },
+          "uuid": {
+            "S": "21"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PT00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH03"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0007_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoRoFloKoCo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/22"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m22.png"
+          },
+          "dna": {
+            "S": "1:8:5:0:0.59"
+          },
+          "uuid": {
+            "S": "22"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PT00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH08"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB12"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "OrigColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoJoOhCoFloKo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/23"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m23.png"
+          },
+          "dna": {
+            "S": "1:2:3:16:0.46"
+          },
+          "uuid": {
+            "S": "23"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PT00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB03"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_0017_ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoCoMoRoPoRoSo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/24"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m24.png"
+          },
+          "dna": {
+            "S": "0:11:4:0:0.19"
+          },
+          "uuid": {
+            "S": "24"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MT01"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH03"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PB16"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "OrigColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "name": {
+            "S": "MojoOhFoeRoRoFlo"
+          },
+          "description": {
+            "S": "Mojos of Planet Mojo."
+          },
+          "external_url": {
+            "S": "https://planetmojo.io//mojo/25"
+          },
+          "image": {
+            "S": "https://planetmojo.io/images/m25.png"
+          },
+          "dna": {
+            "S": "1:0:4:5:0.24"
+          },
+          "uuid": {
+            "S": "25"
+          },
+          "attributes": {
+            "L": [
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "body"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PT00"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "head"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "PH03"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "brow"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "MB02"
+                  }
+                }
+              },
+              {
+                "M": {
+                  "trait_type": {
+                    "S": "colorPalette"
+                  },
+                  "displaytype": {
+                    "NULL": true
+                  },
+                  "value": {
+                    "S": "Palette_7ColorProfile"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

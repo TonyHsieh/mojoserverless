@@ -1,5 +1,5 @@
 {
-  "aws-node-http-api-project-mojoTable-dev": [
+  "aws-api-mojoTable-dev": [
     {
       "PutRequest": {
         "Item": 

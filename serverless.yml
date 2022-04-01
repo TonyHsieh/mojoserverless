@@ -1,7 +1,7 @@
 console: true
 org: tonyhsieh
-app: aws-node-http-api-project
-service: aws-node-http-api-project
+app: aws-api
+service: aws-api
 frameworkVersion: '3'
 
 provider:
