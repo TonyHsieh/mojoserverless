@@ -12,6 +12,9 @@ module.exports.getMojo = async (event) => {
   const dynamodb = new AWS.DynamoDB.DocumentClient();
   const result = await dynamodb.get(scanParams).promise();
 
+  console.log("hello");
+  console.log(JSON.stringify(result.Item.dna));
+
   return {
     statusCode: 200,
     body: JSON.stringify(result.Item),
