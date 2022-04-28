@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "serverless-offline": "^8.7.0"
+  },
+  "dependencies": {
+    "@alch/alchemy-web3": "^1.4.2",
+    "node-fetch": "^2.6.7"
+  }
+}
