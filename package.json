@@ -1,6 +1,7 @@
 {
   "devDependencies": {
-    "serverless-offline": "^8.7.0"
+    "serverless-offline": "^8.7.0",
+    "serverless-plugin-include-dependencies": "^5.0.0"
   },
   "dependencies": {
     "@alch/alchemy-web3": "^1.4.2",
