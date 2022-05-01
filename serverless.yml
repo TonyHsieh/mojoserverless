@@ -44,6 +44,12 @@ functions:
       - httpApi: 
           path: /inventory/{walletAddr}
           method: get 
+  sproutMojo:
+    handler: sproutMojo.sproutMojo
+    events:
+      - httpApi:
+          path: /sproutMojo/{walletAddr}/{signedMessage}/{mojoId}
+          method: get 
   getMojos:
     handler: getMojos.getMojos
     events: 
@@ -69,9 +75,6 @@ resources:
 plugins:
   - serverless-offline
   - serverless-plugin-include-dependencies
+  - serverless-dotenv-plugin
 
-#custom:
-#  includeDependencies:
-#    always:
-#      - "*/**'
 
