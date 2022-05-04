@@ -48,7 +48,7 @@ functions:
     handler: sproutMojo.sproutMojo
     events:
       - httpApi:
-          path: /sproutMojo/{id}
+          path: /mojo/{ id }/sprout/{ signedMessage }
           method: put 
   getMojos:
     handler: getMojos.getMojos
@@ -76,5 +76,3 @@ plugins:
   - serverless-offline
   - serverless-plugin-include-dependencies
   - serverless-dotenv-plugin
-
-

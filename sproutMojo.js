@@ -21,36 +21,6 @@ module.exports.getMojo = async (event) => {
   const dynamodb = new AWS.DynamoDB.DocumentClient();
   const result = await dynamodb.get(scanParams).promise();
 
-
-  //This is the JSON input that is needed in the body
-  //EXAMPLE:
-  //		{
-  //      	  "signerAddr": "0xaaaaaaaaaaa",
-  //              "signature": "0xfffffffff",
-  //      	  "signedMessage": "0xdddddddddd",
-  //      	  "domain": {
-  //      	    "name": "Test Domain",
-  //      	    "version": "0.x.0",
-  //      	    "chainId": 1,
-  //      	    "verifyingContract": "0xccccccccccc"
-  //      	  },
-  //      	  "types": {
-  //      	    "Sale": [
-  //      	      {
-  //      	        "name": "tokenId",
-  //      	        "type": "uint256"
-  //      	      },
-  //      	      {
-  //      	        "name": "price",
-  //      	        "type": "uint256"
-  //      	      }
-  //      	    ]
-  //      	  },
-  //      	  "value": {
-  //      	    "tokenId": 9999,
-  //      	    "price": 101
-  //      	  }
-  //             }
   const body = JSON.parse(Buffer.from(event.body, 'base64').toString())
 
   console.log("1 =====================");
@@ -62,11 +32,12 @@ module.exports.getMojo = async (event) => {
   if ("isSprouted" in result.Item) {
     // if true - then response is 200 OK. 
     statusCodeVal = 200;
+    bodyVal = "Already Sprouted"
   } else {
     //if false - then 
    
     // do the signature check logic
-    const recoveredAddr = ethers.utils.verifyTypedData(body.domain, body.types, body.value, body.signature)
+    const recoveredAddr = ethers.utils.verifyTypedData(domain, types, value, event.pathParameters.signedMessage)
     const isSignerMatching = !!(recoveredAddr === body.signerAddr)
 
     console.log ("recoveredAddr = " + recoveredAddr);
