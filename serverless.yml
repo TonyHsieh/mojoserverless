@@ -48,8 +48,8 @@ functions:
     handler: sproutMojo.sproutMojo
     events:
       - httpApi:
-          path: /sproutMojo/{walletAddr}/{signedMessage}/{mojoId}
-          method: get 
+          path: /sproutMojo/{id}
+          method: put 
   getMojos:
     handler: getMojos.getMojos
     events: 
