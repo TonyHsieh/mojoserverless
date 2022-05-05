@@ -48,13 +48,19 @@ functions:
     handler: sproutMojo.sproutMojo
     events:
       - httpApi:
-          path: /mojo/{ id }/sprout/{ signedMessage }
+          path: /mojo/sprout/{id}
           method: put 
   getMojos:
     handler: getMojos.getMojos
     events: 
       - httpApi:
           path: /
+          method: get
+  testEthers:
+    handler: testEthers.testEthers
+    events:
+      - httpApi:
+          path: /test
           method: get
 
 
