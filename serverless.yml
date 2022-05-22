@@ -30,38 +30,20 @@ functions:
     handler: getMojo.getMojo
     events:
       - httpApi:
-          path: /mojo/{id}
+          path: /mojo/metadata/{id}
           method: get
-  createMojo:
-    handler: createMojo.createMojo
+  getMojoSeed: 
+    handler: getMojoSeed.getMojoSeed
     events:
       - httpApi:
-          path: /
-          method: post
-  getInventory:
-    handler: getInventory.getInventory
-    events:
-      - httpApi: 
-          path: /inventory/{walletAddr}
-          method: get 
-  sproutMojo:
-    handler: sproutMojo.sproutMojo
+          path: /mojo-seed/metadata/{id}
+          method: get
+  sproutMojoSeed:
+    handler: sproutMojoSeed.sproutMojoSeed
     events:
       - httpApi:
-          path: /mojo/sprout/{id}
+          path: /mojo-seed/action/sprout/{id}
           method: put 
-  getMojos:
-    handler: getMojos.getMojos
-    events: 
-      - httpApi:
-          path: /
-          method: get
-  testEthers:
-    handler: testEthers.testEthers
-    events:
-      - httpApi:
-          path: /test
-          method: get
 
 
 resources:

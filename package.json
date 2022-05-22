@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "serverless-dotenv-plugin": "^4.0.0",
-    "serverless-offline": "^8.7.0",
+    "serverless-offline": "^8.8.0",
     "serverless-plugin-include-dependencies": "^5.0.0"
   },
   "dependencies": {
