@@ -1,4 +1,4 @@
-console: true
+console: true 
 org: tonyhsieh
 app: aws-api
 service: aws-api
@@ -44,6 +44,12 @@ functions:
       - httpApi:
           path: /mojo-seed/action/sprout/{id}
           method: put 
+  getMojos: 
+    handler: getMojos.getMojos
+    events:
+      - httpApi:
+          path: /mojos
+          method: get
 
 
 resources:
