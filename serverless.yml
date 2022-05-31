@@ -41,19 +41,19 @@ functions:
     handler: mojoSeed.getMojoSeed
     events:
       - httpApi:
-          path: /mojo-seed/metadata/{id}
+          path: /moj-seed/metadata/{id}
           method: get
   sproutMojoSeed:
     handler: mojoSeed.sproutMojoSeed
     events:
       - httpApi:
-          path: /mojo-seed/action/sprout/{id}
+          path: /moj-seed/action/sprout/{id}
           method: put 
   claimMojoSeed: 
     handler: mojoSeed.claimMojoSeed
     events:
       - httpApi:
-          path: /mojo-seed/action/claim/{addr}
+          path: /moj-seed/action/claim/{addr}
           method: get
   getMojos: 
     handler: getMojos.getMojos

@@ -58,7 +58,7 @@ module.exports.claimMojoSeed = async (event) => {
     }, 
     ExpressionAttributeValues: { 
       ':walletKey' : walletKey, // this uses the input from caller.
-      ':saleKeyPrefix' : "SA", 
+      ':saleKeyPrefix' : "SALE#", 
     },
     ProjectionExpression: 'saleKey, walletId, saleId, walletOrder', 
   };
