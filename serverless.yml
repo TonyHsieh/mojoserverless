@@ -7,8 +7,11 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs14.x
+  deploymentMethod: direct
   environment:
     DYNAMODB_MOJO_TABLE: ${self:service}-mojoTable-${sls:stage}
+    DYNAMODB_WHITELIST_TABLE: ${self:service}-whitelistTable-${sls:stage}
+
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -17,7 +20,9 @@ provider:
         - "dynamodb:Scan*"
         - "dynamodb:UpdateItem"
         - "dynamodb:DeleteItem"
-      Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-mojoTable-${sls:stage}
+      Resource: 
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-mojoTable-${sls:stage}
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}
 
 package:
   excludeDevDependencies: true  
@@ -33,17 +38,23 @@ functions:
           path: /mojo/metadata/{id}
           method: get
   getMojoSeed: 
-    handler: getMojoSeed.getMojoSeed
+    handler: mojoSeed.getMojoSeed
     events:
       - httpApi:
           path: /mojo-seed/metadata/{id}
           method: get
   sproutMojoSeed:
-    handler: sproutMojoSeed.sproutMojoSeed
+    handler: mojoSeed.sproutMojoSeed
     events:
       - httpApi:
           path: /mojo-seed/action/sprout/{id}
           method: put 
+  claimMojoSeed: 
+    handler: mojoSeed.claimMojoSeed
+    events:
+      - httpApi:
+          path: /mojo-seed/action/claim/{addr}
+          method: get
   getMojos: 
     handler: getMojos.getMojos
     events:
@@ -65,8 +76,49 @@ resources:
           - AttributeName: uuid
             KeyType: HASH
         TableName: ${self:service}-mojoTable-${sls:stage}
+    WhitelistTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: walletKey
+            AttributeType: S
+          - AttributeName: saleKey
+            AttributeType: S
+          - AttributeName: walletOrder
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: walletKey
+            KeyType: HASH
+          - AttributeName: saleKey
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: saleKey-index
+            KeySchema:
+            - AttributeName: saleKey
+              KeyType: HASH
+            - AttributeName: walletOrder
+              KeyType: RANGE
+            Projection:
+              ProjectionType: INCLUDE
+              NonKeyAttributes:
+                - walletId
+        TableName: ${self:service}-whitelistTable-${sls:stage}
 
 plugins:
   - serverless-offline
   - serverless-plugin-include-dependencies
   - serverless-dotenv-plugin
+  - serverless-esbuild
+
+custom:
+  esbuild:
+    bundle: true
+    minify: true
+    sourcemap: true
+    exclude: 'aws-sdk'
+    target: node14
+    define:
+      'require.resolve': undefined
+    platform: node
+    concurrency: 10

@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "serverless-dotenv-plugin": "^4.0.0",
+    "serverless-esbuild": "^1.30.0",
     "serverless-offline": "^8.8.0",
     "serverless-plugin-include-dependencies": "^5.0.0"
   },
@@ -8,6 +9,8 @@
     "@alch/alchemy-web3": "^1.4.2",
     "dotenv": "^16.0.0",
     "ethers": "^5.6.4",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.2.31",
     "node-fetch": "^2.6.7"
   }
 }
