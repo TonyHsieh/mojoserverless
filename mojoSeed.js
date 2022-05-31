@@ -9,9 +9,9 @@ const keccak256 = require("keccak256");
 module.exports.claimMojoSeed = async (event) => {
   // ------------ 
   // walletAddress 
-  //const walletId = event.pathParameters.addr;
+  const walletId = event.pathParameters.addr;
   // TEST - This for testing locally
-  const walletId = "0xd102030405060708091011121314151617181920"; // must be a string!
+  //const walletId = "0xd102030405060708091011121314151617181920"; // must be a string!
   const walletKey = "WALLET#" + walletId;
   
   const dynamodb = new AWS.DynamoDB.DocumentClient();
