@@ -20,9 +20,12 @@ provider:
         - "dynamodb:Scan*"
         - "dynamodb:UpdateItem"
         - "dynamodb:DeleteItem"
+        - "dynamodb:Query"
       Resource: 
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-mojoTable-${sls:stage}
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-mojoTable-${sls:stage}/index/*
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}/index/*
 
 package:
   excludeDevDependencies: true  
@@ -55,12 +58,18 @@ functions:
       - httpApi:
           path: /moj-seed/action/claim/{addr}
           method: get
-  getMojos: 
-    handler: getMojos.getMojos
+  plantTree:
+    handler: mojoSeed.plantTree
     events:
       - httpApi:
-          path: /mojos
-          method: get
+          path: /moj-seed/action/plantTree/{addr}/{treeLocation}
+          method: put 
+          #getMojos: 
+          #  handler: getMojos.getMojos
+          #  events:
+          #    - httpApi:
+          #        path: /mojos
+          #        method: get
 
 
 resources:

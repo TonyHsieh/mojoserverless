@@ -147,6 +147,8 @@ module.exports.claimMojoSeed = async (event) => {
         address: walletId,
       };
 
+      console.log(bodyVal);
+
     } else {
       console.log("3.1 ====  ERROR!!!!  Not Found ===");
     }
@@ -216,7 +218,8 @@ module.exports.getMojoSeed = async (event) => {
   // The default return response
   const returnSeedMetaData = {
     external_url: "https://nft.planetmojo.io/mojos/" + uuid, 
-    image: "https://images.planetmojo.io/Mojo_Seed_NFT.mp4",
+    image: "https://images.planetmojo.io/Mojo_Seed.png",
+    animation_url: "https://images.planetmojo.io/Mojo_Seed_NFT.mp4",
   }
   console.log("0.1 =====================");
   console.log(JSON.stringify(returnSeedMetaData));
@@ -246,6 +249,91 @@ module.exports.getMojoSeed = async (event) => {
     statusCode: statusCodeVal,
     body: JSON.stringify(bodyVal),
   };
+}
+
+//------------------------------
+
+module.exports.plantTree = async (event) => {
+
+  //target of Update (put)
+  const walletId = event.pathParameters.addr;
+  const treeLocation = event.pathParameters.treeLocation;
+
+  console.log ("pathParameters: ", event.pathParameters);
+  //TEST
+  //const walletId = "0xd102030405060708091011121314151617181920";
+  //const treeLocation = "NorthAmerica";
+
+  console.log ("walletId: "+ walletId);
+  console.log ("treeLocation: " + treeLocation);
+
+
+  const walletKey = "WALLET#" + walletId;
+
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+
+  let statusCodeVal = 200;
+  let bodyVal = { message: "Not Found" };
+
+  const dateNow = Date.now();
+
+  // Make sure the wallet is tied to a sale at least
+  const queryParams = {
+    TableName: process.env.DYNAMODB_WHITELIST_TABLE,
+    KeyConditionExpression: "#walletKey = :walletKey and begins_with(#saleKey, :saleKeyPrefix)",
+    // NOTE:: begins_with() doesn't work with Parition Key -- KeyConditionExpression: "begins_with(#walletKey, :walletKey) and begins_with(#saleKey, :saleKeyPrefix)",
+    ExpressionAttributeNames:{
+      "#walletKey": "walletKey", 
+      "#saleKey": "saleKey"
+    }, 
+    ExpressionAttributeValues: { 
+      ':walletKey' : walletKey, // this uses the input from caller.
+      ':saleKeyPrefix' : "SALE#", 
+    },
+    ProjectionExpression: 'saleKey, saleId', 
+  };
+
+  console.log("queryParams: ", queryParams);
+  const result = await dynamodb.query(queryParams).promise();
+  if (result.Count != 0) {
+    console.log("1 =======================");
+    console.log("  Found existing WalletAddress");
+
+    var updateParams = {
+      TableName: process.env.DYNAMODB_WHITELIST_TABLE,
+      Key: { 
+        walletKey : walletKey, 
+        saleKey  : "TREE#" + dateNow,
+      },
+      UpdateExpression: 'set #walletId = :walletId, #treeId = :treeId, #treeLocation = :treeLocation',
+      //ConditionExpression: '#a < :MAX',
+      ExpressionAttributeNames: {
+        '#walletId' : 'walletId',
+        '#treeId' : 'treeId',
+        '#treeLocation' : 'treeLocation',
+      },
+      ExpressionAttributeValues: {
+        ':walletId'     : walletId,
+        ':treeId'       : dateNow,
+        ':treeLocation' : treeLocation,
+      },
+      ReturnValues: "ALL_NEW"
+    };
+
+    console.log("updateParams: ", updateParams);
+
+    console.log(await dynamodb.update(updateParams).promise());
+    bodyVal = { message: "Recorded" };
+  } else {
+    console.log("Wallet doesn't exist: ", walletId);
+  }
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyVal),
+  };
+
+
 }
 
 
@@ -382,7 +470,16 @@ module.exports.sproutMojoSeed = async (event) => {
 
     // Prepare for callins the Contract's isSeedPlanted
     const provider = new ethers.providers.JsonRpcProvider('https://polygon-mainnet.g.alchemy.com/v2/'+ apiKey);
-    const sprouterContractAddress = "0x34bff0c8eC197D72c4cb95Ee5a8Be9644FED5022";
+
+    console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+    if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+      console.log("   Choose PROD sprouter contract!");
+      const sprouterContractAddress = "0x34bff0c8eC197D72c4cb95Ee5a8Be9644FED5022"; // PRODUCTION
+    } else {
+      console.log("   Choose DEV sprouter contract!");
+      const sprouterContractAddress = "0x34bff0c8eC197D72c4cb95Ee5a8Be9644FED5022"; // DEV
+    }
+    
     const sprouterContract = new ethers.Contract(
       sprouterContractAddress, 
       [ "function isSeedPlanted(uint256) external view returns(bool)" ], 
