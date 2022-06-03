@@ -217,6 +217,8 @@ module.exports.getMojoSeed = async (event) => {
 
   // The default return response
   const returnSeedMetaData = {
+    name: "Moj-Seed #" + uuid,
+    description: "Plant this Moj-Seed to Sprout a Mojo.",
     external_url: "https://nft.planetmojo.io/mojos/" + uuid, 
     image: "https://images.planetmojo.io/Mojo_Seed.png",
     animation_url: "https://images.planetmojo.io/Mojo_Seed_NFT.mp4",
