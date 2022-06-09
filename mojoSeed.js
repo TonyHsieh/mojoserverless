@@ -217,9 +217,9 @@ module.exports.getMojoSeed = async (event) => {
 
   // The default return response
   const returnSeedMetaData = {
-    name: "Moj-Seed #" + uuid,
+    name: "Moj-Seed",
     description: "Plant this Moj-Seed to Sprout a Mojo.",
-    external_url: "https://nft.planetmojo.io/mojos/" + uuid, 
+    external_url: "https://nft.planetmojo.io", 
     image: "https://images.planetmojo.io/Mojo_Seed.png",
     animation_url: "https://images.planetmojo.io/Mojo_Seed_NFT.mp4",
   }
@@ -406,7 +406,9 @@ module.exports.sproutMojoSeed = async (event) => {
       // if not sprouted and enough time has elapse then check the sprouterContract. 
 
       const isPlanted = await callContractIsSeedPlanted(uuid); 
-      const isMojoExists = await callMojoContract(uuid);
+      //const isMojoExists = await callMojoContract(uuid);
+      //TEMP FIX! until the Mojo Contract works...
+      const isMojoExists = false;
 
       console.log("3 =====================");
       console.log("isPlanted = " + isPlanted);
