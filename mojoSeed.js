@@ -408,7 +408,6 @@ module.exports.sproutMojoSeed = async (event) => {
       console.log("3 =====================");
       const isPlanted = await callContractIsSeedPlanted(uuid); 
       console.log("isPlanted = " + isPlanted);
-      console.log("isMojoExists = " + isMojoExists);
 
       //TEMP WORKAROUND
       //const isMojoExists = false;
@@ -518,13 +517,14 @@ module.exports.sproutMojoSeed = async (event) => {
       console.log("   Choose DEV mojo contract!");
       mojoContractAddress = "0x6621eaA0072B896938C61cb5F151D7700d30BbfF"; // DEV
     }
-
     console.log("Mojo contract: ", mojoContractAddress);
+
     const mojoContract = new ethers.Contract(
       mojoContractAddress,
-      [ "function exists(uint256 tokenId) external returns (bool)"],
+      [ "function exists(uint256 tokenId) external view returns (bool)"],
       provider
     );
+    console.log("Mojo contract innards: ", mojoContract);
 
     // if not sprouted and enough time has elapse then check the mojoContract. 
     return (mojoContract.exists(_id));
