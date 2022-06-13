@@ -351,9 +351,9 @@ module.exports.sproutMojoSeed = async (event) => {
 
   // ------------ 
   // target of the UPDATE (put)
-  //const uuid = event.pathParameters.id;
+  const uuid = event.pathParameters.id;
   // TEST - This for testing locally
-  const uuid = "3"; // must be a string!
+  //const uuid = "1"; // must be a string!
   
   // The default return response
   const returnSeedMetaData = {
@@ -405,13 +405,14 @@ module.exports.sproutMojoSeed = async (event) => {
       console.log("2.2 ==== isSprouted == Not TRUTHY + READY to check NOW =================");
       // if not sprouted and enough time has elapse then check the sprouterContract. 
 
-      const isPlanted = await callContractIsSeedPlanted(uuid); 
-      //const isMojoExists = await callMojoContract(uuid);
-      //TEMP FIX! until the Mojo Contract works...
-      const isMojoExists = false;
-
       console.log("3 =====================");
+      const isPlanted = await callContractIsSeedPlanted(uuid); 
       console.log("isPlanted = " + isPlanted);
+      console.log("isMojoExists = " + isMojoExists);
+
+      //TEMP WORKAROUND
+      //const isMojoExists = false;
+      const isMojoExists = await callMojoContract(uuid);
       console.log("isMojoExists = " + isMojoExists);
 
       // update nextCheckTime to Date.now() + (15 second * 1000 ms)
@@ -478,16 +479,18 @@ module.exports.sproutMojoSeed = async (event) => {
 
     // Prepare for callins the Contract's isSeedPlanted
     const provider = new ethers.providers.JsonRpcProvider('https://polygon-mainnet.g.alchemy.com/v2/'+ apiKey);
+    let sprouterContractAddress = "xx"; 
 
     console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
     if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
       console.log("   Choose PROD sprouter contract!");
-      const sprouterContractAddress = "0x34bff0c8eC197D72c4cb95Ee5a8Be9644FED5022"; // PRODUCTION
+      sprouterContractAddress = "0x34a99D282E1ac4BCe1D1bbdb4cE81600Ad062cA5"; // PRODUCTION
     } else {
       console.log("   Choose DEV sprouter contract!");
-      const sprouterContractAddress = "0x34bff0c8eC197D72c4cb95Ee5a8Be9644FED5022"; // DEV
+      sprouterContractAddress = "0x34a99D282E1ac4BCe1D1bbdb4cE81600Ad062cA5"; // DEV
     }
     
+    console.log("Sprouter contract: ", sprouterContractAddress);
     const sprouterContract = new ethers.Contract(
       sprouterContractAddress, 
       [ "function isSeedPlanted(uint256) external view returns(bool)" ], 
@@ -505,17 +508,19 @@ module.exports.sproutMojoSeed = async (event) => {
 
     // Prepare for callins the Contract's isSeedPlanted
     const provider = new ethers.providers.JsonRpcProvider('https://polygon-mainnet.g.alchemy.com/v2/'+ apiKey);
-
+    let mojoContractAddress = ""; 
+    
     console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
     if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
       console.log("   Choose PROD mojo contract!");
-      const mojoContractAddress = "0x34bff0c8eC197D72c4cb95Ee5a8Be9644FED5022"; // PRODUCTION
+      mojoContractAddress = "0x6621eaA0072B896938C61cb5F151D7700d30BbfF"; // PRODUCTION
     } else {
       console.log("   Choose DEV mojo contract!");
-      const mojoContractAddress = "0x34bff0c8eC197D72c4cb95Ee5a8Be9644FED5022"; // DEV
+      mojoContractAddress = "0x6621eaA0072B896938C61cb5F151D7700d30BbfF"; // DEV
     }
 
-    const mojoContract = new Contract(
+    console.log("Mojo contract: ", mojoContractAddress);
+    const mojoContract = new ethers.Contract(
       mojoContractAddress,
       [ "function exists(uint256 tokenId) external returns (bool)"],
       provider
