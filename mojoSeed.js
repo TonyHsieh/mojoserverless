@@ -486,7 +486,7 @@ module.exports.sproutMojoSeed = async (event) => {
       sprouterContractAddress = "0xAAAAAD282E1ac4BCe1D1bbdb4cE81600Ad062cA5"; // PRODUCTION
     } else {
       console.log("   Choose DEV sprouter contract!");
-      sprouterContractAddress = "0x34a99D282E1ac4BCe1D1bbdb4cE81600Ad062cA5"; // DEV
+      sprouterContractAddress = "0xecC5655E8f74a30Db1C8f6BAdE3daeBDeF35e125"; // DEV
     }
     
     console.log("Sprouter contract: ", sprouterContractAddress);
@@ -515,7 +515,7 @@ module.exports.sproutMojoSeed = async (event) => {
       mojoContractAddress = "0xBBBBBaA0072B896938C61cb5F151D7700d30BbfF"; // PRODUCTION
     } else {
       console.log("   Choose DEV mojo contract!");
-      mojoContractAddress = "0x6621eaA0072B896938C61cb5F151D7700d30BbfF"; // DEV
+      mojoContractAddress = "0xB5157007f381d9c151c706a55757D5a71dE73e3a"; // DEV
     }
     console.log("Mojo contract: ", mojoContractAddress);
 
