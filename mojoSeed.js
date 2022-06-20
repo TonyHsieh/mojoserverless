@@ -340,8 +340,60 @@ module.exports.plantTree = async (event) => {
 
 }
 
+//------------------------------
+/*
+module.exports.testCopy = async (event) => {
 
 
+  // ------------ 
+  // target of the UPDATE (put)
+  const uuid = event.pathParameters.id;
+  // TEST - This for testing locally
+  //const uuid = "1"; // must be a string!
+
+  const DIR_KEY = process.env.DIR_KEY;
+  let imagesURL = "xx";
+  console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+  if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+    console.log("   Choose PROD images!");
+    imagesURL = "planetmojo.io"; // PRODUCTION
+  } else {
+    console.log("   Choose DEV images!");
+    imagesURL = "hsieh.org"; // DEV
+  }
+
+  const s3 = new AWS.S3();
+  const bucket = process.env.S3_PLANETMOJO_IMAGES;
+
+  const imagePNGfilename = "mojo_"+ uuid.toString().padStart(6,'0') + ".png";
+  const imageMP4filename = "mojo_"+ uuid.toString().padStart(6,'0') + ".mp4";
+
+  const paramsPNG = {
+    Bucket: bucket, 
+    CopySource: bucket + "/" + DIR_KEY + "/" + imagePNGfilename, 
+    Key: imagePNGfilename 
+  };
+  console.log("=== PNG COPY ===");
+  console.log("PNG copy: params:: "  + JSON.stringify(paramsPNG));
+  const resultPNG = await s3.copyObject(paramsPNG).promise();
+  console.log("PNG copy: " + resultPNG);
+
+  let paramsMP4 = {
+    Bucket: bucket, 
+    CopySource: bucket + "/" + DIR_KEY + "/" + imageMP4filename, 
+    Key: imageMP4filename 
+  };
+  console.log("=== MP4 COPY ===");
+  console.log("MP4 copy: params:: "  + JSON.stringify(paramsMP4));
+  const resultMP4 = await s3.copyObject(paramsMP4).promise();
+  console.log("MP4 copy: " + resultMP4);
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify("TEST DONE"),
+  };
+}
+*/
 
 //------------------------------
 
@@ -358,7 +410,7 @@ module.exports.sproutMojoSeed = async (event) => {
   // The default return response
   const returnSeedMetaData = {
     external_url: "https://api.planetmojo.io/mojo-seed/metadata/" + uuid, 
-    image: "https://image.planetmojo.io/Mojo_Seed_NFT.mp4"
+    image: "https://images.planetmojo.io/Mojo_Seed_NFT.mp4"
   }
 
   // getting < something > from the input body. 
@@ -421,14 +473,55 @@ module.exports.sproutMojoSeed = async (event) => {
 
       // ifPlanted but not Sprouted then write new isSprouted to be true.
       if ((isPlanted || isMojoExists) && !result.Item.isSprouted) {
+        console.log("4 =====================");
         //Add the information here.
         result.Item.isSprouted = Date.now();
+        console.log("5 =====================");
+        
+        //Copy the files from DIR_KEY to root
+        const DIR_KEY = process.env.DIR_KEY;
+        let imagesURL = "xx";
+        console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+        if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+          console.log("   Choose PROD images!");
+          imagesURL = "planetmojo.io"; // PRODUCTION
+        } else {
+          console.log("   Choose DEV images!");
+          imagesURL = "hsieh.org"; // DEV
+        }
+
+        const s3 = new AWS.S3();
+        const bucket = process.env.S3_PLANETMOJO_IMAGES;
+
+        const imagePNGfilename = "mojo_"+ uuid.toString().padStart(6,'0') + ".png";
+        const imageMP4filename = "mojo_"+ uuid.toString().padStart(6,'0') + ".mp4";
+
+        const paramsPNG = {
+          Bucket: bucket, 
+          CopySource: bucket + "/" + DIR_KEY + "/" + imagePNGfilename, 
+          Key: imagePNGfilename 
+        };
+        console.log("=== PNG COPY ===");
+        console.log("PNG copy: params:: "  + JSON.stringify(paramsPNG));
+        const resultPNG = await s3.copyObject(paramsPNG).promise();
+        console.log("PNG copy: " + resultPNG);
+
+        let paramsMP4 = {
+          Bucket: bucket, 
+          CopySource: bucket + "/" + DIR_KEY + "/" + imageMP4filename, 
+          Key: imageMP4filename 
+        };
+        console.log("=== MP4 COPY ===");
+        console.log("MP4 copy: params:: "  + JSON.stringify(paramsMP4));
+        const resultMP4 = await s3.copyObject(paramsMP4).promise();
+        console.log("MP4 copy: " + resultMP4);
+
         bodyVal = { message: "Sprouting Complete"}; 
       }
 
-      console.log("4 =====================");
+      console.log("6 =====================");
       await putIntoDynamoDB(dynamodb, result.Item); 
-      console.log("5 =====================");
+      console.log("7 =====================");
 
     } 
   }

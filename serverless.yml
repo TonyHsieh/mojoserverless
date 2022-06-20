@@ -11,6 +11,7 @@ provider:
   environment:
     DYNAMODB_MOJO_TABLE: ${self:service}-mojoTable-${sls:stage}
     DYNAMODB_WHITELIST_TABLE: ${self:service}-whitelistTable-${sls:stage}
+    S3_PLANETMOJO_IMAGES: planetmojo-images-${sls:stage}
 
   iamRoleStatements:
     - Effect: "Allow"
@@ -21,11 +22,14 @@ provider:
         - "dynamodb:UpdateItem"
         - "dynamodb:DeleteItem"
         - "dynamodb:Query"
+        - "s3:GetObject"
+        - "s3:PutObject"
       Resource: 
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-mojoTable-${sls:stage}
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-mojoTable-${sls:stage}/index/*
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}/index/*
+        - arn:aws:s3:::planetmojo-images-${sls:stage}/*
 
 package:
   excludeDevDependencies: true  
@@ -69,6 +73,12 @@ functions:
           #  events:
           #    - httpApi:
           #        path: /mojos
+          #        method: get
+          #testCopy: 
+          #  handler: mojoSeed.testCopy
+          #  events:
+          #    - httpApi:
+          #        path: /testCopy/{id}
           #        method: get
 
 
