@@ -39,10 +39,16 @@ package:
 
 functions:
   getMojo: 
-    handler: getMojo.getMojo
+    handler: mojo.getMojo
     events:
       - httpApi:
           path: /mojo/metadata/{id}
+          method: get
+  getMojoOpensea: 
+    handler: mojo.getMojoOpensea
+    events:
+      - httpApi:
+          path: /mojo/opensea/{id}
           method: get
   getMojoSeed: 
     handler: mojoSeed.getMojoSeed
