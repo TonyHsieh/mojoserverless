@@ -512,8 +512,13 @@ module.exports.sproutMojoSeed = async (event) => {
           Key: imageMP4filename 
         };
         console.log("=== MP4 COPY ===");
-        console.log("MP4 copy: params:: "  + JSON.stringify(paramsMP4));
-        const resultMP4 = await s3.copyObject(paramsMP4).promise();
+        let resultMP4 = "";
+        try {
+          console.log("MP4 copy: params:: "  + JSON.stringify(paramsMP4));
+          resultMP4 = await s3.copyObject(paramsMP4).promise();
+        } catch (err) {
+          console.log("suppress:" + err);
+        }
         console.log("MP4 copy: " + resultMP4);
 
         bodyVal = { message: "Sprouting Complete"}; 
@@ -579,7 +584,7 @@ module.exports.sproutMojoSeed = async (event) => {
       sprouterContractAddress = "0xAAAAAD282E1ac4BCe1D1bbdb4cE81600Ad062cA5"; // PRODUCTION
     } else {
       console.log("   Choose DEV sprouter contract!");
-      sprouterContractAddress = "0xecC5655E8f74a30Db1C8f6BAdE3daeBDeF35e125"; // DEV
+      sprouterContractAddress = "0x059A24ed7681b848513348B5bcf42df772A71d23"; // DEV
     }
     
     console.log("Sprouter contract: ", sprouterContractAddress);
@@ -608,7 +613,7 @@ module.exports.sproutMojoSeed = async (event) => {
       mojoContractAddress = "0xBBBBBaA0072B896938C61cb5F151D7700d30BbfF"; // PRODUCTION
     } else {
       console.log("   Choose DEV mojo contract!");
-      mojoContractAddress = "0xB5157007f381d9c151c706a55757D5a71dE73e3a"; // DEV
+      mojoContractAddress = "0x841f19a46A342579A1D7303Bd717A7Ae0fF418e0"; // DEV
     }
     console.log("Mojo contract: ", mojoContractAddress);
 
