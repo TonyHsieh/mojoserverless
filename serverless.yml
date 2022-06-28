@@ -50,6 +50,12 @@ functions:
       - httpApi:
           path: /mojo/opensea/{id}
           method: get
+  getMojoPfp: 
+    handler: mojo.getMojoPfp
+    events:
+      - httpApi:
+          path: /mojo/pfp/{id}
+          method: get
   getMojoSeed: 
     handler: mojoSeed.getMojoSeed
     events:

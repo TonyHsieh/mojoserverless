@@ -581,7 +581,7 @@ module.exports.sproutMojoSeed = async (event) => {
     console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
     if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
       console.log("   Choose PROD sprouter contract!");
-      sprouterContractAddress = "0xAAAAAD282E1ac4BCe1D1bbdb4cE81600Ad062cA5"; // PRODUCTION
+      sprouterContractAddress = "0xCdD0A312C148e1cd449FcD8e7aaF186dF6A1a691"; // PRODUCTION
     } else {
       console.log("   Choose DEV sprouter contract!");
       sprouterContractAddress = "0x059A24ed7681b848513348B5bcf42df772A71d23"; // DEV
@@ -610,7 +610,7 @@ module.exports.sproutMojoSeed = async (event) => {
     console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
     if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
       console.log("   Choose PROD mojo contract!");
-      mojoContractAddress = "0xBBBBBaA0072B896938C61cb5F151D7700d30BbfF"; // PRODUCTION
+      mojoContractAddress = "0x43f2932341c1F619648c7A077b49393Ca882b4d1"; // PRODUCTION
     } else {
       console.log("   Choose DEV mojo contract!");
       mojoContractAddress = "0x841f19a46A342579A1D7303Bd717A7Ae0fF418e0"; // DEV
