@@ -133,6 +133,7 @@ module.exports.getMojoPfp = async (event) => {
       
       // Get the image file from DIR_KEY
       const DIR_PFP_KEY = process.env.DIR_PFP_KEY;
+      /*
       let imagesURL = "xx";
       console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
       if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
@@ -142,6 +143,7 @@ module.exports.getMojoPfp = async (event) => {
         console.log("   Choose DEV images!");
         imagesURL = "hsieh.org"; // DEV
       }
+      */
 
       const s3 = new AWS.S3();
       const bucket = process.env.S3_PLANETMOJO_IMAGES;
@@ -152,9 +154,19 @@ module.exports.getMojoPfp = async (event) => {
         Bucket: bucket, 
         Key: DIR_PFP_KEY + "/" + imagePNGfilename
       };
-      console.log("=== PNG read ===");
-      console.log("PNG read: params:: "  + JSON.stringify(paramsPNG));
-      responsePNG = await s3.getObject(paramsPNG).promise();
+      try {
+        console.log("=== PNG read ===");
+        console.log("PNG read: params:: "  + JSON.stringify(paramsPNG));
+        responsePNG = await s3.getObject(paramsPNG).promise();
+      } catch (err) {
+        // Log the fact that the file was (probably) not found
+        console.log("suppress: " + err);
+        // AND return with NOT FOUND message
+        return {
+          statusCode: statusCodeVal,
+          body: JSON.stringify(bodyVal),
+        }
+      }
       console.log("PNG read: " + responsePNG);
       //console.log("PNG read - base64: " + responsePNG['Body'].toString('base64'));
 
