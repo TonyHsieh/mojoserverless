@@ -629,3 +629,73 @@ module.exports.sproutMojoSeed = async (event) => {
     
   } 
 }
+
+//-------------------------------
+module.exports.claimPosterNFT = async (event) => {
+  // ------------ 
+  // walletAddress 
+  const walletId = event.pathParameters.addr;
+  // TEST - This for testing locally
+  //const walletId = "0xd102030405060708091011121314151617181920"; // must be a string!
+  const walletKey = "WALLET#" + walletId;
+  
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+  let statusCodeVal = 200;
+  let bodyVal = { message : "Not found" }; 
+
+  console.log("0 =====================");
+  console.log("walletId: " + walletId);
+  console.log("walletKey: " + walletKey);
+
+  // This is the way we need to grab the information
+  //   The Wallet can exist in multiple Sales
+  //   So we need this.
+  //   Also this will be the way we do the extraction for the merkel leaves.
+  //    from the salesKey-index
+  const scanParams = {
+    TableName: process.env.DYNAMODB_CLAIM_TABLE,
+    KeyConditionExpression: "#walletKey = :walletKey and begins_with(#saleKey, :saleKeyPrefix)",
+    // NOTE:: begins_with() doesn't work with Parition Key -- KeyConditionExpression: "begins_with(#walletKey, :walletKey) and begins_with(#saleKey, :saleKeyPrefix)",
+    ExpressionAttributeNames:{
+      "#walletKey": "PK", 
+      "#saleKey": "SK"
+    }, 
+    ExpressionAttributeValues: { 
+      ':walletKey' : walletKey, // this uses the input from caller.
+      ':saleKeyPrefix' : "SALE#", 
+    },
+    ProjectionExpression: 'SK, walletId, saleId, saleKey, walletOrder, merkleProof', 
+  };
+
+  console.log("scanParams: ", scanParams);
+
+  const result = await dynamodb.query(scanParams).promise();
+  if (result.Count != 0) {
+    console.log("1 =====================");
+    console.log("Item found!", JSON.stringify(result, null, ));
+
+    console.log(result.Items);
+    const maxSaleId = parseInt(result.Items[result.Count - 1].saleId);
+    console.log("max saleId: " + maxSaleId);
+    const maxSaleKey = result.Items[result.Count - 1].saleKey;
+    console.log("max saleKey: " + maxSaleKey);
+    const maxMerkleProof = result.Items[result.Count - 1].merkleProof;
+    console.log("max merkleProof: " + maxMerkleProof);
+    
+    console.log("2 =====================");
+    bodyVal = { 
+      saleId: maxSaleId,
+      merkleProof: maxMerkleProof,
+      address: walletId,
+    };
+    console.log(bodyVal);
+
+  } else {
+    console.log ("0.1 === Nothing found ===  ");
+  }
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyVal),
+  };
+}

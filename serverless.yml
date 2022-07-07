@@ -11,6 +11,7 @@ provider:
   environment:
     DYNAMODB_MOJO_TABLE: ${self:service}-mojoTable-${sls:stage}
     DYNAMODB_WHITELIST_TABLE: ${self:service}-whitelistTable-${sls:stage}
+    DYNAMODB_CLAIM_TABLE: ${self:service}-claimTable-${sls:stage}
     S3_PLANETMOJO_IMAGES: planetmojo-images-${sls:stage}
 
   iamRoleStatements:
@@ -29,6 +30,8 @@ provider:
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-mojoTable-${sls:stage}/index/*
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}/index/*
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-claimTable-${sls:stage}
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-claimTable-${sls:stage}/index/*
         - arn:aws:s3:::planetmojo-images-${sls:stage}/*
 
 package:
@@ -80,6 +83,13 @@ functions:
       - httpApi:
           path: /moj-seed/action/plantTree/{addr}/{treeLocation}
           method: put 
+  claimPosterNFT: 
+    handler: mojoSeed.claimPosterNFT
+    events:
+      - httpApi:
+          path: /posterNFT/action/claim/{addr}
+          method: get
+
           #getMojos: 
           #  handler: getMojos.getMojos
           #  events:
@@ -135,6 +145,21 @@ resources:
               NonKeyAttributes:
                 - walletId
         TableName: ${self:service}-whitelistTable-${sls:stage}
+    ClaimTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: PK 
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: PK 
+            KeyType: HASH
+          - AttributeName: SK 
+            KeyType: RANGE
+        TableName: ${self:service}-claimTable-${sls:stage}
 
 plugins:
   - serverless-offline

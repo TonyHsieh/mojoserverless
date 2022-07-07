@@ -24,14 +24,16 @@ const index_PK          = 0;
 const index_SK          = 1;
 const index_TYPE        = 2;
 const index_walletId    = 3;
-const index_saleId      = 4;
-const index_merkleProof = 5;
+const index_walletOrder = 4;
+const index_saleId      = 5;
+const index_merkleProof = 6;
 
 const columns = [
   "PK",
   "SK", 
   "TYPE",
   "walletId",
+  "walletOrder",
   "saleId",
   "merkleProof"
 ]
@@ -69,11 +71,14 @@ let row = [];
 row[index_SK] = saleKey;
 row[index_TYPE] = "MERKEL_PROOF";
 row[index_saleId] = padded_saleId;
-
+let counter = 0;
 
 leafArray.forEach(walletId =>  {
-  //   calculate a merkle proof for each wallet
-  console.log(`Line from file: ${walletId}`);
+  // Increment counter 
+  counter++;
+  
+  // calculate a merkle proof for each wallet
+  console.log("#" + counter + `: Line from file: ${walletId}`);
   // calculate the Leaf
   const leaf = solidityKeccak256(["address"], [walletId]);
   console.log("leaf: ", leaf);
@@ -85,6 +90,7 @@ leafArray.forEach(walletId =>  {
   // save in an array for later output in CSV format per line
   row[index_PK] = "WALLET#"+walletId;
   row[index_walletId] = walletId;
+  row[index_walletOrder] = counter.toString().padStart(6, '0');
   row[index_merkleProof] = merkleProof;
   stringifier.write(row);   
 
