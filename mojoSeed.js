@@ -631,7 +631,7 @@ module.exports.sproutMojoSeed = async (event) => {
 }
 
 //-------------------------------
-module.exports.claimPosterNFT = async (event) => {
+module.exports.claimCollectible = async (event) => {
   // ------------ 
   // walletAddress 
   const walletId = event.pathParameters.addr;

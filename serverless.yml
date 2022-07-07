@@ -83,11 +83,11 @@ functions:
       - httpApi:
           path: /moj-seed/action/plantTree/{addr}/{treeLocation}
           method: put 
-  claimPosterNFT: 
-    handler: mojoSeed.claimPosterNFT
+  claimCollectible: 
+    handler: mojoSeed.claimCollectible
     events:
       - httpApi:
-          path: /posterNFT/action/claim/{addr}
+          path: /collectible/action/claim/{addr}
           method: get
 
           #getMojos: 
