@@ -1,7 +1,7 @@
 const fs = require('fs');
 //const events = require('events');
 //const readline = require('readline');
-const { stringify } = require("csv-stringify");
+//const { stringify } = require("csv-stringify");
 const ethers = require('ethers')
 const merkleTreeJS = require('merkletreejs')
 const solidityKeccak256 = require("ethers/lib/utils").solidityKeccak256;
@@ -66,7 +66,6 @@ console.log("MerkelTree: ", merkleTree);
 //
 
 // setup output buffer
-const stringifier = stringify({ header:true, columns: columns});
 let row = []; 
 row[index_SK] = saleKey;
 row[index_TYPE] = "POSTER001";
@@ -75,9 +74,6 @@ let counter = 0;
 
 // open a new output file for CSV
 fs.writeFileSync(outputFile, columns.toString() + "\n");
-/*
- const writeableStream = fs.createWriteStream(outputFile);
-*/
 
 leafArray.forEach(walletId =>  {
   // Increment counter 
@@ -87,11 +83,11 @@ leafArray.forEach(walletId =>  {
   console.log("#" + counter + `: Line from file: ${walletId}`);
   // calculate the Leaf
   const leaf = solidityKeccak256(["address"], [walletId]);
-  console.log("leaf: ", leaf);
+  //console.log("leaf: ", leaf);
 
   // calculate the MerkleProof
   const merkleProof = merkleTree.getHexProof(leaf);
-  console.log("merkleProof: ", merkleProof);
+  //console.log("merkleProof: ", merkleProof);
 
   // save in an array for later output in CSV format per line
   row[index_PK] = "WALLET#"+walletId;
@@ -102,19 +98,8 @@ leafArray.forEach(walletId =>  {
 
   fs.appendFileSync(outputFile, row.toString() + "\n");
   
-  /* 
-  // stringifier.write(row);   
-  */
-
-
 });
 
-/*
-// output in CSV to a file
-stringifier.pipe(writeableStream);
-// Close the writable stream
-stringifier.end();
-*/
 // Close the File
 fs.close();
 
