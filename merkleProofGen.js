@@ -69,9 +69,15 @@ console.log("MerkelTree: ", merkleTree);
 const stringifier = stringify({ header:true, columns: columns});
 let row = []; 
 row[index_SK] = saleKey;
-row[index_TYPE] = "MERKEL_PROOF";
+row[index_TYPE] = "POSTER001";
 row[index_saleId] = padded_saleId;
 let counter = 0;
+
+// open a new output file for CSV
+fs.writeFileSync(outputFile, columns.toString() + "\n");
+/*
+ const writeableStream = fs.createWriteStream(outputFile);
+*/
 
 leafArray.forEach(walletId =>  {
   // Increment counter 
@@ -92,20 +98,28 @@ leafArray.forEach(walletId =>  {
   row[index_walletId] = walletId;
   row[index_walletOrder] = counter.toString().padStart(6, '0');
   row[index_merkleProof] = merkleProof;
-  stringifier.write(row);   
+
+  fs.appendFileSync(outputFile, row.toString() + "\n");
+  
+  /* 
+  // stringifier.write(row);   
+  */
+
 
 });
 
-// open a new output file for CSV
-const writeableStream = fs.createWriteStream(outputFile);
-
+/*
 // output in CSV to a file
 stringifier.pipe(writeableStream);
+// Close the writable stream
+stringifier.end();
+*/
+// Close the File
+fs.close();
 
 // RAM used information...
 const used = process.memoryUsage().heapUsed / 1024 / 1024;
 console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
-
 
 
 /*
