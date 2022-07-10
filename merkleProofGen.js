@@ -97,7 +97,8 @@ leafArray.forEach(walletId =>  {
   row[index_PK] = "WALLET#"+walletId;
   row[index_walletId] = walletId;
   row[index_walletOrder] = counter.toString().padStart(6, '0');
-  row[index_merkleProof] = merkleProof;
+  row[index_merkleProof] =  JSON.stringify(merkleProof).replace(/"/g, '""');
+  row[index_merkleProof] =  '\"' + row[index_merkleProof] + '\"';
 
   fs.appendFileSync(outputFile, row.toString() + "\n");
   
