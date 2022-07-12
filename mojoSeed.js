@@ -631,6 +631,58 @@ module.exports.sproutMojoSeed = async (event) => {
 }
 
 //-------------------------------
+module.exports.getMoviePoster = async (event) => {
+
+  // target of the UPDATE (put)
+  const uuid = event.pathParameters.id;
+  // for debugging locally 
+  //const uuid = "3";
+  
+  let statusCodeVal = 200;
+  let bodyVal = { message: "Not found" };
+
+  // Look up the target Mojo  
+  const scanParams = {
+    TableName: process.env.DYNAMODB_MOJO_TABLE,
+    Key: {
+      uuid: uuid,
+    },
+  };
+  console.log("0 =====================");
+  console.log(JSON.stringify(scanParams));
+
+  let mojoURL = "";
+  console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+  if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+    console.log("   Choose PROD mojo URL!");
+    mojoURL = "https://www.planetmojo.io"; // PRODUCTION
+  } else {
+    console.log("   Choose DEV mojo URL!");
+    mojoURL = "https://develop.d4ptv3m4dtbv3.amplifyapp.com"; // DEV
+  }
+  console.log("Mojo URL: ", mojoURL);
+
+
+  // The default return response
+  const returnSeedMetaData = {
+    uuid: uuid,
+    image: "https://images.planetmojo.io/MojoTrailerPoster.png",
+    name: "Planet Mojo Cinematic Collector's Pass",
+    external_url: mojoURL + "/collectibles/" + uuid, 
+    description: "A limited edition Cinematic Collector's Pass \"movie poster\" NFT created for the community in celebration of the release of Planet Mojo's first cinematic trailer!",
+    attributes: [{ display_type: null, value: "Collector's Edition", trait_type: "Pass Type"}]
+  }
+
+  console.log("0.1 =====================");
+  console.log(JSON.stringify(returnSeedMetaData));
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(returnSeedMetaData),
+  };
+}
+
+//-------------------------------
 module.exports.claimCollectible = async (event) => {
   // ------------ 
   // walletAddress 

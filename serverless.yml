@@ -83,6 +83,12 @@ functions:
       - httpApi:
           path: /moj-seed/action/plantTree/{addr}/{treeLocation}
           method: put 
+  getMoviePoster: 
+    handler: mojoSeed.getMoviePoster
+    events:
+      - httpApi:
+          path: /collectible/movie-poster/metadata/{id}
+          method: get
   claimCollectible: 
     handler: mojoSeed.claimCollectible
     events:

@@ -59,6 +59,7 @@ console.log("MerkleLeaves!", merkleLeaves);
 // Calculate MerkleTree
 const merkleTree = new merkleTreeJS.MerkleTree(merkleLeaves, keccak256, { sort: true, fillDefaultHash: ethers.constants.HashZero });
 console.log("MerkelTree: ", merkleTree);
+console.log("** MerkelTree Root: ", merkleTree.getHexRoot());
 
 //=======
 //
