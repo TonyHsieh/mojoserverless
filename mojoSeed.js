@@ -687,9 +687,11 @@ module.exports.claimCollectible = async (event) => {
   // ------------ 
   // walletAddress 
   const walletId = event.pathParameters.addr;
+  const walletId_lowercase = event.pathParameters.addr.toLowerCase();
   // TEST - This for testing locally
   //const walletId = "0xd102030405060708091011121314151617181920"; // must be a string!
   const walletKey = "WALLET#" + walletId;
+  const walletKey_lowercase = "WALLET#" + walletId_lowercase;
   
   const dynamodb = new AWS.DynamoDB.DocumentClient();
   let statusCodeVal = 200;
@@ -698,12 +700,16 @@ module.exports.claimCollectible = async (event) => {
   console.log("0 =====================");
   console.log("walletId: " + walletId);
   console.log("walletKey: " + walletKey);
+  console.log("walletId - lowercase: " + walletId_lowercase);
+  console.log("walletKey - lowercase: " + walletKey_lowercase);
 
   // This is the way we need to grab the information
   //   The Wallet can exist in multiple Sales
   //   So we need this.
   //   Also this will be the way we do the extraction for the merkel leaves.
   //    from the salesKey-index
+
+  // == upper+lower case==
   const scanParams = {
     TableName: process.env.DYNAMODB_CLAIM_TABLE,
     KeyConditionExpression: "#walletKey = :walletKey and begins_with(#saleKey, :saleKeyPrefix)",
@@ -722,14 +728,35 @@ module.exports.claimCollectible = async (event) => {
   console.log("scanParams: ", scanParams);
 
   const result = await dynamodb.query(scanParams).promise();
-  if (result.Count != 0) {
+
+  // == lowercase ==
+  const scanParams_lowercase = {
+    TableName: process.env.DYNAMODB_CLAIM_TABLE,
+    KeyConditionExpression: "#walletKey = :walletKey and begins_with(#saleKey, :saleKeyPrefix)",
+    // NOTE:: begins_with() doesn't work with Parition Key -- KeyConditionExpression: "begins_with(#walletKey, :walletKey) and begins_with(#saleKey, :saleKeyPrefix)",
+    ExpressionAttributeNames:{
+      "#walletKey": "PK", 
+      "#saleKey": "SK"
+    }, 
+    ExpressionAttributeValues: { 
+      ':walletKey' : walletKey_lowercase, // this uses the input from caller.
+      ':saleKeyPrefix' : "SALE#", 
+    },
+    ProjectionExpression: 'SK, walletId, saleId, saleKey, walletOrder, merkleProof', 
+  };
+
+  console.log("scanParams_lowercase: ", scanParams_lowercase);
+
+  const result_lowercase = await dynamodb.query(scanParams_lowercase).promise();
+  
+  if (result.Count > 0) {
     console.log("1 =====================");
     console.log("Item found!", JSON.stringify(result, null, ));
 
     console.log(result.Items);
     const maxSaleId = parseInt(result.Items[result.Count - 1].saleId);
     console.log("max saleId: " + maxSaleId);
-    const maxSaleKey = result.Items[result.Count - 1].saleKey;
+    const maxSaleKey = result.Items[result.Count - 1].SK;
     console.log("max saleKey: " + maxSaleKey);
     const maxMerkleProof = result.Items[result.Count - 1].merkleProof;
     console.log("max merkleProof: " + maxMerkleProof);
@@ -740,8 +767,27 @@ module.exports.claimCollectible = async (event) => {
       merkleProof: maxMerkleProof,
       address: walletId,
     };
-    console.log(bodyVal);
+    console.log(bodyVal); 
+  } else if (result_lowercase.Count > 0) {
+    console.log("1 =====================");
+    console.log("Item (lowercase) found!", JSON.stringify(result_lowercase, null, ));
 
+    console.log(result_lowercase.Items);
+    const maxSaleId = parseInt(result_lowercase.Items[result_lowercase.Count - 1].saleId);
+    console.log("max saleId: " + maxSaleId);
+    const maxSaleKey = result_lowercase.Items[result_lowercase.Count - 1].SK;
+    console.log("max saleKey: " + maxSaleKey);
+    const maxMerkleProof = result_lowercase.Items[result_lowercase.Count - 1].merkleProof;
+    console.log("max merkleProof: " + maxMerkleProof);
+    
+    console.log("2 =====================");
+    bodyVal = { 
+      saleId: maxSaleId,
+      merkleProof: maxMerkleProof,
+      address: walletId,
+    };
+    console.log(bodyVal); 
+  
   } else {
     console.log ("0.1 === Nothing found ===  ");
   }

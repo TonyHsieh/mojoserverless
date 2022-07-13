@@ -10,13 +10,16 @@ const keccak256 = require("keccak256");
 console.log("Hello World!");
 
 // SET THE saleId
-const saleId = 1;
+const saleId = 12;
 const padded_saleId = saleId.toString().padStart(6, '0');  
 const saleKey = "SALE#" + padded_saleId;
 
-const inputFile = (process.argv.slice(2) != "" ? process.argv.slice(2) : "in.txt");
-const outputFile = (process.argv.slice(3) != "" ? process.argv.slice(3) : "out.csv");
+const args = process.argv.slice(2);
 
+const inputFile = (args[0] != "" ? args[0] : "in.txt");
+const outputFile = (args[1] != "" ? args[1] : "out.csv");
+
+console.log("args" + args);
 console.log("inputFile: " + inputFile);
 console.log("outputFile: " + outputFile);
 
@@ -47,12 +50,15 @@ const allFileContents = fs.readFileSync(inputFile, 'utf-8');
 
 // Split into line array
 // the filter is to get rid of the last phantom line...
-const leafArray = allFileContents.split(/\r?\n/).filter(element => element);
-console.log(leafArray);
+const leafArray_raw = allFileContents.split(/\r?\n/).filter(element => element);
+console.log("leafArray_raw: ", leafArray_raw);
 
 // Calculate MerkleLeaves from leafArray
 console.log("3 ===================");
-const merkleLeaves = leafArray.map((leafId) => { return solidityKeccak256(["address"], [leafId]) } ); 
+// added an ethers.utils.getAddress() to properly set the upper+lower case
+const leafArray = leafArray_raw.map((leafId) => { return ethers.utils.getAddress(leafId) })
+console.log("leafArray: ", leafArray);
+const merkleLeaves = leafArray.map((leafId) => { return solidityKeccak256(["address"], [leafId]) }); 
 console.log("4 ===================");
 console.log("MerkleLeaves!", merkleLeaves);
 
@@ -60,6 +66,11 @@ console.log("MerkleLeaves!", merkleLeaves);
 const merkleTree = new merkleTreeJS.MerkleTree(merkleLeaves, keccak256, { sort: true, fillDefaultHash: ethers.constants.HashZero });
 console.log("MerkelTree: ", merkleTree);
 console.log("** MerkelTree Root: ", merkleTree.getHexRoot());
+
+
+const proof = merkleTree.getHexProof(ethers.utils.solidityKeccak256(["address"], ["0x7C418D7083f6c22B3d600B8fe4F0cf93564098dD"]));
+  console.log("PROOF", proof);
+
 
 //=======
 //
@@ -77,6 +88,8 @@ let counter = 0;
 fs.writeFileSync(outputFile, columns.toString() + "\n");
 
 leafArray.forEach(walletId =>  {
+  //if (walletId != "0x7C418D7083f6c22B3d600B8fe4F0cf93564098dD") return;
+
   // Increment counter 
   counter++;
   
@@ -89,6 +102,8 @@ leafArray.forEach(walletId =>  {
   // calculate the MerkleProof
   const merkleProof = merkleTree.getHexProof(leaf);
   //console.log("merkleProof: ", merkleProof);
+  //console.log(JSON.stringify(merkleProof).replace(/"/g, '""'));
+  //return;
 
   // save in an array for later output in CSV format per line
   row[index_PK] = "WALLET#"+walletId;
@@ -101,13 +116,13 @@ leafArray.forEach(walletId =>  {
   
 });
 
-// Close the File
-fs.close();
 
 // RAM used information...
 const used = process.memoryUsage().heapUsed / 1024 / 1024;
 console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
 
+// Close the File
+fs.close();
 
 /*
 //
