@@ -501,6 +501,7 @@ module.exports.sproutMojoSeed = async (event) => {
           CopySource: bucket + "/" + DIR_KEY + "/" + imagePNGfilename, 
           Key: imagePNGfilename 
         };
+
         console.log("=== PNG COPY ===");
         console.log("PNG copy: params:: "  + JSON.stringify(paramsPNG));
         const resultPNG = await s3.copyObject(paramsPNG).promise();
@@ -584,7 +585,7 @@ module.exports.sproutMojoSeed = async (event) => {
       sprouterContractAddress = "0xCdD0A312C148e1cd449FcD8e7aaF186dF6A1a691"; // PRODUCTION
     } else {
       console.log("   Choose DEV sprouter contract!");
-      sprouterContractAddress = "0x059A24ed7681b848513348B5bcf42df772A71d23"; // DEV
+      sprouterContractAddress = "0xb84528055ddA457a7f902742cd1cb5359C1064b9"; // DEV
     }
     
     console.log("Sprouter contract: ", sprouterContractAddress);
@@ -613,7 +614,7 @@ module.exports.sproutMojoSeed = async (event) => {
       mojoContractAddress = "0x43f2932341c1F619648c7A077b49393Ca882b4d1"; // PRODUCTION
     } else {
       console.log("   Choose DEV mojo contract!");
-      mojoContractAddress = "0x841f19a46A342579A1D7303Bd717A7Ae0fF418e0"; // DEV
+      mojoContractAddress = "0x5BFA11B93a86816CAD05Ef3683aAda0cECA61f9A"; // DEV
     }
     console.log("Mojo contract: ", mojoContractAddress);
 
