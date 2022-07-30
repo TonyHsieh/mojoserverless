@@ -55,14 +55,14 @@ module.exports.getMojos = async (event) => {
 
   // target of the GET
   const uuid = event.pathParameters.id;
-  // for debugging locally
-  // const uuid = "3";
 
   console.log("0 ----------------");
   console.log("id : " + uuid);
 
-  const idArr = uuid.split(',').map(n => { return Number(n); });
-  console.log("number array : " + idArr);
+  const inputArr = uuid.split(',').map(n => { return Number(n); });
+  console.log("number array : " + inputArr);
+  const idArr = inputArr.slice(0,100);
+  console.log("Sliced to up to 100 numbers array : " + idArr);
 
   let statusCodeVal = 200;
   let bodyValArr = [];
@@ -83,30 +83,36 @@ module.exports.getMojos = async (event) => {
     console.log("0 - ID " + n + " check ----------------");
     scanParams.Key["uuid"] = n.toString();
     console.log("0 - ID " + n + " -- ScanParams: "+ JSON.stringify(scanParams) + " ---");
-    result = await dynamodb.get(scanParams).promise()
-                  .catch((e) => {console.log("error: " + e)});
-    console.log("1 - ID " + n + " check ----------------");
-    if (result.Item) {
-      const isSprouted = result.Item.isSprouted || false;
 
-      console.log("ID " + n + " found ----------------");
-      console.log("isSprouted = " + isSprouted);
+    if (n == "NaN") {
+      console.log("ID " + n + " - Not A Number ----------------");
+      bodyValArr[index] = { message: "Not a Number" };
+    } else { 
+      result = await dynamodb.get(scanParams).promise()
+        .catch((e) => {console.log("error: " + e)});
+      console.log("1 - ID " + n + " check ----------------");
+      if (result.Item) {
+        const isSprouted = result.Item.isSprouted || false;
 
-      // if sprouted then return 404
-      if (isSprouted) {
-        // if already sprouted then return 
-        console.log("ID " + n + " : ----------------");
-        console.log(result.Item);
-        
-        bodyValArr[index] = result.Item;
+        console.log("ID " + n + " found ----------------");
+        console.log("isSprouted = " + isSprouted);
+
+        // if sprouted then return 404
+        if (isSprouted) {
+          // if already sprouted then return 
+          console.log("ID " + n + " : ----------------");
+          console.log(result.Item);
+
+          bodyValArr[index] = result.Item;
+        } else {
+          // if not sprouted then return 404
+          console.log("ID " + n + " not Sprouted ----------------");
+          bodyValArr[index] = { message: "Not Sprouted"} ; 
+        }
       } else {
-        // if not sprouted then return 404
-        console.log("ID " + n + " not Sprouted ----------------");
-        bodyValArr[index] = { message: "Not Sprouted"} ; 
+        console.log("ID " + n + " not found ----------------");
+        bodyValArr[index] = { message: "Not Found"};
       }
-    } else {
-      console.log("ID " + n + " not found ----------------");
-      bodyValArr[index] = { message: "Not Found"};
     }
 
   }, undefined);
@@ -117,21 +123,6 @@ module.exports.getMojos = async (event) => {
     body: JSON.stringify(bodyValArr),
   };
 
-  
-  // --------
-  async function retrieveFromDynamoDB(_dynamodb, _uuid) {
-    console.log("**** Entering retrieveFromDynamoDB : " + _uuid);
-
-    // Look up the target Mojo  
-    const scanParams = {
-      TableName: process.env.DYNAMODB_MOJO_TABLE,
-      Key: {
-        uuid: _uuid,
-      },
-    };
-
-    return (_dynamodb.get(scanParams)).promise();
-  }
 
 }
 

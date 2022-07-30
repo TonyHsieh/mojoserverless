@@ -1,4 +1,4 @@
-console: true 
+#console: true 
 org: tonyhsieh
 app: aws-api
 service: aws-api
@@ -177,10 +177,10 @@ custom:
   esbuild:
     bundle: true
     minify: true
-    sourcemap: true
+    #sourcemap: true
     exclude: 'aws-sdk'
     target: node14
-    define:
-      'require.resolve': undefined
+    #define:
+    #  'require.resolve': undefined
     platform: node
     concurrency: 10
