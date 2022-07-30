@@ -5,16 +5,16 @@ const AWS = require('aws-sdk')
 
 module.exports.getMojo = async (event) => {
 
-  // target of the GET 
+  // target of the GET
   const uuid = event.pathParameters.id;
-  // for debugging locally 
+  // for debugging locally
   // const uuid = "3";
   console.log("0 ----------------");
-  console.log("id : " + uuid); 
+  console.log("id : " + uuid);
 
   let statusCodeVal = 200;
   let bodyVal = { message: "Not found" };
-  
+
   const scanParams = {
     TableName: process.env.DYNAMODB_MOJO_TABLE,
     Key: {
@@ -37,7 +37,7 @@ module.exports.getMojo = async (event) => {
       statusCodeVal = 200;
       bodyVal = result.Item;
     } else {
-      // if not sprouted then return 404 
+      // if not sprouted then return 404
       statusCodeVal = 200;
     }
   }
@@ -51,42 +51,88 @@ module.exports.getMojo = async (event) => {
 
 //--------------------
 
-module.exports.getMojoOpensea = async (event) => {
+module.exports.getMojos = async (event) => {
 
-  // target of the GET 
+  // target of the GET
   const uuid = event.pathParameters.id;
-  // for debugging locally 
+  // for debugging locally
   // const uuid = "3";
-  
+
   console.log("0 ----------------");
-  console.log("id : " + uuid); 
+  console.log("id : " + uuid);
+
+  const idArr = uuid.split(',').map(n => { return Number(n); });
+  console.log("number array : " + idArr);
 
   let statusCodeVal = 200;
-  let bodyVal = { message: "Not found" };
+  let bodyValArr = [];
 
-  /* 
-  const Network = OpenSeaSDK.Network;
-  const provider = new Web3.providers.HttpProvider('https://mainnet.infura.io');
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+  let scanParams = {
+    TableName: process.env.DYNAMODB_MOJO_TABLE,
+    Key: {
+      uuid: 0,
+    },
+  };
 
-  const openseaSDK = new OpenSeaSDK(provider, {
-    networkName: Network.Main,
-    apiKey: YOUR_OPENSEA_API_KEY
-  })
+  let result = 0;
 
-  const asset: OpenSeaAsset = await openseaSDK.api.getAsset ({ 
-    tokenAddress, // string 
-    tokenId, // string | number | null 
-  });
+  // Start the loop 
+  await idArr.reduce (async (memo, n, index) => {
+    await memo;
+    console.log("0 - ID " + n + " check ----------------");
+    scanParams.Key["uuid"] = n.toString();
+    console.log("0 - ID " + n + " -- ScanParams: "+ JSON.stringify(scanParams) + " ---");
+    result = await dynamodb.get(scanParams).promise()
+                  .catch((e) => {console.log("error: " + e)});
+    console.log("1 - ID " + n + " check ----------------");
+    if (result.Item) {
+      const isSprouted = result.Item.isSprouted || false;
 
-  if (asset != null) {
-    bodyVal = asset;
-  }
-  */
+      console.log("ID " + n + " found ----------------");
+      console.log("isSprouted = " + isSprouted);
+
+      // if sprouted then return 404
+      if (isSprouted) {
+        // if already sprouted then return 
+        console.log("ID " + n + " : ----------------");
+        console.log(result.Item);
+        
+        bodyValArr[index] = result.Item;
+      } else {
+        // if not sprouted then return 404
+        console.log("ID " + n + " not Sprouted ----------------");
+        bodyValArr[index] = { message: "Not Sprouted"} ; 
+      }
+    } else {
+      console.log("ID " + n + " not found ----------------");
+      bodyValArr[index] = { message: "Not Found"};
+    }
+
+  }, undefined);
+
 
   return {
     statusCode: statusCodeVal,
-    body: JSON.stringify(bodyVal),
+    body: JSON.stringify(bodyValArr),
   };
+
+  
+  // --------
+  async function retrieveFromDynamoDB(_dynamodb, _uuid) {
+    console.log("**** Entering retrieveFromDynamoDB : " + _uuid);
+
+    // Look up the target Mojo  
+    const scanParams = {
+      TableName: process.env.DYNAMODB_MOJO_TABLE,
+      Key: {
+        uuid: _uuid,
+      },
+    };
+
+    return (_dynamodb.get(scanParams)).promise();
+  }
+
 }
 
 
@@ -95,13 +141,13 @@ module.exports.getMojoOpensea = async (event) => {
 
 module.exports.getMojoPfp = async (event) => {
 
-  // target of the GET 
+  // target of the GET
   const uuid = event.pathParameters.id;
-  // for debugging locally 
+  // for debugging locally
   // const uuid = "3";
-  
+
   console.log("0 ----------------");
-  console.log("id : " + uuid); 
+  console.log("id : " + uuid);
 
   let statusCodeVal = 200;
   let bodyVal = { message: "Not found" };
@@ -125,12 +171,12 @@ module.exports.getMojoPfp = async (event) => {
     console.log("1 ----------------");
     console.log("isSprouted = " + isSprouted);
 
-    // if sprouted then return no body 
+    // if sprouted then return no body
     if (isSprouted) {
-      // if already sprouted then return png! 
+      // if already sprouted then return png!
       console.log("2 ----------------");
       console.log("Starting the reading of file");
-      
+
       // Get the image file from DIR_KEY
       const DIR_PFP_KEY = process.env.DIR_PFP_KEY;
       /*
@@ -151,7 +197,7 @@ module.exports.getMojoPfp = async (event) => {
       const imagePNGfilename = "mojo_"+ uuid.toString().padStart(6,'0') + ".png";
 
       const paramsPNG = {
-        Bucket: bucket, 
+        Bucket: bucket,
         Key: DIR_PFP_KEY + "/" + imagePNGfilename
       };
       try {
@@ -171,7 +217,7 @@ module.exports.getMojoPfp = async (event) => {
       //console.log("PNG read - base64: " + responsePNG['Body'].toString('base64'));
 
     } else {
-      // if not sprouted then return not found in body 
+      // if not sprouted then return not found in body
       return {
         statusCode: statusCodeVal,
         body: JSON.stringify(bodyVal),

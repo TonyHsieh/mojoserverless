@@ -47,11 +47,11 @@ functions:
       - httpApi:
           path: /mojo/metadata/{id}
           method: get
-  getMojoOpensea: 
-    handler: mojo.getMojoOpensea
+  getMojos: 
+    handler: mojo.getMojos
     events:
       - httpApi:
-          path: /mojo/opensea/{id}
+          path: /mojos/metadata/{id}
           method: get
   getMojoPfp: 
     handler: mojo.getMojoPfp
