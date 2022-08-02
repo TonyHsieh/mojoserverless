@@ -51,8 +51,8 @@ functions:
     handler: mojo.getMojos
     events:
       - httpApi:
-          path: /mojos/metadata/{id}
-          method: get
+          path: /mojos/metadata
+          method: post
   getMojoPfp: 
     handler: mojo.getMojoPfp
     events:

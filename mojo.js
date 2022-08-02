@@ -53,6 +53,8 @@ module.exports.getMojo = async (event) => {
 
 module.exports.getMojos = async (event) => {
 
+  /*
+   * The old way of using a comma separated get...
   // target of the GET
   const uuid = event.pathParameters.id;
 
@@ -61,7 +63,13 @@ module.exports.getMojos = async (event) => {
 
   const inputArr = uuid.split(',').map(n => { return Number(n); });
   console.log("number array : " + inputArr);
-  const idArr = inputArr.slice(0,100);
+  */
+
+  // Using the body as part of a POST.
+  // This should be giving me a JSON body with an array in it.
+  const body = JSON.parse(Buffer.from(event.body, 'base64').toString())
+  
+  const idArr = body.ids.slice(0,100).map (n => { return Number(n); });
   console.log("Sliced to up to 100 numbers array : " + idArr);
 
   let statusCodeVal = 200;
