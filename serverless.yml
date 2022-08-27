@@ -13,6 +13,7 @@ provider:
     DYNAMODB_WHITELIST_TABLE: ${self:service}-whitelistTable-${sls:stage}
     DYNAMODB_CLAIM_TABLE: ${self:service}-claimTable-${sls:stage}
     S3_PLANETMOJO_IMAGES: planetmojo-images-${sls:stage}
+    DYNAMODB_CHAMPION_TABLE: ${self:service}-championTable-${sls:stage}
 
   iamRoleStatements:
     - Effect: "Allow"
@@ -33,6 +34,7 @@ provider:
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-claimTable-${sls:stage}
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-claimTable-${sls:stage}/index/*
         - arn:aws:s3:::planetmojo-images-${sls:stage}/*
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-championTable-${sls:stage}
 
 package:
   excludeDevDependencies: true  
@@ -95,19 +97,25 @@ functions:
       - httpApi:
           path: /collectible/action/claim/{addr}
           method: get
+  getVIPplaytestPass: 
+    handler: mojoSeed.getVIPplaytestPass
+    events:
+      - httpApi:
+          path: /collectible/vip-playtest-pass/metadata/{id}
+          method: get
+  getChampion: 
+    handler: champion.getChampion
+    events:
+      - httpApi:
+          path: /champion/metadata/{id}
+          method: get
+  getChampions: 
+    handler: champion.getChampions
+    events:
+      - httpApi:
+          path: /champions/metadata
+          method: post
 
-          #getMojos: 
-          #  handler: getMojos.getMojos
-          #  events:
-          #    - httpApi:
-          #        path: /mojos
-          #        method: get
-          #testCopy: 
-          #  handler: mojoSeed.testCopy
-          #  events:
-          #    - httpApi:
-          #        path: /testCopy/{id}
-          #        method: get
 
 
 resources:
@@ -166,6 +174,17 @@ resources:
           - AttributeName: SK 
             KeyType: RANGE
         TableName: ${self:service}-claimTable-${sls:stage}
+    ChampionTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: uuid
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: uuid
+            KeyType: HASH
+        TableName: ${self:service}-championTable-${sls:stage}
 
 plugins:
   - serverless-offline

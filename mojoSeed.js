@@ -634,7 +634,6 @@ module.exports.sproutMojoSeed = async (event) => {
 //-------------------------------
 module.exports.getMoviePoster = async (event) => {
 
-  // target of the UPDATE (put)
   const uuid = event.pathParameters.id;
   // for debugging locally 
   //const uuid = "3";
@@ -643,14 +642,14 @@ module.exports.getMoviePoster = async (event) => {
   let bodyVal = { message: "Not found" };
 
   // Look up the target Mojo  
-  const scanParams = {
-    TableName: process.env.DYNAMODB_MOJO_TABLE,
-    Key: {
-      uuid: uuid,
-    },
-  };
-  console.log("0 =====================");
-  console.log(JSON.stringify(scanParams));
+  //const scanParams = {
+  //  TableName: process.env.DYNAMODB_MOJO_TABLE,
+  //  Key: {
+  //    uuid: uuid,
+  //  },
+  //};
+  //console.log("0 =====================");
+  //console.log(JSON.stringify(scanParams));
 
   let mojoURL = "";
   console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
@@ -661,6 +660,7 @@ module.exports.getMoviePoster = async (event) => {
     console.log("   Choose DEV mojo URL!");
     mojoURL = "https://develop.d4ptv3m4dtbv3.amplifyapp.com"; // DEV
   }
+  console.log("0 =====================");
   console.log("Mojo URL: ", mojoURL);
 
 
@@ -798,3 +798,86 @@ module.exports.claimCollectible = async (event) => {
     body: JSON.stringify(bodyVal),
   };
 }
+
+//-------------------------------
+module.exports.getVIPplaytestPass = async (event) => {
+
+  const uuid = event.pathParameters.id;
+  // for debugging locally 
+  //const uuid = "3";
+  
+  let statusCodeVal = 200;
+  let bodyVal = { message: "Not found" };
+
+  // Look up the target Mojo  
+  //const scanParams = {
+  //  TableName: process.env.DYNAMODB_MOJO_TABLE,
+  //  Key: {
+  //    uuid: uuid,
+  //  },
+  //};
+  //console.log("0 =====================");
+  //console.log(JSON.stringify(scanParams));
+
+  let mojoURL = "";
+  let mojoImagesURL = "";
+  console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+  if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+    console.log("   Choose PROD mojo URL!");
+    mojoURL = "https://www.planetmojo.io"; // DEV
+    mojoImagesURL = "https://images.planetmojo.io"; // PRODUCTION
+  } else {
+    console.log("   Choose DEV mojo URL!");
+    mojoURL = "https://develop.d4ptv3m4dtbv3.amplifyapp.com"; // DEV
+    mojoImagesURL = "https://images.hsieh.org"; // DEV
+  }
+  console.log("0 =====================");
+  console.log("Mojo URL: ", mojoURL);
+  console.log("Mojo images URL: ", mojoImagesURL);
+
+
+  // choose which color VIP playpass to use
+  const colorId = Number(uuid) % 4;
+  let colorString = "";
+  switch (colorId) {
+    case 0: 
+      colorString = "Red";
+      break;
+    case 1: 
+      colorString = "Green";
+      break;
+    case 2: 
+      colorString = "Blue";
+      break;
+    case 3: 
+      colorString = "Purple";
+      break;
+    default: console.log("Unknown colorId: "+ colorId);
+  }
+  const colorStringLowercase = colorString.toLowerCase();
+
+  // The default return response
+  const returnSeedMetaData = {
+    uuid: uuid,
+    image: mojoImagesURL + "/Mojo_VIP-Pass-" + colorStringLowercase + ".png",
+    name: "Planet Mojo VIP Playtest Pass",
+    external_url: mojoURL + "/collectibles/" + uuid, 
+    description: "The Planet Mojo VIP Playtest Pass NFT is a ticket that provides access to Pre-Alpha testing of Mojo Melee. Pass holders will have access to in-game rewards, a special badge and invitations to special events.",
+    attributes: [
+      { display_type: null, trait_type: "Pass Type", value: "Playtester"},
+      { display_type: null, trait_type: "Access", value: "VIP"}, 
+      { display_type: null, trait_type: "Game" , value: "Mojo Melee"}, 
+      { display_type: null, trait_type: "Phase", value: "Pre-Alpha" }, 
+      { display_type: null, trait_type: "Color", value: colorString }, 
+    ]
+  }
+
+  console.log("0.1 =====================");
+  console.log(JSON.stringify(returnSeedMetaData));
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(returnSeedMetaData),
+  };
+}
+
