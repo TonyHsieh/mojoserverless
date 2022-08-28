@@ -854,12 +854,11 @@ module.exports.getVIPplaytestPass = async (event) => {
       break;
     default: console.log("Unknown colorId: "+ colorId);
   }
-  const colorStringLowercase = colorString.toLowerCase();
 
   // The default return response
   const returnSeedMetaData = {
     uuid: uuid,
-    image: mojoImagesURL + "/Mojo_VIP-Pass-" + colorStringLowercase + ".png",
+    image: mojoImagesURL + "/VIP-Pass-NFT-" + colorString + ".png",
     name: "Planet Mojo VIP Playtest Pass",
     external_url: mojoURL + "/collectibles/" + uuid, 
     description: "The Planet Mojo VIP Playtest Pass NFT is a ticket that provides access to Pre-Alpha testing of Mojo Melee. Pass holders will have access to in-game rewards, a special badge and invitations to special events.",
