@@ -859,9 +859,9 @@ module.exports.getVIPplaytestPass = async (event) => {
   const returnSeedMetaData = {
     uuid: uuid,
     image: mojoImagesURL + "/VIP-Pass-NFT-" + colorString + ".png",
-    name: "Planet Mojo VIP Playtest Pass",
+    name: "Mojo Melee VIP Playtest Pass",
     external_url: mojoURL + "/collectibles/" + uuid, 
-    description: "The Planet Mojo VIP Playtest Pass NFT is a ticket that provides access to Pre-Alpha testing of Mojo Melee. Pass holders will have access to in-game rewards, a special badge and invitations to special events.",
+    description: "The Mojo Melee VIP Playtest Pass NFT is a ticket that provides access to Pre-Alpha testing of Mojo Melee. Pass holders will have access to in-game rewards, a special badge and invitations to special events.",
     attributes: [
       { display_type: null, trait_type: "Pass Type", value: "Playtester"},
       { display_type: null, trait_type: "Access", value: "VIP"}, 

@@ -10,7 +10,8 @@ const keccak256 = require("keccak256");
 console.log("Hello World!");
 
 // SET THE saleId
-const saleId = 13;
+//const saleId = 13;
+const saleId = 1;
 const padded_saleId = saleId.toString().padStart(6, '0');  
 const saleKey = "SALE#" + padded_saleId;
 
@@ -80,7 +81,8 @@ const proof = merkleTree.getHexProof(ethers.utils.solidityKeccak256(["address"],
 // setup output buffer
 let row = []; 
 row[index_SK] = saleKey;
-row[index_TYPE] = "POSTER001";
+//row[index_TYPE] = "POSTER001";
+row[index_TYPE] = "VIPPLAYPASS001";
 row[index_saleId] = padded_saleId;
 let counter = 0;
 
