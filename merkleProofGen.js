@@ -10,8 +10,11 @@ const keccak256 = require("keccak256");
 console.log("Hello World!");
 
 // SET THE saleId
-//const saleId = 13;
-const saleId = 1;
+//PRODUCTION
+const saleId = 14;
+
+//DEVELOPMENT
+//const saleId = 1;
 const padded_saleId = saleId.toString().padStart(6, '0');  
 const saleKey = "SALE#" + padded_saleId;
 
