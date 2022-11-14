@@ -421,6 +421,7 @@ module.exports.sproutMojoSeed = async (event) => {
   let statusCodeVal = 200;
   let bodyVal = { message : "Not found" }; 
 
+
   const scanParams = {
     TableName: process.env.DYNAMODB_MOJO_TABLE,
     Key: {
