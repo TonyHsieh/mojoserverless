@@ -257,7 +257,15 @@ module.exports.updateMojoGameStats = async (event) => {
 
   console.log("0 ----------------");
   
-  const input = JSON.parse(Buffer.from(event.body, 'base64').toString());
+  // Removed this and made this simpler -- only a simple JSON.parse(event.body)
+  //   This was needed so I could post this via Postman with the IAM authorization working.
+  //   So the POST body needs to be raw data and "Content-Type: application/json"
+  //
+  //  OVERLY COMPLEX? -- const input = JSON.parse(Buffer.from(event.body, 'base64').toString().trim());
+  //
+  //
+   
+  const input = JSON.parse(event.body);
   console.log("input : " + JSON.stringify(input));
   const uuid = input.id; 
   
