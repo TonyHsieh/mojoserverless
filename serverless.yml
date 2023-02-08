@@ -126,6 +126,12 @@ functions:
       - httpApi:
           path: /champions/metadata
           method: post
+  getGoldenMojoItem: 
+    handler: mojoSeed.getGoldenMojoItem
+    events:
+      - httpApi:
+          path: /collectible/golden-mojo-item/metadata/{id}
+          method: get
 
 
 

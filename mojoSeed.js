@@ -881,3 +881,68 @@ module.exports.getVIPplaytestPass = async (event) => {
   };
 }
 
+//-------------------------------
+module.exports.getGoldenMojoItem = async (event) => {
+
+  const uuid = event.pathParameters.id;
+  // for debugging locally 
+  //const uuid = "3";
+  
+  let statusCodeVal = 200;
+  let bodyVal = { message: "Not found" };
+
+  // Look up the target Mojo  
+  //const scanParams = {
+  //  TableName: process.env.DYNAMODB_MOJO_TABLE,
+  //  Key: {
+  //    uuid: uuid,
+  //  },
+  //};
+  //console.log("0 =====================");
+  //console.log(JSON.stringify(scanParams));
+
+  let mojoURL = "";
+  let mojoImagesURL = "";
+  console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+  if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+    console.log("   Choose PROD mojo URL!");
+    mojoURL = "https://www.planetmojo.io"; // DEV
+    mojoImagesURL = "https://images.planetmojo.io"; // PRODUCTION
+  } else {
+    console.log("   Choose DEV mojo URL!");
+    mojoURL = "https://develop.d4ptv3m4dtbv3.amplifyapp.com"; // DEV
+    mojoImagesURL = "https://images.hsieh.org"; // DEV
+  }
+  console.log("0 =====================");
+  console.log("Mojo URL: ", mojoURL);
+  console.log("Mojo images URL: ", mojoImagesURL);
+
+  // color is Gold
+  const colorString = "Gold";
+
+  // The default return response
+  const returnSeedMetaData = {
+    uuid: uuid,
+    image: mojoImagesURL + "/GoldenMojo.png",
+    animation_url: mojoImagesURL + "/GoldenMojo.mp4",
+    name: "Golden Mojo",
+    external_url: mojoURL + "/collectibles/" + uuid, 
+    description: "The limited edition Golden Mojo represents participation in the inaugural Mojo Melee 2023 Mojo Bowl Tournament.",
+    attributes: [
+      { display_type: null, trait_type: "Pass Type", value: "Tournament"},
+      { display_type: null, trait_type: "Reward", value: "Mojo Bowl"}, 
+      { display_type: null, trait_type: "Game" , value: "Mojo Melee"}, 
+      { display_type: null, trait_type: "Phase", value: "Alpha" }, 
+      { display_type: null, trait_type: "Color", value: colorString }, 
+    ]
+  }
+
+  console.log("0.1 =====================");
+  console.log(JSON.stringify(returnSeedMetaData));
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(returnSeedMetaData),
+  };
+}
+
