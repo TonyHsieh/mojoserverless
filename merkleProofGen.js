@@ -124,10 +124,11 @@ leafArray.forEach(walletId =>  {
 
 // RAM used information...
 const used = process.memoryUsage().heapUsed / 1024 / 1024;
-console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
+console.log(`\nThe script uses approximately ${Math.round(used * 100) / 100} MB`);
 
-// Close the File
-fs.close();
+//// Close the File -- this seems to throw an error... not sure why so I commented it out.
+//fs.close();
+
 
 /*
 //
