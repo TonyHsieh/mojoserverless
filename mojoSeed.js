@@ -882,7 +882,7 @@ module.exports.getVIPplaytestPass = async (event) => {
 }
 
 //-------------------------------
-module.exports.getGoldenMojoItem = async (event) => {
+module.exports.getGoldenMojo = async (event) => {
 
   const uuid = event.pathParameters.id;
   // for debugging locally 
