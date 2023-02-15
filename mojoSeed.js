@@ -656,7 +656,7 @@ module.exports.getMoviePoster = async (event) => {
   console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
   if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
     console.log("   Choose PROD mojo URL!");
-    mojoURL = "https://www.planetmojo.io"; // PRODUCTION
+    mojoURL = "https://nft.planetmojo.io"; // PRODUCTION
   } else {
     console.log("   Choose DEV mojo URL!");
     mojoURL = "https://develop.d4ptv3m4dtbv3.amplifyapp.com"; // DEV
@@ -670,7 +670,7 @@ module.exports.getMoviePoster = async (event) => {
     uuid: uuid,
     image: "https://images.planetmojo.io/MojoTrailerPoster.png",
     name: "Planet Mojo Cinematic Collector's Pass",
-    external_url: mojoURL + "/collectibles/" + uuid, 
+    external_url: mojoURL + "/collectibles/cinematic-collectors-pass/" + uuid, 
     description: "A limited edition Cinematic Collector's Pass \"movie poster\" NFT created for the community in celebration of the release of Planet Mojo's first cinematic trailer!",
     attributes: [{ display_type: null, value: "Collector's Edition", trait_type: "Pass Type"}]
   }
@@ -825,7 +825,7 @@ module.exports.getVIPplaytestPass = async (event) => {
   console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
   if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
     console.log("   Choose PROD mojo URL!");
-    mojoURL = "https://www.planetmojo.io"; // DEV
+    mojoURL = "https://nft.planetmojo.io"; // DEV
     mojoImagesURL = "https://images.planetmojo.io"; // PRODUCTION
   } else {
     console.log("   Choose DEV mojo URL!");
@@ -861,7 +861,7 @@ module.exports.getVIPplaytestPass = async (event) => {
     uuid: uuid,
     image: mojoImagesURL + "/VIP-Pass-NFT-" + colorString + ".png",
     name: "Mojo Melee VIP Playtest Pass",
-    external_url: mojoURL + "/collectibles/" + uuid, 
+    external_url: mojoURL + "/collectibles/vip-playtest-pass/" + uuid, 
     description: "The Mojo Melee VIP Playtest Pass NFT is a ticket that provides access to Pre-Alpha testing of Mojo Melee. Pass holders will have access to in-game rewards, a special badge and invitations to special events.",
     attributes: [
       { display_type: null, trait_type: "Pass Type", value: "Playtester"},
@@ -906,7 +906,7 @@ module.exports.getGoldenMojo = async (event) => {
   console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
   if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
     console.log("   Choose PROD mojo URL!");
-    mojoURL = "https://www.planetmojo.io"; // DEV
+    mojoURL = "https://nft.planetmojo.io"; // PRODUCTION
     mojoImagesURL = "https://images.planetmojo.io"; // PRODUCTION
   } else {
     console.log("   Choose DEV mojo URL!");
@@ -926,7 +926,7 @@ module.exports.getGoldenMojo = async (event) => {
     image: mojoImagesURL + "/GoldenMojo.png",
     animation_url: mojoImagesURL + "/GoldenMojo.mp4",
     name: "Golden Mojo",
-    external_url: mojoURL + "/collectibles/" + uuid, 
+    external_url: mojoURL + "/collectibles/golden-mojo/" + uuid, 
     description: "The limited edition Golden Mojo represents participation in the inaugural Mojo Melee 2023 Mojo Bowl Tournament.",
     attributes: [
       { display_type: null, trait_type: "Pass Type", value: "Tournament"},
