@@ -946,3 +946,64 @@ module.exports.getGoldenMojo = async (event) => {
   };
 }
 
+//-------------------------------
+module.exports.getChampionChest = async (event) => {
+
+  const uuid = event.pathParameters.id;
+  // for debugging locally 
+  //const uuid = "3";
+  
+  let statusCodeVal = 200;
+  let bodyVal = { message: "Not found" };
+
+  // Look up the target Mojo  
+  //const scanParams = {
+  //  TableName: process.env.DYNAMODB_MOJO_TABLE,
+  //  Key: {
+  //    uuid: uuid,
+  //  },
+  //};
+  //console.log("0 =====================");
+  //console.log(JSON.stringify(scanParams));
+
+  let mojoURL = "";
+  let mojoImagesURL = "";
+  console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+  if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+    console.log("   Choose PROD mojo URL!");
+    mojoURL = "https://nft.planetmojo.io"; // PRODUCTION
+    mojoImagesURL = "https://images.planetmojo.io"; // PRODUCTION
+  } else {
+    console.log("   Choose DEV mojo URL!");
+    mojoURL = "https://develop.d4ptv3m4dtbv3.amplifyapp.com"; // DEV
+    mojoImagesURL = "https://images.hsieh.org"; // DEV
+  }
+  console.log("0 =====================");
+  console.log("Mojo URL: ", mojoURL);
+  console.log("Mojo images URL: ", mojoImagesURL);
+
+  // color is Gold
+  const colorString = "Gold";
+
+  // The default return response
+  const returnSeedMetaData = {
+    uuid: uuid,
+    image: mojoImagesURL + "/ChampionChest.png",
+    animation_url: mojoImagesURL + "/ChampionChest.mp4",
+    name: "Champion Chest #" + uuid.toString().padStart(4, '0'),
+    external_url: mojoURL + "/collectibles/champion-chest/" + uuid, 
+    description: "An Alpha Champion Chest holds one of four Planet Mojo Champions from the Alpha Generation. Planet Mojo Champions are unlocked in all Planet Mojo games for owners, provide Collection Points to unlock rewards faster and give access to other exclusive content.",
+    attributes: [
+      { display_type: null, trait_type: "Tier", value: "Alpha" }, 
+    ]
+  }
+
+  console.log("0.1 =====================");
+  console.log(JSON.stringify(returnSeedMetaData));
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(returnSeedMetaData),
+  };
+}
+

@@ -132,6 +132,12 @@ functions:
       - httpApi:
           path: /collectible/golden-mojo/metadata/{id}
           method: get
+  getChampionChest: 
+    handler: mojoSeed.getChampionChest
+    events:
+      - httpApi:
+          path: /collectible/champion-chest/metadata/{id}
+          method: get
 
 
 
