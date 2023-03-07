@@ -988,10 +988,11 @@ module.exports.getChampionChest = async (event) => {
   // The default return response
   const returnSeedMetaData = {
     uuid: uuid,
-    image: mojoImagesURL + "/ChampionChest.png",
+    image: mojoImagesURL + "/ChampionChest.gif",
     animation_url: mojoImagesURL + "/ChampionChest.mp4",
     name: "Champion Chest #" + uuid.toString().padStart(4, '0'),
-    external_url: mojoURL + "/collectibles/champion-chest/" + uuid, 
+    //external_url: mojoURL + "/collectibles/champion-chest/" + uuid, 
+    external_url: mojoURL + "/collectibles", 
     description: "An Alpha Champion Chest holds one of four Planet Mojo Champions from the Alpha Generation. Planet Mojo Champions are unlocked in all Planet Mojo games for owners, provide Collection Points to unlock rewards faster and give access to other exclusive content.",
     attributes: [
       { display_type: null, trait_type: "Tier", value: "Alpha" }, 
