@@ -604,7 +604,6 @@ module.exports.sproutMojoSeed = async (event) => {
   async function callMojoContract(_id) {
 
     console.log("**** Entering callMojoContract");
-
     // Prepare for callins the Contract's isSeedPlanted
     const provider = new ethers.providers.JsonRpcProvider('https://polygon-mainnet.g.alchemy.com/v2/'+ apiKey);
     let mojoContractAddress = ""; 
@@ -631,6 +630,253 @@ module.exports.sproutMojoSeed = async (event) => {
     
   } 
 }
+//-------------------------------
+
+/*
+module.exports.unboxChampion = async (event) => {
+
+  const apiKey = process.env.API_KEY;
+
+  // ------------
+  // This is the additional offset
+  const idOffset = 0;
+  //const idOffset = 5000;
+  let temp_uuid = parseInt(event.pathParameters, 10) + idOffset;
+  
+  // ------------ 
+  // target of the UPDATE (put)
+  const uuid = temp_uuid.toString();
+  // TEST - This for testing locally
+  //const uuid = "1"; // must be a string!
+  
+  // The default return response
+  const returnChampionMetaData = {
+    external_url: "https://api.planetmojo.io/champion/metadata/" + uuid, 
+    image: "https://images.planetmojo.io/ChampionChest.mp4"
+  };
+
+  // getting < something > from the input body. 
+  //const body = JSON.parse(Buffer.from(event.body, 'base64').toString())
+  
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+
+  let statusCodeVal = 200;
+  let bodyVal = { message : "Not found" }; 
+
+
+  const scanParams = {
+    TableName: process.env.DYNAMODB_CHAMPION_TABLE, Key: {
+      uuid: uuid,
+    },
+  };
+  const result = await dynamodb.get(scanParams).promise();
+
+  if (result.Item) {  
+    console.log("1 =====================");
+    console.log("Item found!");
+    console.log("2 =====================");
+    console.log("id: " + JSON.stringify(result.Item.uuid));
+    console.log("isSprouted: " + JSON.stringify(result.Item.isSprouted));
+    console.log("Date.now() vs nextCheckTime: " + Date.now() + " vs " + JSON.stringify(result.Item.nextCheckTime));
+    // ------------ 
+    // if isSprouted then do nothing and return a 200 
+    // if NOT isSprouted and currentTime < nextCheckTime then do nothing and return (unrevealed) Seed Movie
+    // if NOT isSprouted and currentTime > nextCheckTime then
+    //          update the nextCheckTime to Date.now() plus 15 seconds (so you can't overcheck the contract)
+    //          do a check (which costs money) for the SeedPlanted Contract and the MojoExists Contract
+    //          if isPlanted || isMojoExists then update NFT to be isSprouted = Date.now()
+    //          write out the value back to DynamoDB
+    //
+    if (result.Item.isSprouted) {
+      console.log("2.1 ====isSprouted == TRUTHY =================");
+      // if sprouted then return 200
+      statusCodeVal = 200;
+    } else if (Date.now() < result.Item.nextCheckTime) {
+      console.log("2.1 ==== isSprouted == Not TRUTHY + not ready to check yet =================");
+      // return the cached results
+      statusCodeVal = 200;
+    } else {
+      console.log("2.2 ==== isSprouted == Not TRUTHY + READY to check NOW =================");
+      // if not sprouted and enough time has elapse then check the sprouterContract. 
+
+      console.log("3 =====================");
+      const canUnbox = await callContractCanUnbox(uuid); 
+      console.log("canUnbox = " + canUnbox);
+
+      //TEMP WORKAROUND
+      //const isMojoExists = false;
+      const isChampionExists = await callChampionContract(uuid);
+      console.log("isChampionExists = " + isChampionExists);
+
+      // update nextCheckTime to Date.now() + (15 second * 1000 ms)
+      result.Item.nextCheckTime = Date.now() + (15 * 1000);
+
+      statusCodeVal = 200;
+
+      // ifPlanted but not Sprouted then write new isSprouted to be true.
+      if ((canUnox || isChampionExists) && !result.Item.isSprouted) {
+        console.log("4 =====================");
+        //Add the information here.
+        result.Item.isSprouted = Date.now();
+        console.log("5 =====================");
+       
+        /*  -- this is the copy of the hidden image to the revealed image -- 
+
+        //Copy the files from DIR_KEY to root
+        const DIR_KEY = process.env.DIR_KEY;
+        let imagesURL = "xx";
+        console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+        if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+          console.log("   Choose PROD images!");
+          imagesURL = "planetmojo.io"; // PRODUCTION
+        } else {
+          console.log("   Choose DEV images!");
+          imagesURL = "hsieh.org"; // DEV
+        }
+
+        const s3 = new AWS.S3();
+        const bucket = process.env.S3_PLANETMOJO_IMAGES;
+
+        const imagePNGfilename = "mojo_"+ uuid.toString().padStart(6,'0') + ".png";
+        const imageMP4filename = "mojo_"+ uuid.toString().padStart(6,'0') + ".mp4";
+
+        const paramsPNG = {
+          Bucket: bucket, 
+          CopySource: bucket + "/" + DIR_KEY + "/" + imagePNGfilename, 
+          Key: imagePNGfilename 
+        };
+
+        console.log("=== PNG COPY ===");
+        console.log("PNG copy: params:: "  + JSON.stringify(paramsPNG));
+        const resultPNG = await s3.copyObject(paramsPNG).promise();
+        console.log("PNG copy: " + resultPNG);
+
+        let paramsMP4 = {
+          Bucket: bucket, 
+          CopySource: bucket + "/" + DIR_KEY + "/" + imageMP4filename, 
+          Key: imageMP4filename 
+        };
+        console.log("=== MP4 COPY ===");
+        let resultMP4 = "";
+        try {
+          console.log("MP4 copy: params:: "  + JSON.stringify(paramsMP4));
+          resultMP4 = await s3.copyObject(paramsMP4).promise();
+        } catch (err) {
+          console.log("suppress:" + err);
+        }
+        console.log("MP4 copy: " + resultMP4);
+
+        */
+/*
+        bodyVal = { message: "Sprouting Complete"}; 
+      }
+
+      console.log("6 =====================");
+      await putIntoDynamoDB(dynamodb, result.Item); 
+      console.log("7 =====================");
+
+    } 
+  }
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyVal),
+  };
+
+
+
+  // --------
+  async function retrieveFromDynamoDB(_dynamodb, _uuid) {
+    console.log("**** Entering retrieveFromDynamoDB");
+
+    // Look up the target Mojo  
+    const scanParams = {
+      TableName: process.env.DYNAMODB_MOJO_TABLE,
+      Key: {
+        uuid: _uuid,
+      },
+    };
+
+    return (_dynamodb.get(scanParams)).promise();
+  }
+
+
+  // --------
+  async function putIntoDynamoDB(_dynamodb, _body) {
+    console.log("**** Entering putIntoDynamoDB");
+
+    console.log("4.1 =====================");
+    console.log(JSON.stringify(_body));
+
+    const putParams = {
+      TableName: process.env.DYNAMODB_MOJO_TABLE, 
+      Item: _body, 
+    }
+    return await (_dynamodb.put(putParams)).promise();
+  }
+
+
+  // --------
+  async function callContractCanUnbox(_id) {
+
+    console.log("**** Entering callContractCanUnbox");
+
+    // Prepare for callins the Contract's canUnbox() 
+    const provider = new ethers.providers.JsonRpcProvider('https://polygon-mainnet.g.alchemy.com/v2/'+ apiKey);
+    let sprouterContractAddress = "xx"; 
+
+    console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+    if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+      console.log("   Choose PROD sprouter contract!");
+      sprouterContractAddress = "0xCdD0A312C148e1cd449FcD8e7aaF186dF6A1a691"; // PRODUCTION
+    } else {
+      console.log("   Choose DEV sprouter contract!");
+      sprouterContractAddress = "0xb84528055ddA457a7f902742cd1cb5359C1064b9"; // DEV
+    }
+    
+    console.log("Sprouter contract: ", sprouterContractAddress);
+    const sprouterContract = new ethers.Contract(
+      sprouterContractAddress, 
+      [ "function canUnbox(uint256) external view returns(bool)" ], 
+      provider
+    );
+
+    // if not sprouted and enough time has elapse then check the sprouterContract. 
+    return (sprouterContract.canUnbox(_id));
+  }
+
+  // --------
+  async function callChampionContract(_id) {
+
+    console.log("**** Entering callChampionContract");
+
+    // Prepare for callins the Contract's callChampionContract 
+    const provider = new ethers.providers.JsonRpcProvider('https://polygon-mainnet.g.alchemy.com/v2/'+ apiKey);
+    let championContractAddress = ""; 
+    
+    console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+    if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+      console.log("   Choose PROD mojo contract!");
+      championContractAddress = "0x43f2932341c1F619648c7A077b49393Ca882b4d1"; // PRODUCTION
+    } else {
+      console.log("   Choose DEV mojo contract!");
+      championContractAddress = "0x5BFA11B93a86816CAD05Ef3683aAda0cECA61f9A"; // DEV
+    }
+    console.log("Champion contract: ", championContractAddress);
+
+    const championContract = new ethers.Contract(
+      championContractAddress,
+      [ "function exists(uint256 tokenId) external view returns (bool)"],
+      provider
+    );
+    console.log("Champion contract innards: ", championContract);
+
+    // if not sprouted and enough time has elapse then check the mojoContract. 
+    return (championContract.exists(_id));
+    
+  } 
+}
+*/
 
 //-------------------------------
 module.exports.getMoviePoster = async (event) => {

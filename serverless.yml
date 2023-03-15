@@ -120,6 +120,12 @@ functions:
       - httpApi:
           path: /champion/metadata/{id}
           method: get
+  unboxChampion: 
+    handler: champion.unboxChampion
+    events:
+      - httpApi:
+          path: /champion/action/unbox/{id}
+          method: put
   getChampions: 
     handler: champion.getChampions
     events:
