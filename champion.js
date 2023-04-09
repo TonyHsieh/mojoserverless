@@ -148,7 +148,7 @@ module.exports.unboxChampion = async (event) => {
   console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
   if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
     console.log("   Choose PROD offset!");
-    idOffset = 5000; // this is the offset value for PROD
+    idOffset = 6746; // this is the offset value for PROD
   } else {
     console.log("   Choose DEV offset!");
     idOffset = 100; // this is the offset value for DEV
@@ -350,11 +350,11 @@ module.exports.unboxChampion = async (event) => {
     if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
       console.log("   Choose PROD sprouter contract!");
       providerURL = "https://polygon-mainnet.g.alchemy.com/v2/"; // PRODUCTION
-      sprouterContractAddress = "0xCdD0A312C148e1cd449FcD8e7aaF186dF6A1a691"; // PRODUCTION
+      sprouterContractAddress = "0x05Dd6aCF8E6956417d98aF10743AC97206d630a2"; // PRODUCTION
     } else {
       console.log("   Choose DEV sprouter contract!");
       providerURL = "https://polygon-mumbai.g.alchemy.com/v2/"; // DEV 
-      sprouterContractAddress = "0x05c7b8b09D139D808607257d1CaA3A58D2B243C1"; // DEV
+      sprouterContractAddress = "0xFb36b258e250516Ef047f806cd6440bd2C14E91e"; // DEV
     }
     
     const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
@@ -385,11 +385,11 @@ module.exports.unboxChampion = async (event) => {
     if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
       console.log("   Choose PROD champion contract!");
       providerURL = "https://polygon-mainnet.g.alchemy.com/v2/"; // PRODUCTION
-      championContractAddress = "0x43f2932341c1F619648c7A077b49393Ca882b4d1"; // PRODUCTION
+      championContractAddress = "0x90C45Bb702384812825dA4971054fdb6836582a0"; // PRODUCTION
     } else {
       console.log("   Choose DEV champion contract!");
       providerURL = "https://polygon-mumbai.g.alchemy.com/v2/"; // DEV 
-      championContractAddress = "0x64Ba948Cb6C05429cCa8cdE7f8A75dd3F0700cbc"; // DEV
+      championContractAddress = "0xC8F8299f19d11106bEE8fBdC34f64e8fA9EC0Bf9"; // DEV
     }
     
     const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
