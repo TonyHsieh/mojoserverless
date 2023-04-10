@@ -577,18 +577,24 @@ module.exports.sproutMojoSeed = async (event) => {
     console.log("**** Entering callContractIsSeedPlanted");
 
     // Prepare for callins the Contract's isSeedPlanted
-    const provider = new ethers.providers.JsonRpcProvider('https://polygon-mainnet.g.alchemy.com/v2/'+ apiKey);
+    //const provider = new ethers.providers.JsonRpcProvider('https://polygon-mainnet.g.alchemy.com/v2/'+ apiKey);
+    console.log("_id = " + _id);
+    let providerURL = "xx";
     let sprouterContractAddress = "xx"; 
 
     console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
     if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
       console.log("   Choose PROD sprouter contract!");
+      providerURL = "https://polygon-mainnet.g.alchemy.com/v2/"; // PRODUCTION
       sprouterContractAddress = "0xCdD0A312C148e1cd449FcD8e7aaF186dF6A1a691"; // PRODUCTION
     } else {
       console.log("   Choose DEV sprouter contract!");
-      sprouterContractAddress = "0xb84528055ddA457a7f902742cd1cb5359C1064b9"; // DEV
+      providerURL = "https://polygon-mumbai.g.alchemy.com/v2/"; // DEV 
+      sprouterContractAddress = "0xAf76c6F88520Db4aF9a0a643E88A4e4e1537Ad7e"; // DEV
     }
     
+    const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
+    console.log("Provider: ", providerURL);
     console.log("Sprouter contract: ", sprouterContractAddress);
     const sprouterContract = new ethers.Contract(
       sprouterContractAddress, 
@@ -605,17 +611,24 @@ module.exports.sproutMojoSeed = async (event) => {
 
     console.log("**** Entering callMojoContract");
     // Prepare for callins the Contract's isSeedPlanted
-    const provider = new ethers.providers.JsonRpcProvider('https://polygon-mainnet.g.alchemy.com/v2/'+ apiKey);
+    //const provider = new ethers.providers.JsonRpcProvider('https://polygon-mainnet.g.alchemy.com/v2/'+ apiKey);
+    console.log("_id = " + _id);
+    let providerURL = "xx";
     let mojoContractAddress = ""; 
     
     console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
     if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
       console.log("   Choose PROD mojo contract!");
+      providerURL = "https://polygon-mainnet.g.alchemy.com/v2/"; // PRODUCTION
       mojoContractAddress = "0x43f2932341c1F619648c7A077b49393Ca882b4d1"; // PRODUCTION
     } else {
       console.log("   Choose DEV mojo contract!");
-      mojoContractAddress = "0x5BFA11B93a86816CAD05Ef3683aAda0cECA61f9A"; // DEV
+      providerURL = "https://polygon-mumbai.g.alchemy.com/v2/"; // DEV 
+      mojoContractAddress = "0x7Ed9a5D4Af51AC4D2A3F798a62e75fE79Eccfa95"; // DEV
     }
+
+    const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
+    console.log("Provider: ", providerURL);
     console.log("Mojo contract: ", mojoContractAddress);
 
     const mojoContract = new ethers.Contract(

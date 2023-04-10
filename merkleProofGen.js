@@ -11,7 +11,9 @@ console.log("Hello World!");
 
 // SET THE saleId
 //PRODUCTION
-const saleId = 14;
+//const saleId = 14;
+//DEV
+const saleId = 1;
 
 //DEVELOPMENT
 //const saleId = 1;
@@ -85,7 +87,8 @@ const proof = merkleTree.getHexProof(ethers.utils.solidityKeccak256(["address"],
 let row = []; 
 row[index_SK] = saleKey;
 //row[index_TYPE] = "POSTER001";
-row[index_TYPE] = "VIPPLAYPASS001";
+//row[index_TYPE] = "VIPPLAYPASS001";
+row[index_TYPE] = "MOJOTEST001";
 row[index_saleId] = padded_saleId;
 let counter = 0;
 
