@@ -144,6 +144,12 @@ functions:
       - httpApi:
           path: /collectible/champion-chest/metadata/{id}
           method: get
+  getBetaChest: 
+    handler: mojoSeed.getBetaChest
+    events:
+      - httpApi:
+          path: /collectible/beta-chest/metadata/{id}
+          method: get
 
 
 
