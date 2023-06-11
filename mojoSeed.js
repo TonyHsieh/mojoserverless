@@ -927,7 +927,7 @@ module.exports.getMoviePoster = async (event) => {
   // The default return response
   const returnSeedMetaData = {
     uuid: uuid,
-    image: "https://images.planetmojo.io/MojoTrailerPoster.png",
+    image: "https://images.planetmojo.io/MojoTrailerPoster.jpg",
     name: "Planet Mojo Cinematic Collector's Pass",
     external_url: mojoURL + "/collectibles/cinematic-collectors-pass/" + uuid, 
     description: "A limited edition Cinematic Collector's Pass \"movie poster\" NFT created for the community in celebration of the release of Planet Mojo's first cinematic trailer!",
