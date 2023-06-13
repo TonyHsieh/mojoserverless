@@ -150,7 +150,12 @@ functions:
       - httpApi:
           path: /collectible/beta-chest/metadata/{id}
           method: get
-
+  createChampion: 
+    handler: champion.createChampion
+    events:
+      - httpApi:
+          path: /champion/action/create
+          method: post
 
 
 resources:

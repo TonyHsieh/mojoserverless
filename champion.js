@@ -409,3 +409,662 @@ module.exports.unboxChampion = async (event) => {
   } 
 }
 
+//--------------------
+
+module.exports.createChampion = async (event, context) => {
+
+  console.log("000 - enter createChampion ");
+  const TypeDataList = {
+    "bear": {
+      "uuid": "",
+      "name": "Brooka Clawhaven #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 1,
+      "type": "Bear",
+      "rarity": "Mystic",
+      "image": "https://images.planetmojo.io/champions/BearBrooka_Base_",
+      "isSprouted": "",
+      "animation_url": "https://images.planetmojo.io/champions/BearBrooka_Base_",
+      "description": "Born to be a fighter, raised to be a leader, he will stop at nothing to defend his caves and his people. He is strapping, courageous, a warrior among warriors. He is Brooka Clawhaven, High Chief of Clan Clawhaven.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Clawhaven"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Paladin"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Brooka Clawhaven"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Male"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Forest"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Origin"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Morning Blue"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Stone Salute"
+        }
+      ]
+    },
+    "elephant": {
+      "uuid": "",
+      "name": "General Dox #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 0,
+      "type": "Elephant",
+      "rarity": "Mystic",
+      "image": "https://images.planetmojo.io/champions/ElephantGeneralDox_Base_",
+      "isSprouted": "",
+      "animation_url": "https://model-viewer.planetmojo.io?assetUrl=https://images.planetmojo.io/champions/ElephantGeneralDox_Base.glb",
+      "description": "A Queen, Clan Champion and unstoppable if she gets enough momentum - slicing an elephant-sized hole through any defense with her razor-sharp, diamond-encrusted tusks as blows bounce off her battle-hardened hide.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Ivorium"
+        },
+        {
+          "trait_type": "Class",
+          "value": "General "
+        },
+        {
+          "trait_type": "Name",
+          "value": "General Dox"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Female"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Savannah"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Alpha"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Morning Blue"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Stalwart Staunch"
+        },
+        {
+          "trait_type": "Media Type",
+          "value": "3D"
+        }
+      ]
+    },
+    "frog": {
+      "uuid": "",
+      "name": "Froda Swamphag #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 1,
+      "type": "Frog",
+      "rarity": "Mystic",
+      "image": "https://images.planetmojo.io/champions/FrogFroda_Base_",
+      "isSprouted": "",
+      "animation_url": "https://images.planetmojo.io/champions/FrogFroda_Base_",
+      "description": "Her bulging eyes allow her to see all things at once. Her brightly colored bumps warn predators of her toxic skin. She is magical, mesmerizing, and a little crazy. She is Froda Swamphag: cold-blooded shaman of Clan Kroker.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Kroker"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Shaman"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Froda Swamphag"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Female"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Swamp"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Origin"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Murky Magenta"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Safeguard"
+        }
+      ]
+    },
+    "hippo": {
+      "uuid": "",
+      "name": "Batakamus Rex #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 1,
+      "type": "Hippo",
+      "rarity": "Mystic",
+      "image": "https://images.planetmojo.io/champions/HippoBatakamus_Base_",
+      "isSprouted": "",
+      "animation_url": "https://images.planetmojo.io/champions/HippoBatakamus_Base_",
+      "description": "As battle begins, he whips himself into a frenzied bloodlust by howling like a banshee, biting chunks off his armor, and frothing at the mouth. He is deranged, unstoppable, the deadliest butcher on two feet. He is Batakamus Rex, the front-line berserker of Clan Supremus.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Supremus"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Berzerker"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Batakamus Rex"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Male"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Savannah"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Origin"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Burnt Red"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Bouncer"
+        }
+      ]
+    },
+    "panther": {
+      "uuid": "",
+      "name": "Dawn Striker #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 0,
+      "type": "Panther",
+      "rarity": "Mystic",
+      "image": "https://images.planetmojo.io/champions/PantherDawn_Base_",
+      "isSprouted": "",
+      "animation_url": "https://model-viewer.planetmojo.io?assetUrl=https://images.planetmojo.io/champions/PantherDawn_Base.glb",
+      "description": "She is a nocturnal predator with eyes so sharp she can spot prey in total darkness, a nose so keen she can smell the shape of your soul, and a voice so seductive you will not notice the blade in your back until it is too late. As Clan Champion, Dawn can leap great distances and pounce on escaping enemies. Her retractable steel claws can hook onto victims and yank them into her razor sharp maw.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Zama"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Huntress"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Dawn Striker"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Female"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Jungle"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Alpha"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Burnt Orange"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Prowler"
+        },
+        {
+          "trait_type": "Media Type",
+          "value": "3D"
+        }
+      ]
+    },
+    "penguin": {
+      "uuid": "",
+      "name": "Gwyn Rockhopper #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 0,
+      "type": "Penguin",
+      "rarity": "Mystic",
+      "image": "https://images.planetmojo.io/champions/PenguinGwyn_Base_",
+      "isSprouted": "",
+      "animation_url": "https://model-viewer.planetmojo.io?assetUrl=https://images.planetmojo.io/champions/PenguinGwyn_Base.glb",
+      "description": "An outcast, Gwyn does not seem to fit in on the battlefield, with her tattered robes and limping gait - until she unleashes her mystical spells of artic dark magic.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Glak"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Witch"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Gwyn Rockhopper"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Female"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Arctic"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Alpha"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Midnight Teal"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Mystic Hex"
+        },
+        {
+          "trait_type": "Media Type",
+          "value": "3D"
+        }
+      ]
+    },
+    "raccoon": {
+      "uuid": "",
+      "name": "Dark Brightley #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 1,
+      "type": "Raccoon",
+      "rarity": "Mystic",
+      "image": "https://images.planetmojo.io/champions/RaccoonDark_Base_",
+      "isSprouted": "",
+      "animation_url": "https://images.planetmojo.io/champions/RaccoonDark_Base_",
+      "description": "She can shoot you through the heart with a silent arrow. Seduce you while dripping poison in your ear. She is smart, adaptive, ferocious.\nShe is Dark Brightley: royal assassin of Clan Furgen.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Furgen"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Assassin"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Dark Brightley"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Female"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Forest"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Origin"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Midnight Purple"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Dead Eye"
+        }
+      ]
+    },
+    "rhino": {
+      "uuid": "",
+      "name": "Sumatra Stronghorn #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 1,
+      "type": "Rhino",
+      "rarity": "Mystic",
+      "image": "https://images.planetmojo.io/champions/RhinoSuma_Base_",
+      "isSprouted": "",
+      "animation_url": "https://images.planetmojo.io/champions/RhinoSuma_Base_",
+      "description": "The scars on his skin are too many to count. Countless enemies have driven his clan to near-extinction, yet still he survives. The guilt makes him angry, vengeful, out of control. He is Sumatra Stronghorn, the disgraced warlord of Clan Stronghorn.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Stronghorn"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Warrrior"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Sumatra Stronghorn"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Male"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Savannah"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Origin"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Steely Turquoise"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Metal Guard"
+        }
+      ]
+    },
+    "scorpion": {
+      "uuid": "",
+      "name": "Deth Kolo #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 0,
+      "type": "Scorpion",
+      "rarity": "Mystic",
+      "image": "https://images.planetmojo.io/champions/ScorpionDeth_Base_",
+      "isSprouted": "",
+      "animation_url": "https://model-viewer.planetmojo.io?assetUrl=https://images.planetmojo.io/champions/ScorpionDeth_Base.glb",
+      "description": "A skittering assassin of evil, immune to all poisons and potions, yet none are immune to her precise sniper stab that paralyzes victims for a limited time. Avoid close combat with Kolo at all costs. If she pins you down with her claws, there will be no escape from her sting.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Kolo"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Assassin"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Deth Kolo"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Female"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Desert"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Alpha"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Dark Violet"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Stinging Blight"
+        },
+        {
+          "trait_type": "Media Type",
+          "value": "3D"
+        }
+      ]
+    },
+    "turtle": {
+      "uuid": "",
+      "name": "Zerlin the Lesser #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 1,
+      "type": "Turtle",
+      "rarity": "Mystic",
+      "image": "https://images.planetmojo.io/champions/TurtleZerlin_Base_",
+      "isSprouted": "",
+      "animation_url": "https://images.planetmojo.io/champions/TurtleZerlin_Base_",
+      "description": "Some say he hatched at the dawn of time. Others say he is so slow, he can stop time with a raise of his gnarled finger. He is bizarre, absent-minded and insanely powerful. He is Zerlin the Lesser, the mad, wandering cleric of Clan Primorda.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Primorda"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Cleric"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Zerlin the Lesser"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Male"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Swamp"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Origin"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Violet Shadow"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Peacekeeper"
+        }
+      ]
+    }
+  };
+  const TypeList = Object.keys(TypeDataList);
+  const RarityList = ['Common', "Rare", "Legendary", "Mystic"];
+
+  // Using the body as part of a POST.
+  // This should be giving me a JSON body with a TYPE - if blank then random..
+  const body = JSON.parse(Buffer.from(event.body, 'base64').toString())
+  console.log("00 - Show the body : " + JSON.stringify(body));
+
+  let requestType = "";
+  if (("requestType" in body) && (body.requestType != null)) {
+    requestType = body.requestType;
+    console.log("00.PASSED_IN - requestType: " + requestType);
+  } else {
+    const randomTypeIndex = Math.floor(Math.random() * TypeList.length);
+    console.log("00.RANDOM - randomTypeIndex: " + randomTypeIndex);
+    requestType = TypeList[randomTypeIndex];
+  }
+  console.log("0 - Show the requestType : " + requestType);
+
+  let championData = JSON.parse(JSON.stringify(TypeDataList[requestType]));
+  console.log ("1 - Show the intial Champion row data after a DEEP COPY : " + JSON.stringify(championData));
+
+  const rarityRandomRoll = Math.random();
+  let rarityValue = "nothing"
+  if (rarityRandomRoll < 0.7) rarityValue = RarityList[0];
+  else if (rarityRandomRoll >= 0.7 && rarityRandomRoll < 0.85) rarityValue = RarityList[1];
+  else if (rarityRandomRoll >= 0.85 && rarityRandomRoll < 0.95) rarityValue = RarityList[2];
+  else if (rarityRandomRoll >= 0.95 && rarityRandomRoll < 1.0) rarityValue = RarityList[3];
+  console.log("2 - Show the Rarity : " + rarityValue);
+
+  const orderValue = championData.order;
+  console.log("3 - championData.order : " + orderValue);
+
+  // --- 
+  let statusCodeVal = 200;
+  let bodyValArr = [];
+
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+  console.log("3.05 - dynamodbs: " + JSON.stringify(dynamodb));
+
+  // Get the LastID key from the MetaData
+  let scanParams = {
+    TableName: process.env.DYNAMODB_CHAMPION_TABLE,
+    Key: {
+      uuid: "0",
+    }, 
+    AttributesToGet: ["LastID"],
+    ConsistentRead: true,
+  };
+  console.log("3.1 - scanParams: " + JSON.stringify(scanParams));
+  
+  let tableMetaData = await dynamodb.get(scanParams).promise();
+  console.log("3.2 - tableMetaData: " + JSON.stringify(tableMetaData));
+
+  // Increment lastID by one
+  const currentId = tableMetaData["Item"]["LastID"];
+  const nextId = currentId + 1;
+
+  // begin setting up the variables with the rarityValue and the currentId.
+  championData.rarity = rarityValue;
+  championData.image += rarityValue + ".jpg"; 
+  championData.attributes.push ({ "trait_type": "Rarity", "value": rarityValue });
+  if (championData.order) {  
+    if (rarityValue.indexOf(RarityList[0])) 
+      championData.animation_url = "";
+    else
+      championData.animation_url += rarityValue + ".mp4";
+  }
+
+  console.log ("3.4 - Show the mid-step Champion row data with correct data: " + JSON.stringify(championData));
+  console.log ("3.5 - currentId: " + currentId);
+  console.log ("3.6 - typeof currentId: " + typeof currentId);
+
+  championData.uuid = currentId.toString();
+  championData.name += currentId.toString();
+  championData.external_url += currentId.toString();
+  championData.order = currentId.toString().padStart(6, '0');
+  console.log ("4 - Show the final Champion row data with correct data: " + JSON.stringify(championData));
+
+  // Begin the transaction closure
+  //   1) Update the incremented LastID 
+  //   2) Put in the new row with the information needed
+
+  // If the transaction fails, then roll back both actions and return a failure service 
+  //   409 - The request could not be completed due to a conflict with the current state
+  //   of the target resource.  This code is used in sutiaotns where 
+  //   the user might be able to resolve the conflict and resumbit the request.
+
+
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyValArr),
+  };
+
+}
