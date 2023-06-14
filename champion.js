@@ -977,7 +977,8 @@ module.exports.createChampion = async (event, context) => {
 
   // Using the body as part of a POST.
   // This should be giving me a JSON body with a TYPE - if blank then random..
-  const body = JSON.parse(Buffer.from(event.body, 'base64').toString())
+  //const body = JSON.parse(Buffer.from(event.body, 'base64').toString())
+  const body = JSON.parse(event.body);
   console.log("00 - Show the body : " + JSON.stringify(body));
 
   let requestType = "";
