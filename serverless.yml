@@ -156,12 +156,12 @@ functions:
       - httpApi:
           path: /champion/action/create
           method: post
-  createChampionNotSecure: 
-    handler: champion.createChampion
-    events:
-      - httpApi:
-          path: /champion/action/createNotSecure
-          method: post
+            #  createChampionNotSecure: 
+            #    handler: champion.createChampion
+            #    events:
+            #      - httpApi:
+            #          path: /champion/action/createNotSecure
+            #          method: post
 
 
 resources:

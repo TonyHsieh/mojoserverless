@@ -415,6 +415,64 @@ module.exports.createChampion = async (event, context) => {
 
   console.log("000 - enter createChampion ");
   const TypeDataList = {
+    "badger": {
+      "uuid": "",
+      "name": "Krumble Gravelstache #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 0,
+      "type": "Badger",
+      "rarity": "Miner",
+      "image": "https://images.planetmojo.io/champions/BadgerKrumble_Base_",
+      "isSprouted": "1",
+      "animation_url": "https://model-viewer.planetmojo.io?assetUrl=https://images.planetmojo.io/champions/BadgerKrumble_Base.glb",
+      "description": "Krumble has led Clan Mustel for as long as anyone can remember.  A superb fighter when challenged, he is wise enough to gather power from the wealth underground hoarding magic extracted from buried crystals and the roots of enchanted trees. Krumble would prefer to trade and negotiate with the other clans, but he has kept his clan safe with his well-earned reputation for merciless counter-attack, when bargaining fails.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Mustel"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Miner"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Krumble Gravelstache"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Male"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Underground"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Foundation"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Underground Orange"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Pick & Pop"
+        },
+        {
+          "trait_type": "Media Type",
+          "value": "3D"
+        }
+      ]
+    },
     "bear": {
       "uuid": "",
       "name": "Brooka Clawhaven #",
@@ -453,7 +511,7 @@ module.exports.createChampion = async (event, context) => {
         },
         {
           "trait_type": "Generation",
-          "value": "Origin"
+          "value": "Foundation"
         },
         {
           "trait_type": "Background",
@@ -507,7 +565,7 @@ module.exports.createChampion = async (event, context) => {
         },
         {
           "trait_type": "Generation",
-          "value": "Alpha"
+          "value": "Foundation"
         },
         {
           "trait_type": "Background",
@@ -565,7 +623,7 @@ module.exports.createChampion = async (event, context) => {
         },
         {
           "trait_type": "Generation",
-          "value": "Origin"
+          "value": "Foundation"
         },
         {
           "trait_type": "Background",
@@ -619,7 +677,7 @@ module.exports.createChampion = async (event, context) => {
         },
         {
           "trait_type": "Generation",
-          "value": "Origin"
+          "value": "Foundation"
         },
         {
           "trait_type": "Background",
@@ -673,7 +731,7 @@ module.exports.createChampion = async (event, context) => {
         },
         {
           "trait_type": "Generation",
-          "value": "Alpha"
+          "value": "Foundation"
         },
         {
           "trait_type": "Background",
@@ -731,7 +789,7 @@ module.exports.createChampion = async (event, context) => {
         },
         {
           "trait_type": "Generation",
-          "value": "Alpha"
+          "value": "Foundation"
         },
         {
           "trait_type": "Background",
@@ -744,6 +802,64 @@ module.exports.createChampion = async (event, context) => {
         {
           "trait_type": "Pose",
           "value": "Mystic Hex"
+        },
+        {
+          "trait_type": "Media Type",
+          "value": "3D"
+        }
+      ]
+    },
+    "platypus": {
+      "uuid": "",
+      "name": "Veren Mostelier #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 0,
+      "type": "Platypus",
+      "rarity": "Rogue",
+      "image": "https://images.planetmojo.io/champions/PlatypusVeren_Base_",
+      "isSprouted": "1",
+      "animation_url": "https://model-viewer.planetmojo.io?assetUrl=https://images.planetmojo.io/champions/PlatypusVeren_Base.glb",
+      "description": "Veren is the descendent of a long line of Umbran rogue assassins who long ago crafted their dark arts, realizing they could match even the most terrifying predator’s strength, without but a scratch by ending that strength. He trains the young assassins in the dark arts of apothecary, the same as he was taught when he was a youth, the same way it has been done for centuries.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Umbran"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Rogue"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Veren Mostelier"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Male"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "River"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Foundation"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Venomous Green"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Deadly Dance"
         },
         {
           "trait_type": "Media Type",
@@ -789,7 +905,7 @@ module.exports.createChampion = async (event, context) => {
         },
         {
           "trait_type": "Generation",
-          "value": "Origin"
+          "value": "Foundation"
         },
         {
           "trait_type": "Background",
@@ -843,7 +959,7 @@ module.exports.createChampion = async (event, context) => {
         },
         {
           "trait_type": "Generation",
-          "value": "Origin"
+          "value": "Foundation"
         },
         {
           "trait_type": "Background",
@@ -897,7 +1013,7 @@ module.exports.createChampion = async (event, context) => {
         },
         {
           "trait_type": "Generation",
-          "value": "Alpha"
+          "value": "Foundation"
         },
         {
           "trait_type": "Background",
@@ -955,7 +1071,7 @@ module.exports.createChampion = async (event, context) => {
         },
         {
           "trait_type": "Generation",
-          "value": "Origin"
+          "value": "Foundation"
         },
         {
           "trait_type": "Background",
@@ -974,6 +1090,13 @@ module.exports.createChampion = async (event, context) => {
   };
   const TypeList = Object.keys(TypeDataList);
   const RarityList = ['Common', "Rare", "Legendary", "Mystic"];
+
+  // Removed this and made this simpler -- only a simple JSON.parse(event.body)
+  //   This was needed so I could post this via Postman with the IAM authorization working.
+  //   So the POST body needs to be raw data and "Content-Type: application/json"
+  //
+  //  OVERLY COMPLEX? -- const body = JSON.parse(Buffer.from(event.body, 'base64').toString().trim());
+  //
 
   // Using the body as part of a POST.
   // This should be giving me a JSON body with a TYPE - if blank then random..
@@ -997,10 +1120,10 @@ module.exports.createChampion = async (event, context) => {
 
   const rarityRandomRoll = Math.random();
   let rarityValue = "nothing"
-  if (rarityRandomRoll < 0.7) rarityValue = RarityList[0];
-  else if (rarityRandomRoll >= 0.7 && rarityRandomRoll < 0.85) rarityValue = RarityList[1];
-  else if (rarityRandomRoll >= 0.85 && rarityRandomRoll < 0.95) rarityValue = RarityList[2];
-  else if (rarityRandomRoll >= 0.95 && rarityRandomRoll < 1.0) rarityValue = RarityList[3];
+  if (rarityRandomRoll < 0.9) rarityValue = RarityList[0];
+  else if (rarityRandomRoll >= 0.9 && rarityRandomRoll < 0.95) rarityValue = RarityList[1];
+  else if (rarityRandomRoll >= 0.95 && rarityRandomRoll < 0.98) rarityValue = RarityList[2];
+  else if (rarityRandomRoll >= 0.98 && rarityRandomRoll < 1.0) rarityValue = RarityList[3];
   console.log("2.0 - Show the rarityRandomRoll : " + rarityRandomRoll);
   console.log("2.1 - Show the Rarity : " + rarityValue);
 

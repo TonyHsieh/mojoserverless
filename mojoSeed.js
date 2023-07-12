@@ -1231,11 +1231,13 @@ module.exports.getChampionChest = async (event) => {
   if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
     console.log("   Choose PROD mojo URL!");
     mojoURL = "https://nft.planetmojo.io"; // PRODUCTION
-    mojoImagesURL = "https://images.planetmojo.io"; // PRODUCTION
+    //mojoImagesURL = "https://images.planetmojo.io"; // PRODUCTION
+    mojoImagesURL = "https://planetmojo-images-prod.s3.amazonaws.com"; // PRODUCTION
   } else {
     console.log("   Choose DEV mojo URL!");
     mojoURL = "https://develop.d4ptv3m4dtbv3.amplifyapp.com"; // DEV
-    mojoImagesURL = "https://images.hsieh.org"; // DEV
+    //mojoImagesURL = "https://images.hsieh.org"; // DEV
+    mojoImagesURL = "https://planetmojo-images-dev.s3.amazonaws.com"; // DEV
   }
   console.log("0 =====================");
   console.log("Mojo URL: ", mojoURL);
@@ -1283,11 +1285,13 @@ module.exports.getBetaChest = async (event) => {
   if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
     console.log("   Choose PROD mojo URL!");
     mojoURL = "https://nft.planetmojo.io"; // PRODUCTION
-    mojoImagesURL = "https://images.planetmojo.io"; // PRODUCTION
+    //mojoImagesURL = "https://images.planetmojo.io"; // PRODUCTION
+    mojoImagesURL = "https://planetmojo-images-prod.s3.amazonaws.com"; // PRODUCTION
   } else {
     console.log("   Choose DEV mojo URL!");
     mojoURL = "https://develop.d4ptv3m4dtbv3.amplifyapp.com"; // DEV
-    mojoImagesURL = "https://images.hsieh.org"; // DEV
+    //mojoImagesURL = "https://images.hsieh.org"; // DEV
+    mojoImagesURL = "https://planetmojo-images-dev.s3.amazonaws.com"; // DEV
   }
   console.log("0 =====================");
   console.log("Mojo URL: ", mojoURL);
