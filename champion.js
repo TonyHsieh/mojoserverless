@@ -693,6 +693,64 @@ module.exports.createChampion = async (event, context) => {
         }
       ]
     },
+    "meerkat": {
+      "uuid": "",
+      "name": "Haile Tibeb #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 0,
+      "type": "Meerkat",
+      "rarity": "Ranger",
+      "image": "https://planetmojo-images-prod.s3.amazonaws.com/champions/MeerkatHaile_Base_",
+      "isSprouted": "1",
+      "animation_url": "https://planetmojo-images-prod.s3.amazonaws.com/champions/MeerkatHaile_Base.glb",
+      "description": "Haile Tibeb studied and mastered the Sling from an early age, but as he grew older, the Clan Vigil innate ability was noted to be particularly powerful in him he quickly realized that the strategies he found most valuable were those that turned the violence of enemies against themselves.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Vigil"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Ranger"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Haile Tibeb"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Male"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Savannah"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Foundation"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Emerald Majesty"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Rope Dart"
+        },
+        {
+          "trait_type": "Media Type",
+          "value": "3D"
+        }
+      ]
+    },
     "panther": {
       "uuid": "",
       "name": "Dawn Striker #",
