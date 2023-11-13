@@ -5,10 +5,11 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs18.x
   deploymentMethod: direct
   environment:
     DYNAMODB_MOJO_TABLE: ${self:service}-mojoTable-${sls:stage}
+    DYNAMODB_MODABLEMOJO_TABLE: ${self:service}-modablemojoTable-${sls:stage}
     DYNAMODB_WHITELIST_TABLE: ${self:service}-whitelistTable-${sls:stage}
     DYNAMODB_CLAIM_TABLE: ${self:service}-claimTable-${sls:stage}
     S3_PLANETMOJO_IMAGES: planetmojo-images-${sls:stage}
@@ -28,6 +29,8 @@ provider:
       Resource: 
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-mojoTable-${sls:stage}
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-mojoTable-${sls:stage}/index/*
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoTable-${sls:stage}
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoTable-${sls:stage}/index/*
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}/index/*
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-claimTable-${sls:stage}
@@ -72,6 +75,24 @@ functions:
       - httpApi:
           path: /mojo/action/clear/{id}
           method: put
+  getModableMojo: 
+    handler: mojo.getModableMojo
+    events:
+      - httpApi:
+          path: /mod-able-mojo/metadata/{id}
+          method: get
+  mintModableMojo: 
+    handler: mojo.mintModableMojo
+    events:
+      - httpApi:
+          path: /mod-able-mojo/action/mint
+          method: post 
+  mintModableMojoNotSecure: 
+    handler: mojo.mintModableMojo
+    events:
+      - httpApi:
+          path: /mod-able-mojo/action/mintNotSecure
+          method: post 
   getMojoSeed: 
     handler: mojoSeed.getMojoSeed
     events:
@@ -177,6 +198,17 @@ resources:
           - AttributeName: uuid
             KeyType: HASH
         TableName: ${self:service}-mojoTable-${sls:stage}
+    ModAbleMojoTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: uuid
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: uuid
+            KeyType: HASH
+        TableName: ${self:service}-modablemojoTable-${sls:stage}
     WhitelistTable:
       Type: AWS::DynamoDB::Table
       Properties:

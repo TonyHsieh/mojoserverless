@@ -501,3 +501,557 @@ module.exports.clearMojoGameStats = async (event) => {
   };
 
 }
+
+// ---------------------
+module.exports.getModableMojo = async (event) => {
+
+  // target of the GET
+  const uuid = event.pathParameters.id;
+  // for debugging locally
+  // const uuid = "3";
+  console.log("0 ----------------");
+  console.log("id : " + uuid);
+
+  let statusCodeVal = 200;
+  let bodyVal = { message: "Not found" };
+
+  const scanParams = {
+    TableName: process.env.DYNAMODB_MODABLEMOJO_TABLE,
+    Key: {
+      uuid: uuid,
+    },
+  };
+
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+  const result = await dynamodb.get(scanParams).promise();
+
+  if (result.Item) {
+    const isSprouted = result.Item.isSprouted || false;
+
+    console.log("1 ----------------");
+    console.log("isSprouted = " + isSprouted);
+
+    // if sprouted then return 404
+    if (isSprouted) {
+      // if already sprouted then return 404
+      statusCodeVal = 200;
+      bodyVal = result.Item;
+    } else {
+      // if not sprouted then return 404
+      statusCodeVal = 200;
+    }
+  }
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyVal),
+  };
+}
+
+//---------------------
+module.exports.mintModableMojo = async (event) => {
+  console.log("0 ----------------"); 
+
+  const SubclassList = {
+    "Flower": {
+      "uuid": "",
+      "name": "Mod-able Mojo ",
+      "order": "",
+      "number": 0,
+      "type": "Flower",
+      "isSprouted": "1",
+      "external_url": "https://www.planetmojo.io/mod-able-mojo/",
+      "image": "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/",
+      "animation_url": "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/",
+      "description": "Mod-able Mojos are a new collection from Planet Mojo where users will be able to swap parts and customize the look of their Mojos both in-game, and on-chain. Mojos are powerful plant heroes brought forth by the planet to battle the deadly threat known as the Scourge. They are 3D playable game characters in Mojo Melee and future games and experiences set inside the Planet Mojo Universe.",
+      "attributes": [
+        {
+          "value": "Plant",
+          "trait_type": "Class"
+        },
+        {
+          "value": "Flower",
+          "trait_type": "Subclass"
+        },
+        {
+          "value": "Genesis",
+          "trait_type": "Generation"
+        },
+        {
+          "value": "",
+          "trait_type": "Number"
+        },
+        {
+          "value": "Blooming Iris Hair",
+          "trait_type": "Head"
+        },
+        {
+          "value": "None",
+          "trait_type": "Eyewear"
+        },
+        {
+          "value": "Flower Base",
+          "trait_type": "Upper Body"
+        },
+        {
+          "value": "None",
+          "trait_type": "Lower Body"
+        },
+        {
+          "value": "None",
+          "trait_type": "Hands"
+        },
+        {
+          "value": "None",
+          "trait_type": "Feet"
+        },
+        {
+          "value": "Flower Base",
+          "trait_type": "Costume"
+        },
+        {
+          "value": "Pink Eyes",
+          "trait_type": "Eye Color"
+        },
+        {
+          "value": "Busy Succulent",
+          "trait_type": "Eyebrows"
+        },
+        {
+          "value": "Neutral",
+          "trait_type": "Face Marking"
+        },
+        {
+          "value": "None",
+          "trait_type": "Facial Hair"
+        },
+        {
+          "value": "Citrus",
+          "trait_type": "Body Color"
+        },
+        {
+          "value": "Flower Citrus",
+          "trait_type": "Background"
+        },
+        {
+          "value": "Happy Idle",
+          "trait_type": "Pose"
+        },
+        {
+          "value": "None",
+          "trait_type": "Animation"
+        }
+      ],
+    },
+    "Leafy": {
+      "uuid": "",
+      "name": "Mod-able Mojo ",
+      "order": "",
+      "number": 0,
+      "type": "Leafy",
+      "isSprouted": "1",
+      "external_url": "https://www.planetmojo.io/mod-able-mojo/",
+      "image": "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/",
+      "animation_url": "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/",
+      "description": "Mod-able Mojos are a new collection from Planet Mojo where users will be able to swap parts and customize the look of their Mojos both in-game, and on-chain. Mojos are powerful plant heroes brought forth by the planet to battle the deadly threat known as the Scourge. They are 3D playable game characters in Mojo Melee and future games and experiences set inside the Planet Mojo Universe.",
+      "attributes": [
+        {
+          "value": "Plant",
+          "trait_type": "Class"
+        },
+        {
+          "value": "Leafy",
+          "trait_type": "Subclass"
+        },
+        {
+          "value": "Genesis",
+          "trait_type": "Generation"
+        },
+        {
+          "value": "",
+          "trait_type": "Number"
+        },
+        {
+          "value": "Leafy Full Hair",
+          "trait_type": "Head"
+        },
+        {
+          "value": "None",
+          "trait_type": "Eyewear"
+        },
+        {
+          "value": "Leafy Base",
+          "trait_type": "Upper Body"
+        },
+        {
+          "value": "None",
+          "trait_type": "Lower Body"
+        },
+        {
+          "value": "None",
+          "trait_type": "Hands"
+        },
+        {
+          "value": "None",
+          "trait_type": "Feet"
+        },
+        {
+          "value": "Leafy Base",
+          "trait_type": "Costume"
+        },
+        {
+          "value": "Lemonata Eyes",
+          "trait_type": "Eye Color"
+        },
+        {
+          "value": "Succulent",
+          "trait_type": "Eyebrows"
+        },
+        {
+          "value": "Neutral",
+          "trait_type": "Face Marking"
+        },
+        {
+          "value": "None",
+          "trait_type": "Facial Hair"
+        },
+        {
+          "value": "Citrus",
+          "trait_type": "Body Color"
+        },
+        {
+          "value": "Vine Citrus",
+          "trait_type": "Background"
+        },
+        {
+          "value": "Very Happy",
+          "trait_type": "Pose"
+        },
+        {
+          "value": "None",
+          "trait_type": "Animation"
+        }
+      ],
+    },
+    "Vine": {
+      "uuid": "",
+      "name": "Mod-able Mojo ",
+      "order": "",
+      "number": 0,
+      "type": "Vine",
+      "isSprouted": "1",
+      "external_url": "https://www.planetmojo.io/mod-able-mojo/",
+      "image": "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/",
+      "animation_url": "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/",
+      "description": "Mod-able Mojos are a new collection from Planet Mojo where users will be able to swap parts and customize the look of their Mojos both in-game, and on-chain. Mojos are powerful plant heroes brought forth by the planet to battle the deadly threat known as the Scourge. They are 3D playable game characters in Mojo Melee and future games and experiences set inside the Planet Mojo Universe.",
+      "attributes": [
+        {
+          "value": "Plant",
+          "trait_type": "Class"
+        },
+        {
+          "value": "Vine",
+          "trait_type": "Subclass"
+        },
+        {
+          "value": "Genesis",
+          "trait_type": "Generation"
+        },
+        {
+          "value": "",
+          "trait_type": "Number"
+        },
+        {
+          "value": "Bok Choy Hair",
+          "trait_type": "Head"
+        },
+        {
+          "value": "None",
+          "trait_type": "Eyewear"
+        },
+        {
+          "value": "Vine Base",
+          "trait_type": "Upper Body"
+        },
+        {
+          "value": "None",
+          "trait_type": "Lower Body"
+        },
+        {
+          "value": "None",
+          "trait_type": "Hands"
+        },
+        {
+          "value": "None",
+          "trait_type": "Feet"
+        },
+        {
+          "value": "Vine Base",
+          "trait_type": "Costume"
+        },
+        {
+          "value": "Blue Grey Eyes",
+          "trait_type": "Eye Color"
+        },
+        {
+          "value": "Full Moss",
+          "trait_type": "Eyebrows"
+        },
+        {
+          "value": "Neutral",
+          "trait_type": "Face Marking"
+        },
+        {
+          "value": "None",
+          "trait_type": "Facial Hair"
+        },
+        {
+          "value": "Spring",
+          "trait_type": "Body Color"
+        },
+        {
+          "value": "Vine Spring",
+          "trait_type": "Background"
+        },
+        {
+          "value": "Angry Hands On Hips",
+          "trait_type": "Pose"
+        },
+        {
+          "value": "None",
+          "trait_type": "Animation"
+        }
+      ],
+    },
+    "Moss": {
+      "uuid": "",
+      "name": "Mod-able Mojo ",
+      "order": "",
+      "number": 0,
+      "type": "Moss",
+      "isSprouted": "1",
+      "external_url": "https://www.planetmojo.io/mod-able-mojo/",
+      "image": "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/",
+      "animation_url": "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/",
+      "description": "Mod-able Mojos are a new collection from Planet Mojo where users will be able to swap parts and customize the look of their Mojos both in-game, and on-chain. Mojos are powerful plant heroes brought forth by the planet to battle the deadly threat known as the Scourge. They are 3D playable game characters in Mojo Melee and future games and experiences set inside the Planet Mojo Universe.",
+      "attributes": [
+        {
+          "value": "Plant",
+          "trait_type": "Class"
+        },
+        {
+          "value": "Moss",
+          "trait_type": "Subclass"
+        },
+        {
+          "value": "Genesis",
+          "trait_type": "Generation"
+        },
+        {
+          "value": "",
+          "trait_type": "Number"
+        },
+        {
+          "value": "Afro Large Hair",
+          "trait_type": "Head"
+        },
+        {
+          "value": "None",
+          "trait_type": "Eyewear"
+        },
+        {
+          "value": "Moss Base",
+          "trait_type": "Upper Body"
+        },
+        {
+          "value": "None",
+          "trait_type": "Lower Body"
+        },
+        {
+          "value": "None",
+          "trait_type": "Hands"
+        },
+        {
+          "value": "None",
+          "trait_type": "Feet"
+        },
+        {
+          "value": "Moss Base",
+          "trait_type": "Costume"
+        },
+        {
+          "value": "Green Eyes",
+          "trait_type": "Eye Color"
+        },
+        {
+          "value": "Busy Succulent",
+          "trait_type": "Eyebrows"
+        },
+        {
+          "value": "Swirl Left eye",
+          "trait_type": "Face Marking"
+        },
+        {
+          "value": "None",
+          "trait_type": "Facial Hair"
+        },
+        {
+          "value": "Summer",
+          "trait_type": "Body Color"
+        },
+        {
+          "value": "Moss Summer",
+          "trait_type": "Background"
+        },
+        {
+          "value": "Neutral Floating Idle",
+          "trait_type": "Pose"
+        },
+        {
+          "value": "None",
+          "trait_type": "Animation"
+        }
+      ],
+    }
+  }; 
+  
+  //-----
+  const CHUNK_LENGTH = 8 + 2;
+  const uid = () =>
+    String(
+      Math.random().toString(10).padEnd(CHUNK_LENGTH,"0").substring(0, CHUNK_LENGTH) + 
+      Date.now().toString(10) +
+      Math.random().toString(10).padEnd(CHUNK_LENGTH,"0").substring(0, CHUNK_LENGTH)
+    ).replace(/0\./g, '')
+  //-----
+
+  const TypeList = ["Snowman", "Pumpkin Spice", "Fallboy", "Flower", "Leafy",	"Vine",	"Moss",	"Mummy", "Skeleton", "Pirate", "Dinosaur"];
+  const ClassList = ["Plant"];
+  const SubclassListKeys = Object.keys(SubclassList);
+  const GenerationList = ["Genesis"];
+
+  const HeadList = ["None", "Snowman Head",	"Fall Beanie","Blooming Iris Hair", "Leafy Full Hair", "Bok Choy Hair", "Afro Large Hair", "Mummy Mask", "Pirate Tricorn Hat with eyepatch", "Dino Head"];
+  const EyewearList = ["None"];
+  const UpperBodyList = [ "Dino T-Shirt", "Fallboy T-Shirt", "Flower Base", "Leafy Base", "Moss Base", "None", "Skeleton T-Shirt", "Snowman Body", "Vine Base", "Wrap Star T-Shirt" ];
+  const LowerBodyList = ["None"];
+  const HandsList = ["None", "Snowman Mittens"];
+  const FeetList = ["Mojo Kicks - Argh!", "Mojo Kicks - Mummy", "Mojo Kicks - Scales", "None" ];
+
+  const CostumeList = ["None", "Dinosaur", "Fallboy", "Flower Base", "Leafy Base", "Moss Base", "Mummy", "Pirate", "Pumkpin Spice", "Skeleton", "Snowman", "Vine Base" ];
+  const EyeColorList = ["None", "Blue Grey Eyes", "Candy Cornea", "Caribbean Blue", "Green Eyes", "Green Glow", "Grim Pink", "Ice Iris", "Jurassic Yellow", "Lemonata Eyes", "Pink Eyes", "Slime Yellow" ];
+  const EyebrowsList = [ "Busy Succulent", "Full Moss", "None", "Succulent" ];
+  const FaceMarkingList = [ "Neutral", "Snowface", "Striped", "Swirl Left eye" ];
+  const FacialHairList = ["Full Beard", "None"];
+  const BodyColorList = [ "Autumn Leaves", "Bleached Bones", "Citrus", "Flamingo Pink", "Icicle Blue", "Prehistoric Purple", "Pumkpin", "Spring", "Summer", "Undead" ];
+  const BackgroundList = [ "Buccaneer Blue", "Flower Citrus", "Moss Summer", "None", "Pharaoh's Gold", "Raptor Rust", "Spooky Fall", "Twilight Teal", "Vine Citrus", "Vine Spring" ];
+  const PoseList = [ "Angry Hands On Hips", "Fighting Stance", "Flare", "Floating", "Happy Hands on Hips", "Happy Idle", "Neutral Floating Idle", "None", "Spooky Fall", "Terrorize", "Very Happy" ];
+  const AnimationList = [ "Fighting Stance", "Flare", "Floating", "Happy Hands on Hips", "Mischievous", "None", "Terrorize" ];
+
+  const TypeValueCheckArray = {
+    "Type": TypeList,
+    "Class": ClassList,
+    "Subclass": SubclassListKeys,
+    "Generation": GenerationList,
+    "Head": HeadList,
+    "Eyewear": EyewearList,
+    "UpperBody": UpperBodyList,
+    "LowerBody": LowerBodyList,
+    "Hands": HandsList,
+    "Feet": FeetList,
+    "Costume": CostumeList,
+    "EyeColor": EyeColorList,
+    "Eyebrows": EyebrowsList,
+    "FaceMarking": FaceMarkingList,
+    "FacialHair": FacialHairList,
+    "BodyColor": BodyColorList,
+    "Background": BackgroundList,
+    "Pose": PoseList,
+    "Animation": AnimationList
+  }
+
+  const body = JSON.parse(event.body);
+  console.log("00 - Show the input body: " + JSON.stringify(body));
+
+  let statusCodeVal = 200;
+  let bodyValArr = [];
+
+  let mojoSubclass = "";
+  let modableMojoData = []; 
+  if (("Subclass" in body) && (body.Subclass != null)) {
+    mojoSubclass = body.Subclass;
+    console.log("00.PASSED_IN - mojoSubclass: " + mojoSubclass);
+  } else {
+    statusCodeVal = 422; // Unprocessable Entity ERROR
+    console.log("00.NOT GOOD DATA- mojoSubclass: " + mojoSubclass);
+  }
+
+  if (statusCodeVal == 200) {
+    // Init the modableMojoData 
+    modableMojoData = JSON.parse(JSON.stringify(SubclassList[mojoSubclass]));
+    console.log("0 - Show the modableMojoData : " + JSON.stringify(modableMojoData)); 
+
+    const TypeList = Object.keys(TypeValueCheckArray);
+    for (const Type of TypeList) {
+      if (Type in body) {
+        if (body[Type] != null) {
+          if (TypeValueCheckArray[Type].includes(body[Type])) {
+            replaceTraitValue(modableMojoData.attributes, Type, body[Type]); 
+            console.log("00. OK body ["+ Type + "]: " + body[Type]);
+          } else {
+            statusCodeVal = 422; // Unprocessable Entity ERROR
+            console.log("01.NOT GOOD DATA- missing body ["+ Type + "]: " + body[Type]);
+          }
+        }
+      }
+    }
+
+    modableMojoData.type = body.Type;
+    modableMojoData.number = Number(body.Number);
+    
+    console.log("0.9 - Show the changed modableMojoData : " + JSON.stringify(modableMojoData)); 
+
+
+    // ----------
+    // start filling in the mod-able Mojo body
+    modableMojoData.uuid = uid();
+    modableMojoData.external_url += modableMojoData.uuid;
+    replaceTraitValue(modableMojoData.attributes, "Number", modableMojoData.number); 
+    modableMojoData.name = "Mod-able Mojo " + modableMojoData.number;
+    modableMojoData.order = modableMojoData.number.toString().padStart(6, '0');
+    modableMojoData.image += modableMojoData.type + ".png"; 
+    modableMojoData.animation_url += modableMojoData.type + ".mp4"; 
+    modableMojoData.isSprouted = "1";
+
+    console.log("1.9 - Show the changed modableMojoData : " + JSON.stringify(modableMojoData)); 
+
+
+
+    // ----------
+    // Write it into the DynamoDB
+    const dynamodb = new AWS.DynamoDB.DocumentClient();
+    const putParams = {
+      TableName: process.env.DYNAMODB_MODABLEMOJO_TABLE, 
+      Item: modableMojoData, 
+    }
+    await (dynamodb.put(putParams)).promise();
+
+    bodyValArr = modableMojoData; 
+    console.log("SUCCESS: writeSuccess" );
+  };
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyValArr),
+  };
+
+
+//-------
+  function replaceTraitValue (inputList, trait, newValue) {
+    inputList.find((o, idx) => {
+      if (o["trait_type"] == trait) {
+        inputList[idx]["value"] = newValue;
+      };
+    });
+  }
+
+}
