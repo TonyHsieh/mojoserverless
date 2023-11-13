@@ -640,6 +640,10 @@ module.exports.mintModableMojo = async (event) => {
         {
           "value": "None",
           "trait_type": "Animation"
+        },
+        {
+          "value": "None",
+          "trait_type": "Skin"
         }
       ],
     },
@@ -730,6 +734,10 @@ module.exports.mintModableMojo = async (event) => {
         {
           "value": "None",
           "trait_type": "Animation"
+        },
+        {
+          "value": "None",
+          "trait_type": "Skin"
         }
       ],
     },
@@ -820,6 +828,10 @@ module.exports.mintModableMojo = async (event) => {
         {
           "value": "None",
           "trait_type": "Animation"
+        },
+        {
+          "value": "None",
+          "trait_type": "Skin"
         }
       ],
     },
@@ -910,6 +922,10 @@ module.exports.mintModableMojo = async (event) => {
         {
           "value": "None",
           "trait_type": "Animation"
+        },
+        {
+          "value": "None",
+          "trait_type": "Skin"
         }
       ],
     }
@@ -940,12 +956,13 @@ module.exports.mintModableMojo = async (event) => {
   const CostumeList = ["None", "Dinosaur", "Fallboy", "Flower Base", "Leafy Base", "Moss Base", "Mummy", "Pirate", "Pumkpin Spice", "Skeleton", "Snowman", "Vine Base" ];
   const EyeColorList = ["None", "Blue Grey Eyes", "Candy Cornea", "Caribbean Blue", "Green Eyes", "Green Glow", "Grim Pink", "Ice Iris", "Jurassic Yellow", "Lemonata Eyes", "Pink Eyes", "Slime Yellow" ];
   const EyebrowsList = [ "Busy Succulent", "Full Moss", "None", "Succulent" ];
-  const FaceMarkingList = [ "Neutral", "Snowface", "Striped", "Swirl Left eye" ];
+  const FaceMarkingList = [ "Neutral", "None", "Snowface", "Striped", "Swirl Left eye" ];
   const FacialHairList = ["Full Beard", "None"];
-  const BodyColorList = [ "Autumn Leaves", "Bleached Bones", "Citrus", "Flamingo Pink", "Icicle Blue", "Prehistoric Purple", "Pumkpin", "Spring", "Summer", "Undead" ];
-  const BackgroundList = [ "Buccaneer Blue", "Flower Citrus", "Moss Summer", "None", "Pharaoh's Gold", "Raptor Rust", "Spooky Fall", "Twilight Teal", "Vine Citrus", "Vine Spring" ];
-  const PoseList = [ "Angry Hands On Hips", "Fighting Stance", "Flare", "Floating", "Happy Hands on Hips", "Happy Idle", "Neutral Floating Idle", "None", "Spooky Fall", "Terrorize", "Very Happy" ];
-  const AnimationList = [ "Fighting Stance", "Flare", "Floating", "Happy Hands on Hips", "Mischievous", "None", "Terrorize" ];
+  const BodyColorList = [ "Autumn Leaves", "Bleached Bones", "Citrus", "Flamingo Pink", "None", "Prehistoric Purple", "Pumkpin", "Spring", "Summer", "Undead" ];
+  const BackgroundList = [ "Buccaneer Blue", "Flower Citrus", "Moss Summer", "None", "Pharaoh's Gold", "Raptor Rust", "Spooky Fall", "Twilight Teal", "Vine Citrus", "Vine Spring", "Winter Wonder" ];
+  const PoseList = [ "Angry Hands On Hips", "Fighting Stance", "Flare", "Floating", "Happy Hands on Hips", "Happy Idle", "Neutral Floating Idle", "None", "Spooky Fall", "Snowy Smile", "Terrorize", "Very Happy" ];
+  const AnimationList = [ "Fighting Stance", "Flare", "Floating", "Happy Hands on Hips", "Mischievous", "None", "Snowy Smile", "Terrorize" ];
+  const SkinList = ["Icicle Blue", "None"];
 
   const TypeValueCheckArray = {
     "Type": TypeList,
@@ -966,7 +983,8 @@ module.exports.mintModableMojo = async (event) => {
     "BodyColor": BodyColorList,
     "Background": BackgroundList,
     "Pose": PoseList,
-    "Animation": AnimationList
+    "Animation": AnimationList,
+    "Skin": SkinList
   }
 
   const body = JSON.parse(event.body);
@@ -982,6 +1000,7 @@ module.exports.mintModableMojo = async (event) => {
     console.log("00.PASSED_IN - mojoSubclass: " + mojoSubclass);
   } else {
     statusCodeVal = 422; // Unprocessable Entity ERROR
+    bodyVarArr = { message: "00.NOT GOOD DATA- mojoSubclass: " + mojoSubclass }; 
     console.log("00.NOT GOOD DATA- mojoSubclass: " + mojoSubclass);
   }
 
@@ -999,44 +1018,45 @@ module.exports.mintModableMojo = async (event) => {
             console.log("00. OK body ["+ Type + "]: " + body[Type]);
           } else {
             statusCodeVal = 422; // Unprocessable Entity ERROR
+            bodyVarArr = { message: "01.NOT GOOD DATA- missing body ["+ Type + "]: " + body[Type] }; 
             console.log("01.NOT GOOD DATA- missing body ["+ Type + "]: " + body[Type]);
           }
         }
       }
     }
 
-    modableMojoData.type = body.Type;
-    modableMojoData.number = Number(body.Number);
-    
-    console.log("0.9 - Show the changed modableMojoData : " + JSON.stringify(modableMojoData)); 
+    if (statusCodeVal == 200) { 
+      modableMojoData.type = body.Type;
+      modableMojoData.number = Number(body.Number);
+
+      console.log("0.9 - Show the changed modableMojoData : " + JSON.stringify(modableMojoData)); 
 
 
-    // ----------
-    // start filling in the mod-able Mojo body
-    modableMojoData.uuid = uid();
-    modableMojoData.external_url += modableMojoData.uuid;
-    replaceTraitValue(modableMojoData.attributes, "Number", modableMojoData.number); 
-    modableMojoData.name = "Mod-able Mojo " + modableMojoData.number;
-    modableMojoData.order = modableMojoData.number.toString().padStart(6, '0');
-    modableMojoData.image += modableMojoData.type + ".png"; 
-    modableMojoData.animation_url += modableMojoData.type + ".mp4"; 
-    modableMojoData.isSprouted = "1";
+      // ----------
+      // start filling in the mod-able Mojo body
+      modableMojoData.uuid = uid();
+      modableMojoData.external_url += modableMojoData.uuid;
+      replaceTraitValue(modableMojoData.attributes, "Number", modableMojoData.number); 
+      modableMojoData.name = "Mod-able Mojo " + modableMojoData.number;
+      modableMojoData.order = modableMojoData.number.toString().padStart(6, '0');
+      modableMojoData.image += modableMojoData.type + ".png"; 
+      modableMojoData.animation_url += modableMojoData.type + ".mp4"; 
+      modableMojoData.isSprouted = "1";
 
-    console.log("1.9 - Show the changed modableMojoData : " + JSON.stringify(modableMojoData)); 
+      console.log("1.9 - Show the changed modableMojoData : " + JSON.stringify(modableMojoData)); 
 
+      // ----------
+      // Write it into the DynamoDB
+      const dynamodb = new AWS.DynamoDB.DocumentClient();
+      const putParams = {
+        TableName: process.env.DYNAMODB_MODABLEMOJO_TABLE, 
+        Item: modableMojoData, 
+      }
+      await (dynamodb.put(putParams)).promise();
 
-
-    // ----------
-    // Write it into the DynamoDB
-    const dynamodb = new AWS.DynamoDB.DocumentClient();
-    const putParams = {
-      TableName: process.env.DYNAMODB_MODABLEMOJO_TABLE, 
-      Item: modableMojoData, 
+      bodyValArr = modableMojoData; 
+      console.log("SUCCESS: writeSuccess" );
     }
-    await (dynamodb.put(putParams)).promise();
-
-    bodyValArr = modableMojoData; 
-    console.log("SUCCESS: writeSuccess" );
   };
 
   return {
