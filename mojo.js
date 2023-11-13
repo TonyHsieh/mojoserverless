@@ -954,7 +954,7 @@ module.exports.mintModableMojo = async (event) => {
   const FeetList = ["Mojo Kicks - Argh!", "Mojo Kicks - Mummy", "Mojo Kicks - Scales", "None" ];
 
   const CostumeList = ["None", "Dinosaur", "Fallboy", "Flower Base", "Leafy Base", "Moss Base", "Mummy", "Pirate", "Pumkpin Spice", "Skeleton", "Snowman", "Vine Base" ];
-  const EyeColorList = ["None", "Blue Grey Eyes", "Candy Cornea", "Caribbean Blue", "Green Eyes", "Green Glow", "Grim Pink", "Ice Iris", "Jurassic Yellow", "Lemonata Eyes", "Pink Eyes", "Slime Yellow" ];
+  const EyeColorList = ["None", "Blue Grey Eyes", "Candy Cornea", "Caribbean Blue", "Green Eyes", "Green Glow", "Grim Pink", "Ice Iris", "Jurassic Yellow", "Lemonata Eyes", "Pink Eyes", "Slime Yellow", "Winter" ];
   const EyebrowsList = [ "Busy Succulent", "Full Moss", "None", "Succulent" ];
   const FaceMarkingList = [ "Neutral", "None", "Snowface", "Striped", "Swirl Left eye" ];
   const FacialHairList = ["Full Beard", "None"];
@@ -971,16 +971,16 @@ module.exports.mintModableMojo = async (event) => {
     "Generation": GenerationList,
     "Head": HeadList,
     "Eyewear": EyewearList,
-    "UpperBody": UpperBodyList,
-    "LowerBody": LowerBodyList,
+    "Upper Body": UpperBodyList,
+    "Lower Body": LowerBodyList,
     "Hands": HandsList,
     "Feet": FeetList,
     "Costume": CostumeList,
-    "EyeColor": EyeColorList,
+    "Eye Color": EyeColorList,
     "Eyebrows": EyebrowsList,
-    "FaceMarking": FaceMarkingList,
-    "FacialHair": FacialHairList,
-    "BodyColor": BodyColorList,
+    "Face Marking": FaceMarkingList,
+    "Facial Hair": FacialHairList,
+    "Body Color": BodyColorList,
     "Background": BackgroundList,
     "Pose": PoseList,
     "Animation": AnimationList,
@@ -990,18 +990,22 @@ module.exports.mintModableMojo = async (event) => {
   const body = JSON.parse(event.body);
   console.log("00 - Show the input body: " + JSON.stringify(body));
 
-  let statusCodeVal = 200;
-  let bodyValArr = [];
+  var statusCodeVal = 200;
+  var bodyValArr = [];
 
-  let mojoSubclass = "";
-  let modableMojoData = []; 
-  if (("Subclass" in body) && (body.Subclass != null)) {
-    mojoSubclass = body.Subclass;
-    console.log("00.PASSED_IN - mojoSubclass: " + mojoSubclass);
-  } else {
-    statusCodeVal = 422; // Unprocessable Entity ERROR
-    bodyVarArr = { message: "00.NOT GOOD DATA- mojoSubclass: " + mojoSubclass }; 
-    console.log("00.NOT GOOD DATA- mojoSubclass: " + mojoSubclass);
+  var mojoSubclass = "";
+  var modableMojoData = []; 
+  if ("Subclass" in body) {
+    if  (body.Subclass != null) {
+      if (SubclassListKeys.includes(body.Subclass)) {
+        mojoSubclass = body.Subclass;
+        console.log("00.PASSED_IN - mojoSubclass: " + mojoSubclass);
+      } else {
+        statusCodeVal = 422; // Unprocessable Entity ERROR
+        bodyValArr = { message: "00.NOT GOOD DATA- body.Subclass: < "+ body.Subclass +" > -- mojoSubclass: <" + mojoSubclass + ">"}; 
+        console.log("00.NOT GOOD DATA- body.Subclass: < "+ body.Subclass +" > -- mojoSubclass: <" + mojoSubclass + ">");
+      }
+    }
   }
 
   if (statusCodeVal == 200) {
@@ -1018,8 +1022,8 @@ module.exports.mintModableMojo = async (event) => {
             console.log("00. OK body ["+ Type + "]: " + body[Type]);
           } else {
             statusCodeVal = 422; // Unprocessable Entity ERROR
-            bodyVarArr = { message: "01.NOT GOOD DATA- missing body ["+ Type + "]: " + body[Type] }; 
-            console.log("01.NOT GOOD DATA- missing body ["+ Type + "]: " + body[Type]);
+            bodyValArr = { message: "01.NOT GOOD DATA- missing ["+ Type + "]: " + body[Type] }; 
+            console.log("01.NOT GOOD DATA- missing ["+ Type + "]: " + body[Type]);
           }
         }
       }
