@@ -954,12 +954,12 @@ module.exports.mintPrepModableMojo = async (event) => {
   const HandsList = ["None", "Snowman Mittens"];
   const FeetList = ["Mojo Kicks - Argh!", "Mojo Kicks - Mummy", "Mojo Kicks - Scales", "None" ];
 
-  const CostumeList = ["Dinosaur", "Fallboy", "Flower Base", "Leafy Base", "Moss Base", "Mummy", "Pirate", "Pumkpin Spice", "Skeleton", "Snowman", "Vine Base" ];
+  const CostumeList = ["Dinosaur", "Fallboy", "Flower Base", "Leafy Base", "Moss Base", "Mummy", "Pirate", "Pumpkin Spice", "Skeleton", "Snowman", "Vine Base" ];
   const EyeColorList = ["Blue Grey Eyes", "Candy Cornea", "Caribbean Blue", "Green Eyes", "Green Glow", "Grim Pink", "Jurassic Yellow", "Lemonata Eyes", "Pink Eyes", "Slime Yellow", "Winter" ];
   const EyebrowsList = [ "Busy Succulent", "Full Moss", "None", "Succulent" ];
   const FaceMarkingList = [ "Flow", "Neutral", "None", "Striped", "Swirl Left eye", "Winter"];
   const FacialHairList = ["Full Beard", "None"];
-  const BodyColorList = [ "Autumn Leaves", "Citrus", "Flamingo Pink", "None", "Prehistoric Purple", "Pumkpin", "Spring", "Summer", "Undead" ];
+  const BodyColorList = [ "Autumn Leaves", "Citrus", "Flamingo Pink", "None", "Prehistoric Purple", "Pumpkin", "Spring", "Summer", "Undead" ];
   const BackgroundList = [ "Buccaneer Blue", "Flower Citrus", "Moss Summer", "None", "Pharaoh's Gold", "Raptor Rust", "Spooky Fall", "Twilight Teal", "Vine Citrus", "Vine Spring", "Winter Wonder" ];
   const PoseList = [ "Angry Hands On Hips", "Fighting Stance", "Flare", "Floating", "Happy Hands on Hips", "Happy Idle", "Neutral Floating Idle", "Snowy Smile", "Spooky Fall", "Terrorize", "Very Happy"]; 
   const AnimationList = [ "Fighting Stance", "Flare", "Floating", "Happy Hands on Hips", "Mischievous", "None", "Snowy Smile", "Terrorize" ];
