@@ -2,6 +2,7 @@
 const AWS = require('aws-sdk')
 //const Web3 = require('web3')
 //const OpenSeaSDK = require('opensea-js')
+const ethers = require('ethers')
 
 module.exports.getMojo = async (event) => {
 
@@ -549,14 +550,14 @@ module.exports.getModableMojo = async (event) => {
 }
 
 //---------------------
-module.exports.mintModableMojo = async (event) => {
+module.exports.mintPrepModableMojo = async (event) => {
   console.log("0 ----------------"); 
 
   const SubclassList = {
     "Flower": {
-      "uuid": "",
+      //"uuid": "",
       "name": "Mod-able Mojo ",
-      "order": "",
+      //"order": "",
       "number": 0,
       "type": "Flower",
       "isSprouted": "1",
@@ -648,9 +649,9 @@ module.exports.mintModableMojo = async (event) => {
       ],
     },
     "Leafy": {
-      "uuid": "",
+      //"uuid": "",
       "name": "Mod-able Mojo ",
-      "order": "",
+      //"order": "",
       "number": 0,
       "type": "Leafy",
       "isSprouted": "1",
@@ -742,9 +743,9 @@ module.exports.mintModableMojo = async (event) => {
       ],
     },
     "Vine": {
-      "uuid": "",
+      //"uuid": "",
       "name": "Mod-able Mojo ",
-      "order": "",
+      //"order": "",
       "number": 0,
       "type": "Vine",
       "isSprouted": "1",
@@ -836,9 +837,9 @@ module.exports.mintModableMojo = async (event) => {
       ],
     },
     "Moss": {
-      "uuid": "",
+      //"uuid": "",
       "name": "Mod-able Mojo ",
-      "order": "",
+      //"order": "",
       "number": 0,
       "type": "Moss",
       "isSprouted": "1",
@@ -932,13 +933,13 @@ module.exports.mintModableMojo = async (event) => {
   }; 
   
   //-----
-  const CHUNK_LENGTH = 8 + 2;
-  const uid = () =>
-    String(
-      Math.random().toString(10).padEnd(CHUNK_LENGTH,"0").substring(0, CHUNK_LENGTH) + 
-      Date.now().toString(10) +
-      Math.random().toString(10).padEnd(CHUNK_LENGTH,"0").substring(0, CHUNK_LENGTH)
-    ).replace(/0\./g, '')
+//  const CHUNK_LENGTH = 8 + 2;
+//  const uid = () =>
+//    String(
+//      Math.random().toString(10).padEnd(CHUNK_LENGTH,"0").substring(0, CHUNK_LENGTH) + 
+//      Date.now().toString(10) +
+//      Math.random().toString(10).padEnd(CHUNK_LENGTH,"0").substring(0, CHUNK_LENGTH)
+//    ).replace(/0\./g, '')
   //-----
 
   const TypeList = ["Snowman", "Pumpkin Spice", "Fallboy", "Flower", "Leafy",	"Vine",	"Moss",	"Mummy", "Skeleton", "Pirate", "Dinosaur"];
@@ -953,16 +954,16 @@ module.exports.mintModableMojo = async (event) => {
   const HandsList = ["None", "Snowman Mittens"];
   const FeetList = ["Mojo Kicks - Argh!", "Mojo Kicks - Mummy", "Mojo Kicks - Scales", "None" ];
 
-  const CostumeList = ["None", "Dinosaur", "Fallboy", "Flower Base", "Leafy Base", "Moss Base", "Mummy", "Pirate", "Pumkpin Spice", "Skeleton", "Snowman", "Vine Base" ];
-  const EyeColorList = ["None", "Blue Grey Eyes", "Candy Cornea", "Caribbean Blue", "Green Eyes", "Green Glow", "Grim Pink", "Ice Iris", "Jurassic Yellow", "Lemonata Eyes", "Pink Eyes", "Slime Yellow", "Winter" ];
+  const CostumeList = ["Dinosaur", "Fallboy", "Flower Base", "Leafy Base", "Moss Base", "Mummy", "Pirate", "Pumkpin Spice", "Skeleton", "Snowman", "Vine Base" ];
+  const EyeColorList = ["Blue Grey Eyes", "Candy Cornea", "Caribbean Blue", "Green Eyes", "Green Glow", "Grim Pink", "Jurassic Yellow", "Lemonata Eyes", "Pink Eyes", "Slime Yellow", "Winter" ];
   const EyebrowsList = [ "Busy Succulent", "Full Moss", "None", "Succulent" ];
-  const FaceMarkingList = [ "Neutral", "None", "Snowface", "Striped", "Swirl Left eye" ];
+  const FaceMarkingList = [ "Flow", "Neutral", "None", "Striped", "Swirl Left eye", "Winter"];
   const FacialHairList = ["Full Beard", "None"];
-  const BodyColorList = [ "Autumn Leaves", "Bleached Bones", "Citrus", "Flamingo Pink", "None", "Prehistoric Purple", "Pumkpin", "Spring", "Summer", "Undead" ];
+  const BodyColorList = [ "Autumn Leaves", "Citrus", "Flamingo Pink", "None", "Prehistoric Purple", "Pumkpin", "Spring", "Summer", "Undead" ];
   const BackgroundList = [ "Buccaneer Blue", "Flower Citrus", "Moss Summer", "None", "Pharaoh's Gold", "Raptor Rust", "Spooky Fall", "Twilight Teal", "Vine Citrus", "Vine Spring", "Winter Wonder" ];
-  const PoseList = [ "Angry Hands On Hips", "Fighting Stance", "Flare", "Floating", "Happy Hands on Hips", "Happy Idle", "Neutral Floating Idle", "None", "Spooky Fall", "Snowy Smile", "Terrorize", "Very Happy" ];
+  const PoseList = [ "Angry Hands On Hips", "Fighting Stance", "Flare", "Floating", "Happy Hands on Hips", "Happy Idle", "Neutral Floating Idle", "Snowy Smile", "Spooky Fall", "Terrorize", "Very Happy"]; 
   const AnimationList = [ "Fighting Stance", "Flare", "Floating", "Happy Hands on Hips", "Mischievous", "None", "Snowy Smile", "Terrorize" ];
-  const SkinList = ["Icicle Blue", "None"];
+  const SkinList = ["Boned", "Icicle Blue", "None"];
 
   const TypeValueCheckArray = {
     "Type": TypeList,
@@ -986,6 +987,8 @@ module.exports.mintModableMojo = async (event) => {
     "Animation": AnimationList,
     "Skin": SkinList
   }
+
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
 
   const body = JSON.parse(event.body);
   console.log("00 - Show the input body: " + JSON.stringify(body));
@@ -1029,37 +1032,235 @@ module.exports.mintModableMojo = async (event) => {
       }
     }
 
+    // ------------
+    // Set the modableMojoData.number - from the modableMojoNumberTable
+    var currentId = 0;
+    var newId = 0;
+
+    if (statusCodeVal == 200) {
+      // get the current MAX index from the dynamooDB 
+      let scanParams = {
+        TableName: process.env.DYNAMODB_MODABLEMOJO_NUMBER_TABLE,
+        Key: {
+          number: 0,
+        }, 
+        AttributesToGet: ["LastID"],
+        ConsistentRead: true,
+      };
+      console.log("0.32 - scanParams: " + JSON.stringify(scanParams));
+
+      let tableMetaData = await dynamodb.get(scanParams).promise();
+      console.log("0.33 - tableMetaData: " + JSON.stringify(tableMetaData));
+
+      // set the currentId
+      currentId = Number(tableMetaData["Item"]["LastID"]);
+      console.log("0.34 - currentId: " + currentId);
+    }
+
+
+    // Check if there is request for a new modableMojo
+    var isNewModableMojo = false;
     if (statusCodeVal == 200) { 
       modableMojoData.type = body.Type;
-      modableMojoData.number = Number(body.Number);
+      if ("Number" in body) {
+        modableMojoData.number = Number(body.Number);
+        console.log("0.50 - modableMojoData.number: " +modableMojoData.number);
 
+        if (modableMojoData.number == -1) {
+          console.log("0.51 - New mod-able-modjo --> getting LastID from database " +modableMojoData.number);
+          isNewModableMojo = true;
+
+          // set the modableMojoData.number = currentId + 1
+//          let scanParams = {
+//            TableName: process.env.DYNAMODB_MODABLEMOJO_NUMBER_TABLE,
+//            Key: {
+//              number: 0,
+//            }, 
+//            AttributesToGet: ["LastID"],
+//            ConsistentRead: true,
+//          };
+//          console.log("0.52 - scanParams: " + JSON.stringify(scanParams));
+//
+//          let tableMetaData = await dynamodb.get(scanParams).promise();
+//          console.log("0.53 - tableMetaData: " + JSON.stringify(tableMetaData));
+//
+//          // Increment lastID by one
+//          currentId = Number(tableMetaData["Item"]["LastID"]);
+          newId = currentId + 1;
+          modableMojoData.number = newId;
+          console.log("0.59 - modableMojoData.number: " +modableMojoData.number);
+
+        } else if (modableMojoData.number > currentId) {
+          statusCodeVal = 422; // Unprocessable Entity ERROR
+          bodyValArr = { message: "INVALID NUMBER DATA- modableMojoData.number: "+ modableMojoData.number +" GREATER-THAN currentId: "+ currentId };
+          console.log("0.59 - modableMojoData.number: " +modableMojoData.number + " GREATER-THAN currentId: "+ currentId);
+        }
+      }
+    }
+
+    if (statusCodeVal == 200) {
+      
       console.log("0.9 - Show the changed modableMojoData : " + JSON.stringify(modableMojoData)); 
-
 
       // ----------
       // start filling in the mod-able Mojo body
-      modableMojoData.uuid = uid();
-      modableMojoData.external_url += modableMojoData.uuid;
       replaceTraitValue(modableMojoData.attributes, "Number", modableMojoData.number); 
       modableMojoData.name = "Mod-able Mojo " + modableMojoData.number;
       modableMojoData.order = modableMojoData.number.toString().padStart(6, '0');
+      // eventually this needs to depend on the type value being passed in or not... 
+      //   if not passed in, then this needs to be the number (mojoNumber)
       modableMojoData.image += modableMojoData.type + ".png"; 
       modableMojoData.animation_url += modableMojoData.type + ".mp4"; 
       modableMojoData.isSprouted = "1";
 
-      console.log("1.9 - Show the changed modableMojoData : " + JSON.stringify(modableMojoData)); 
+      console.log("1.9 - Show the changed modableMojoData before hashing values: " + JSON.stringify(modableMojoData)); 
+
+      // NFT calc code from Jure 
+      console.log("2.0 - Entering hashing code"); 
+      const rawMojoIdEncodingVersion = 0;
+      const rawMojoNumber = modableMojoData.number;
+      const rawMetadata = JSON.stringify(modableMojoData); // this shoud be the JSON of the metadata
+      console.log("2.1 - Show the rawMojoIdEncodingVersion: " + rawMojoIdEncodingVersion + "\n rawMojoNumber: "+ rawMojoNumber + "\n rawMetadata: " + rawMetadata); 
+
+      const mojoIdEncodingVersion = ethers.BigNumber.from(rawMojoIdEncodingVersion);
+      const mojoNumber = ethers.BigNumber.from(rawMojoNumber);
+      const metadataHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(rawMetadata));
+      console.log("2.1 - Show the  metadataHash: " + metadataHash); 
+
+      const tokenId = ethers.utils.keccak256(ethers.utils.solidityPack(
+        [
+          "uint8", 
+          //"uint64",
+          "bytes32"
+        ], 
+        [
+          mojoIdEncodingVersion,
+          //mojoNumber,
+          metadataHash
+        ]
+      ));
+
+      console.log("2.3 - Show tokenId (hex): " + tokenId); // To get the hex representation
+
+      modableMojoData.uuid = ethers.BigNumber.from(tokenId).toString();
+      console.log("2.4 - Show tokenId (dec): " + modableMojoData.uuid);// To get the decimal representation
+
+      modableMojoData.external_url += modableMojoData.uuid;
+      modableMojoData.metadataHash = metadataHash;
+      modableMojoData.mojoIdEncodingVersion = mojoIdEncodingVersion;
+      
+      console.log("2.9 - Show the newly calc metadataHash, mojoIdEncoding, tokenId as uuid changed modableMojoData : " + JSON.stringify(modableMojoData)); 
 
       // ----------
       // Write it into the DynamoDB
-      const dynamodb = new AWS.DynamoDB.DocumentClient();
-      const putParams = {
-        TableName: process.env.DYNAMODB_MODABLEMOJO_TABLE, 
-        Item: modableMojoData, 
-      }
-      await (dynamodb.put(putParams)).promise();
+      //   -- this will need to be a transaction to write both to tables
+      //   the DYNAMODB_MODABLEMOJO_NUMBER_TABLE - index on MojoNumber and write the uuid, and encoding version
+      //   the DYNAMODB_MODABLEMOJO_TABLE - write the modableMojoData
+      if (!isNewModableMojo) {
+        try {
+          const response = await dynamodb.transactWrite({
+            TransactItems: [
+              {
+                //   1- Use the number as index and overwrite the uuid in DynamoDB_MODABLEMOJO_NUMBER_TABLE   
+                "Put": {
+                  TableName: process.env.DYNAMODB_MODABLEMOJO_NUMBER_TABLE, 
+                  Item: {
+                    number: modableMojoData.number,
+                    uuid: modableMojoData.uuid,
+                  }, 
+                },
+              },
+              {
+                //   2- Overwrite in the new row with the information needed
+                "Put": {
+                  TableName: process.env.DYNAMODB_MODABLEMOJO_TABLE, 
+                  Item: modableMojoData, 
+                },
+              },
+            ],
+          }).promise();
 
-      bodyValArr = modableMojoData; 
-      console.log("SUCCESS: writeSuccess" );
+          // ----------
+          // Success exiting
+          bodyValArr = modableMojoData; 
+          console.log("3.0 - SUCCESS existing mod-able-mojo write to both db: " + JSON.stringify(response));
+
+        } catch (error) { 
+          // If the transaction fails, then roll back both actions and return a failure service 
+          //   409 - The request could not be completed due to a conflict with the current state
+          //   of the target resource.  This code is used in sutiaotns where 
+          //   the user might be able to resolve the conflict and resumbit the request.
+          //statusCodeVal = 409;
+          statusCodeVal = 500; 
+          bodyValArr = { message : "Transaction Update failed. No changed made. Please attempt again." }; 
+          console.log("3.0 - ERROR fail write to db: " + JSON.stringify(error));
+        };
+
+        // ----------
+        // Success exiting
+        bodyValArr = modableMojoData; 
+        console.log("SUCCESS - existing mod-able-mojo write to db: ");
+
+      } else {
+        // New mod-able-mojo - Begin the transaction closure
+        // -- this will need to be a transaction to write both to tables
+        // the DYNAMODB_MODABLEMOJO_TABLE - write the modableMojoData
+        // the DYNAMODB_MODABLEMOJO_NUMBER_TABLE - increment the LastID 
+        // the DYNAMODB_MODABLEMOJO_NUMBER_TABLE - index on MojoNumber and write the uuid, and encoding version
+        //   There will be a conditional expression on the DYNAMODB_MODABLEMOJO_NUMBER_TABLE index on MojoNumber to see no duplicates.
+        try {
+          const response = await dynamodb.transactWrite({
+            TransactItems: [
+              {
+                //   1 - Put in the new row with the information needed
+                "Put": {
+                  TableName: process.env.DYNAMODB_MODABLEMOJO_TABLE, 
+                  Item: modableMojoData, 
+                },
+              },
+              {
+                //   2 - Update the incremented LastID 
+                Update: {
+                  TableName: process.env.DYNAMODB_MODABLEMOJO_NUMBER_TABLE,
+                  Key: { number: 0 },
+                  "ConditionExpression": "LastID = :currentId",
+                  "UpdateExpression": "SET LastID = LastID + :incr",
+                  "ExpressionAttributeValues": {
+                    ":incr": 1,
+                    ":currentId": currentId,
+                  }, 
+                },
+              },
+              {
+                //   3 - Put in the new row with the information needed
+                "Put": {
+                  TableName: process.env.DYNAMODB_MODABLEMOJO_NUMBER_TABLE, 
+                  Item: {
+                    number: modableMojoData.number,
+                    uuid: modableMojoData.uuid,
+                  }, 
+                },
+                "ConditionalExpression": "attribute_not_exists(number)",
+              },
+            ],
+          }).promise();
+
+          // ----------
+          // Success exiting
+          bodyValArr = modableMojoData; 
+          console.log("SUCCESS new mod-able-mojo write to db: " + JSON.stringify(response));
+
+
+        } catch (error) { 
+          // If the transaction fails, then roll back both actions and return a failure service 
+          //   409 - The request could not be completed due to a conflict with the current state
+          //   of the target resource.  This code is used in sutiaotns where 
+          //   the user might be able to resolve the conflict and resumbit the request.
+          statusCodeVal = 409;
+          bodyValArr = { message : "Create Failed. No changed made. Please attempt again." }; 
+          console.log("ERROR fail write to db: " + JSON.stringify(error));
+        };
+      }
     }
   };
 

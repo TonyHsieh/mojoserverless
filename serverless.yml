@@ -10,6 +10,7 @@ provider:
   environment:
     DYNAMODB_MOJO_TABLE: ${self:service}-mojoTable-${sls:stage}
     DYNAMODB_MODABLEMOJO_TABLE: ${self:service}-modablemojoTable-${sls:stage}
+    DYNAMODB_MODABLEMOJO_NUMBER_TABLE: ${self:service}-modablemojoNumberTable-${sls:stage}
     DYNAMODB_WHITELIST_TABLE: ${self:service}-whitelistTable-${sls:stage}
     DYNAMODB_CLAIM_TABLE: ${self:service}-claimTable-${sls:stage}
     S3_PLANETMOJO_IMAGES: planetmojo-images-${sls:stage}
@@ -31,6 +32,8 @@ provider:
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-mojoTable-${sls:stage}/index/*
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoTable-${sls:stage}
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoTable-${sls:stage}/index/*
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoNumberTable-${sls:stage}
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoNumberTable-${sls:stage}/index/*
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}/index/*
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-claimTable-${sls:stage}
@@ -81,17 +84,17 @@ functions:
       - httpApi:
           path: /mod-able-mojo/metadata/{id}
           method: get
-  mintModableMojo: 
-    handler: mojo.mintModableMojo
+  mintPrepModableMojo: 
+    handler: mojo.mintPrepModableMojo
     events:
       - httpApi:
-          path: /mod-able-mojo/action/mint
+          path: /mod-able-mojo/action/mintPrep
           method: post 
-  mintModableMojoNotSecure: 
-    handler: mojo.mintModableMojo
+  mintPrepModableMojoNotSecure: 
+    handler: mojo.mintPrepModableMojo
     events:
       - httpApi:
-          path: /mod-able-mojo/action/mintNotSecure
+          path: /mod-able-mojo/action/mintPrepNotSecure
           method: post 
   getMojoSeed: 
     handler: mojoSeed.getMojoSeed
@@ -209,6 +212,17 @@ resources:
           - AttributeName: uuid
             KeyType: HASH
         TableName: ${self:service}-modablemojoTable-${sls:stage}
+    ModAbleMojoNumberTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: number 
+            AttributeType: N 
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: number 
+            KeyType: HASH
+        TableName: ${self:service}-modablemojoNumberTable-${sls:stage}
     WhitelistTable:
       Type: AWS::DynamoDB::Table
       Properties:
