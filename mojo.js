@@ -504,6 +504,56 @@ module.exports.clearMojoGameStats = async (event) => {
 }
 
 // ---------------------
+// 2023-11-15 this is for the old Pumpkin Spice and Fallboy mod-able Mojos.  
+//   Delete this and the related table when they switch over to them.
+module.exports.getModableMojoOld = async (event) => {
+
+  // target of the GET
+  const uuid = event.pathParameters.id;
+  // for debugging locally
+  // const uuid = "3";
+  console.log("0 ----------------");
+  console.log("id : " + uuid);
+
+  let statusCodeVal = 200;
+  let bodyVal = { message: "Not found" };
+
+  const scanParams = {
+    TableName: process.env.DYNAMODB_MODABLEMOJO_OLD_TABLE,
+    Key: {
+      uuid: uuid,
+    },
+  };
+
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+  const result = await dynamodb.get(scanParams).promise();
+
+  if (result.Item) {
+    const isSprouted = result.Item.isSprouted || false;
+
+    console.log("1 ----------------");
+    console.log("isSprouted = " + isSprouted);
+
+    // if sprouted then return 404
+    if (isSprouted) {
+      // if already sprouted then return 404
+      statusCodeVal = 200;
+      bodyVal = result.Item;
+    } else {
+      // if not sprouted then return 404
+      statusCodeVal = 200;
+    }
+  }
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyVal),
+  };
+}
+
+// ---------------------
+// 2023-11-15 - this is going to the the metadata/v2/{id} endpoint.
+//   Stuck with the v2 endpoint forever.
 module.exports.getModableMojo = async (event) => {
 
   // target of the GET
@@ -1109,12 +1159,13 @@ module.exports.mintPrepModableMojo = async (event) => {
       modableMojoData.order = modableMojoData.number.toString().padStart(6, '0');
       // eventually this needs to depend on the type value being passed in or not... 
       //   if not passed in, then this needs to be the number (mojoNumber)
-      modableMojoData.image += modableMojoData.type + ".png"; 
-      modableMojoData.animation_url += modableMojoData.type + ".mp4"; 
+      modableMojoData.image += modableMojoData.type.replace(/\s/g, "") + ".png"; 
+      modableMojoData.animation_url += modableMojoData.type.replace(/\s/g, "") + ".mp4"; 
       modableMojoData.isSprouted = "1";
 
       console.log("1.9 - Show the changed modableMojoData before hashing values: " + JSON.stringify(modableMojoData)); 
 
+      // ----------
       // NFT calc code from Jure 
       console.log("2.0 - Entering hashing code"); 
       const rawMojoIdEncodingVersion = 0;
