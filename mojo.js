@@ -992,7 +992,7 @@ module.exports.mintPrepModableMojo = async (event) => {
 //    ).replace(/0\./g, '')
   //-----
 
-  const TypeList = ["Snowman", "Pumpkin Spice", "Fallboy", "Flower", "Leafy",	"Vine",	"Moss",	"Mummy", "Skeleton", "Pirate", "Dinosaur"];
+  const TypeList = ["Custom", "Snowman", "Pumpkin Spice", "Fallboy", "Flower", "Leafy",	"Vine",	"Moss",	"Mummy", "Skeleton", "Pirate", "Dinosaur"];
   const ClassList = ["Plant"];
   const SubclassListKeys = Object.keys(SubclassList);
   const GenerationList = ["Genesis"];
@@ -1157,10 +1157,6 @@ module.exports.mintPrepModableMojo = async (event) => {
       replaceTraitValue(modableMojoData.attributes, "Number", modableMojoData.number); 
       modableMojoData.name = "Mod-able Mojo " + modableMojoData.number;
       modableMojoData.order = modableMojoData.number.toString().padStart(6, '0');
-      // eventually this needs to depend on the type value being passed in or not... 
-      //   if not passed in, then this needs to be the number (mojoNumber)
-      modableMojoData.image += modableMojoData.type.replace(/\s/g, "") + ".png"; 
-      modableMojoData.animation_url += modableMojoData.type.replace(/\s/g, "") + ".mp4"; 
       modableMojoData.isSprouted = "1";
 
       console.log("1.9 - Show the changed modableMojoData before hashing values: " + JSON.stringify(modableMojoData)); 
@@ -1200,7 +1196,21 @@ module.exports.mintPrepModableMojo = async (event) => {
       modableMojoData.metadataHash = metadataHash;
       modableMojoData.mojoIdEncodingVersion = mojoIdEncodingVersion;
       
-      console.log("2.9 - Show the newly calc metadataHash, mojoIdEncoding, tokenId as uuid changed modableMojoData : " + JSON.stringify(modableMojoData)); 
+      console.log("2.6 - Show the newly calc metadataHash, mojoIdEncoding, tokenId as uuid changed modableMojoData : " + JSON.stringify(modableMojoData)); 
+
+      // to depend on the type value being passed in is "Custom" or one of the possible types
+      //   if type = "Custom" then set the image and animation_url to uuid.
+      if (modableMojoData.type === "Custom") {
+        console.log("2.8 - modableMojoData.type is CUSTOM : " + modableMojoData.type); 
+        modableMojoData.image += modableMojoData.uuid + ".png"; 
+        modableMojoData.animation_url += modableMojoData.uuid + ".mp4"; 
+      } else {
+        console.log("2.8 - modableMojoData.type is TYPE : " + modableMojoData.type); 
+        modableMojoData.image += modableMojoData.type.replace(/\s/g, "") + ".png"; 
+        modableMojoData.animation_url += modableMojoData.type.replace(/\s/g, "") + ".mp4"; 
+      }
+      
+      console.log("2.9 - Show modableMojoData with the correct image and animation_url : " + JSON.stringify(modableMojoData)); 
 
       // ----------
       // Write it into the DynamoDB
