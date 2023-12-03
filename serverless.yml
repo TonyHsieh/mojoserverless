@@ -93,6 +93,12 @@ functions:
       - httpApi:
           path: /mod-able-mojo/metadata/v2/{id}
           method: get
+  getModableMojoHash: 
+    handler: mojo.getModableMojoHash
+    events:
+      - httpApi:
+          path: /mod-able-mojo/hash/v2/{number}
+          method: get
   mintPrepModableMojo: 
     handler: mojo.mintPrepModableMojo
     events:
@@ -104,6 +110,18 @@ functions:
             #    events:
             #      - httpApi:
             #          path: /mod-able-mojo/action/mintPrepNotSecure
+            #          method: post 
+  updateModableMojo: 
+    handler: mojo.updateModableMojo
+    events:
+      - httpApi:
+          path: /mod-able-mojo/action/update
+          method: post 
+            #  updateModableMojoNotSecure: 
+            #    handler: mojo.updateModableMojo
+            #    events:
+            #      - httpApi:
+            #          path: /mod-able-mojo/action/updateNotSecure
             #          method: post 
   getMojoSeed: 
     handler: mojoSeed.getMojoSeed

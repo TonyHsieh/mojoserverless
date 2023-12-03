@@ -599,6 +599,48 @@ module.exports.getModableMojo = async (event) => {
   };
 }
 
+// ---------------------
+// 2023-12-02 - this is going to the lookup for the id (hash) using the mojo number 
+//   this will give you the current id (hash) so you can use it for the metadata/v2/{id} endpoint.
+module.exports.getModableMojoHash = async (event) => {
+
+  // target of the GET
+  const number = Number(event.pathParameters.number);
+  // for debugging locally
+  // const number = "3";
+  console.log("0 ----------------");
+  console.log("number : " + number);
+
+  let statusCodeVal = 200;
+  let bodyVal = { message: "Not found" };
+
+  const scanParams = {
+    TableName: process.env.DYNAMODB_MODABLEMOJO_NUMBER_TABLE,
+    Key: {
+      number: number,
+    },
+  };
+
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+  const result = await dynamodb.get(scanParams).promise();
+
+  if (result.Item) {
+
+    console.log("1 ----------------");
+    console.log("item = " + JSON.stringify(result.Item));
+
+    // if the number = 0 then return the LastId (the highest number)
+    // else return the id (hash) for the given number.
+    statusCodeVal = 200;
+    bodyVal = result.Item;
+  }
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyVal),
+  };
+}
+
 //---------------------
 module.exports.mintPrepModableMojo = async (event) => {
   console.log("0 ----------------"); 
@@ -1070,14 +1112,16 @@ module.exports.mintPrepModableMojo = async (event) => {
     for (const Type of TypeValueList) {
       if (Type in body) {
         if (body[Type] != null) {
-          if (TypeValueCheckArray[Type].includes(body[Type])) {
-            replaceTraitValue(modableMojoData.attributes, Type, body[Type]); 
-            console.log("00. OK body ["+ Type + "]: " + body[Type]);
-          } else {
-            statusCodeVal = 422; // Unprocessable Entity ERROR
-            bodyValArr = { message: "01.NOT GOOD DATA- missing ["+ Type + "]: " + body[Type] }; 
-            console.log("01.NOT GOOD DATA- missing ["+ Type + "]: " + body[Type]);
-          }
+          // 2023-12-02 - Commented out - relaxed the check - for the attributes
+          //if (TypeValueCheckArray[Type].includes(body[Type])) {
+          replaceTraitValue(modableMojoData.attributes, Type, body[Type]); 
+          console.log("00. OK body ["+ Type + "]: " + body[Type]);
+        } else {
+          statusCodeVal = 422; // Unprocessable Entity ERROR
+          bodyValArr = { message: "01.NOT GOOD DATA- missing ["+ Type + "]: " + body[Type] }; 
+          console.log("01.NOT GOOD DATA- missing ["+ Type + "]: " + body[Type]);
+          // 2023-12-02 - Commented out - relaxed the check - for the attributes
+          //}
         }
       }
     }
@@ -1261,9 +1305,7 @@ module.exports.mintPrepModableMojo = async (event) => {
         // Success exiting
         bodyValArr = modableMojoData; 
         console.log("SUCCESS - existing mod-able-mojo write to db: ");
-
-      } else {
-        // New mod-able-mojo - Begin the transaction closure
+      } else { // New mod-able-mojo - Begin the transaction closure
         // -- this will need to be a transaction to write both to tables
         // the DYNAMODB_MODABLEMOJO_TABLE - write the modableMojoData
         // the DYNAMODB_MODABLEMOJO_NUMBER_TABLE - increment the LastID 
@@ -1340,4 +1382,186 @@ module.exports.mintPrepModableMojo = async (event) => {
     });
   }
 
+}
+
+//--------------------
+
+module.exports.updateModableMojo = async (event) => {
+
+  // Update the Modable Mojo.
+  // This is going to use the Mojo Number instead of using the Mojo id..
+  // curl -X POST -d '{"number":1, 
+  //                   "Head": "something",
+  //                   "Eyewear": "something",
+  //                   "Upper Body": "something",
+  //                   "Lower Body": "something",
+  //                   "Hands": "something",
+  //                   "Feet": "something",
+  //                   "Costume": "something",
+  //                   "Eye Color": "something",
+  //                   "Eyebrows": "something",
+  //                   "Face Marking": "something",
+  //                   "Face Accessory": "something",
+  //                   "Body Color": "something",
+  //                   "Background": "something",
+  //                   "Pose": "something",
+  //                   "Animation": "something",
+  //                   "Skin": "something",
+  //                  }' --url   https://api.hsieh.org/mojo/action/update
+
+  console.log("0 ----------------");
+  
+  
+  // need to look up the hash key from the number
+  // then get the data from the modable mojo table
+  // then update the data based on the data passed in to the function
+  // and then check to see if the data passed in is the correct Attributes.
+
+  const input = JSON.parse(event.body);
+  console.log("input : " + JSON.stringify(input));
+  const number = Number(input.number); 
+  
+  let statusCodeVal = 200;
+  let bodyValArr = [];
+
+  // for debugging locally
+  // const uuid = "3";
+  console.log("1 ----------------");
+  console.log("number : " + number);
+  console.log("input : " + JSON.stringify(input));
+
+  let bodyVal = { message: "Not found" };
+  
+  console.log("1.1 -----get the hash--------");
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+
+  var scanParams = {
+    TableName: process.env.DYNAMODB_MODABLEMOJO_NUMBER_TABLE,
+    Key: {
+      number: number,
+    },
+  };
+  let result = await dynamodb.get(scanParams).promise();
+  let uuid = "";
+
+  if (result.Item) {
+    console.log("1.2 ----hash get SUCCESS------------");
+    console.log("Mojo Lookup - item = " + JSON.stringify(result.Item));
+
+    // if the number = 0 then return the LastId (the highest number)
+    // else return the id (hash) for the given number.
+    uuid = result.Item.uuid;
+  } else {
+    console.log("1.2 ----hash get FAIL------------");
+    statusCodeVal = 404;
+    bodyVal = { message: "Not found" };
+    return {
+      statusCode: statusCodeVal,
+      body: JSON.stringify(bodyVal),
+    };
+  }
+  
+  console.log("1.2 -----get the modable mojo--------");
+  var body = {};
+  scanParams = {
+    TableName: process.env.DYNAMODB_MODABLEMOJO_TABLE,
+    Key: {
+      uuid: uuid,
+    },
+  };
+
+  result = await dynamodb.get(scanParams).promise();
+  if (result.Item) {
+    console.log("1.3 ---modableMojoData get SUCCESS-------------");
+    console.log("Modable Mojo - item = " + JSON.stringify(result.Item));
+
+    body = result.Item;
+  } else {
+    console.log("1.3 ---modableMojoData get FAIL-------------");
+    statusCodeVal = 404;
+    bodyVal = { message: "Not found" };
+    return {
+      statusCode: statusCodeVal,
+      body: JSON.stringify(bodyVal),
+    };
+  }
+
+
+  console.log("2 -----Update the appropriate Attributes-----------");
+  // there needs to be a screening of the trait_type
+  // against the accepted trait_types
+  //
+  const AttributesList = [ 
+    "Head",
+    "Eyewear",
+    "Upper Body",
+    "Lower Body",
+    "Hands",
+    "Feet",
+    "Costume",
+    "Eye Color",
+    "Eyebrows",
+    "Face Marking",
+    "Face Accessory",
+    "Body Color",
+    "Background",
+    "Pose",
+    "Animation",
+    "Skin"
+  ];
+  console.log("Accepted AttributesList: " + JSON.stringify(AttributesList));
+
+  // loop through the attributes array and find the matching trait_type in the input array
+  // if there is a match then run the replaceTraitValue() function to update the value in body
+  // if there is no match then do nothing.
+  for (const idx in AttributesList) {
+    const attribute = AttributesList[idx];
+    if (attribute in input) {
+      console.log("2.1 -  Attribute: " + attribute + " in input parameters: "+ input[attribute]);
+      replaceTraitValue(body.attributes, attribute, input[attribute]);
+    } else {
+      // do nothing
+      console.log("2.1 -  Attribute: " + attribute + " NOT in input parameters.");
+    }
+  }
+
+  // check for the "ImageAnimName" in the input array
+  if ("ImageAnimName" in input) {
+    body.image = "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/" + input.ImageAnimName + ".png";
+    body.animation_url = "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/" + input.ImageAnimName + ".mp4";
+  }
+
+  // TODO: check for the "Level" in the input array
+    
+  // TODO: check for the "Number of Battles" in the input array
+
+
+  console.log("2.5 - updated body: " + JSON.stringify(body));
+
+  console.log("3 -----Update the ModableMojoData-----------");
+
+  // Write it into the DynamoDB
+  const putParams = {
+    TableName: process.env.DYNAMODB_MODABLEMOJO_TABLE, 
+    Item: body, 
+  }
+  await (dynamodb.put(putParams)).promise();
+  bodyVal = { message: "Updated" };
+
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyVal),
+  };
+
+
+  //-------
+  function replaceTraitValue (inputList, trait, newValue) {
+    inputList.find((o, idx) => {
+      if (o["trait_type"] == trait) {
+        inputList[idx]["value"] = newValue;
+      };
+    });
+  }
+    
 }
