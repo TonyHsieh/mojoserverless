@@ -1147,14 +1147,14 @@ module.exports.createChampion = async (event, context) => {
     },
     "vulture": {
       "uuid": "",
-      "name": "Rackmore Voortom #",
+      "name": "Rackmor Voortom #",
       "external_url": "https://www.planetmojo.io/champion/",
-      "order": 1,
+      "order": 0,
       "type": "Vulture",
       "rarity": "Mystic",
-      "image": "https://planetmojo-images-prod.s3.amazonaws.com/champions/VultureRackmore_Base_",
+      "image": "https://planetmojo-images-prod.s3.amazonaws.com/champions/VultureRackmor_Base_",
       "isSprouted": "1",
-      "animation_url": "https://planetmojo-images-prod.s3.amazonaws.com/champions/VultureRackmore_Base_",
+      "animation_url": "https://planetmojo-images-prod.s3.amazonaws.com/champions/VultureRackmor_Base.glb",
       "description": "Rackmor has no illusions of who he is. Reviled by the other clans, he watches the rivalries, betrayals, victories and defeats of those that look down on him patiently waiting to pick at their bones after death. And so it went for centuries until his forebears uncovered the dark magic to raise the dead.",
       "attributes": [
         {
@@ -1167,7 +1167,7 @@ module.exports.createChampion = async (event, context) => {
         },
         {
           "trait_type": "Name",
-          "value": "Rackmore Voortom"
+          "value": "Rackmor Voortom"
         },
         //          {
         //            "trait_type": "Rarity",

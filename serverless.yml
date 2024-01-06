@@ -93,6 +93,12 @@ functions:
       - httpApi:
           path: /mod-able-mojo/metadata/v2/{id}
           method: get
+  getModableMojosNew: 
+    handler: mojo.getModableMojos
+    events:
+      - httpApi:
+          path: /mod-able-mojos/metadata/v2
+          method: post
   getModableMojoHash: 
     handler: mojo.getModableMojoHash
     events:

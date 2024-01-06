@@ -641,6 +641,84 @@ module.exports.getModableMojoHash = async (event) => {
   };
 }
 
+
+
+// ----------
+// This is to get multiple mod-able mojo metadata - using an input array of id (hash)
+//   Up to 100 ids (hash) at a time.
+module.exports.getModableMojos = async (event) => {
+
+  // Using the body as part of a POST.
+  // This should be giving me a JSON body with an array in it.
+  //const body = JSON.parse(Buffer.from(event.body, 'base64').toString())
+  const body = JSON.parse(event.body);
+  console.log("body : " + JSON.stringify(body));
+
+  //const idArr = body.ids.slice(0,100).map (n => { return Number(n); });
+  const idArr = body.ids.slice(0,100);
+  console.log("Sliced to up to 100 numbers array : " + idArr);
+
+  let statusCodeVal = 200;
+  let bodyValArr = [];
+
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+  let scanParams = {
+    TableName: process.env.DYNAMODB_MODABLEMOJO_TABLE,
+    Key: {
+      uuid: 0,
+    },
+  };
+
+  let result = 0;
+
+  // Start the loop 
+  await idArr.reduce (async (memo, n, index) => {
+    await memo;
+    console.log("0 - ID " + n + " check ----------------");
+    scanParams.Key["uuid"] = n.toString();
+    console.log("0 - ID " + n + " -- ScanParams: "+ JSON.stringify(scanParams) + " ---");
+
+    if (n == "NaN") {
+      console.log("ID " + n + " - Not A Number ----------------");
+      bodyValArr[index] = { message: "Not a Number" };
+    } else { 
+      result = await dynamodb.get(scanParams).promise()
+        .catch((e) => {console.log("error: " + e)});
+      console.log("1 - ID " + n + " check ----------------");
+      if (result.Item) {
+        const isSprouted = result.Item.isSprouted || false;
+
+        console.log("ID " + n + " found ----------------");
+        console.log("isSprouted = " + isSprouted);
+
+        // if sprouted then return 404
+        if (isSprouted) {
+          // if already sprouted then return 
+          console.log("ID " + n + " : ----------------");
+          console.log(result.Item);
+
+          bodyValArr[index] = result.Item;
+        } else {
+          // if not sprouted then return 404
+          console.log("ID " + n + " not Sprouted ----------------");
+          bodyValArr[index] = { message: "Not Sprouted"} ; 
+        }
+      } else {
+        console.log("ID " + n + " not found ----------------");
+        bodyValArr[index] = { message: "Not Found"};
+      }
+    }
+
+  }, undefined);
+
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyValArr),
+  };
+
+}
+
 //---------------------
 module.exports.mintPrepModableMojo = async (event) => {
   console.log("0 ----------------"); 
@@ -1092,6 +1170,16 @@ module.exports.mintPrepModableMojo = async (event) => {
   var modableMojoData = []; 
   if ("Subclass" in body) {
     if  (body.Subclass != null) {
+      
+      // 2023-12-05 - Kludge! for "Vines" to be "Vine" and for "Leafy" to be "Leaf".
+      if ("Vines" === body.Subclass) {
+        body.Subclass = "Vine";
+      }
+      if ("Leaf" === body.Subclass) {
+        body.Subclass = "Leafy";
+      }
+      // --------- 
+
       if (SubclassListKeys.includes(body.Subclass)) {
         mojoSubclass = body.Subclass;
         console.log("00.PASSED_IN - mojoSubclass: " + mojoSubclass);
@@ -1161,7 +1249,7 @@ module.exports.mintPrepModableMojo = async (event) => {
         console.log("0.50 - modableMojoData.number: " +modableMojoData.number);
 
         if (modableMojoData.number == -1) {
-          console.log("0.51 - New mod-able-modjo --> getting LastID from database " +modableMojoData.number);
+          console.log("0.51 - New mod-able-modjo --> getting LastID from database " + modableMojoData.number);
           isNewModableMojo = true;
 
           // set the modableMojoData.number = currentId + 1
@@ -1247,7 +1335,8 @@ module.exports.mintPrepModableMojo = async (event) => {
       if (modableMojoData.type === "Custom") {
         console.log("2.8 - modableMojoData.type is CUSTOM : " + modableMojoData.type); 
         modableMojoData.image += modableMojoData.uuid + ".png"; 
-        modableMojoData.animation_url += modableMojoData.uuid + ".mp4"; 
+        // 2023-12-13 - Since there is no MP4 for custom, set it to "" (blank)
+        modableMojoData.animation_url = ""; 
       } else {
         console.log("2.8 - modableMojoData.type is TYPE : " + modableMojoData.type); 
         modableMojoData.image += modableMojoData.type.replace(/\s/g, "") + ".png"; 
@@ -1511,6 +1600,8 @@ module.exports.updateModableMojo = async (event) => {
   ];
   console.log("Accepted AttributesList: " + JSON.stringify(AttributesList));
 
+
+
   // loop through the attributes array and find the matching trait_type in the input array
   // if there is a match then run the replaceTraitValue() function to update the value in body
   // if there is no match then do nothing.
@@ -1526,9 +1617,11 @@ module.exports.updateModableMojo = async (event) => {
   }
 
   // check for the "ImageAnimName" in the input array
+  // 2023-12-13 - The Update doesn't provide an MP4 - we need to set it to blank.
   if ("ImageAnimName" in input) {
     body.image = "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/" + input.ImageAnimName + ".png";
-    body.animation_url = "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/" + input.ImageAnimName + ".mp4";
+    //body.animation_url = "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/" + input.ImageAnimName + ".mp4";
+    body.animation_url = "";
   }
 
   // TODO: check for the "Level" in the input array
