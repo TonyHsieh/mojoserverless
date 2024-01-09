@@ -753,6 +753,10 @@ module.exports.mintPrepModableMojo = async (event) => {
           "trait_type": "Number"
         },
         {
+          "value": "",
+          "trait_type": "Rarity"
+        },
+        {
           "value": "Blooming Iris Hair",
           "trait_type": "Head"
         },
@@ -845,6 +849,10 @@ module.exports.mintPrepModableMojo = async (event) => {
         {
           "value": "",
           "trait_type": "Number"
+        },
+        {
+          "value": "",
+          "trait_type": "Rarity"
         },
         {
           "value": "Leafy Full Hair",
@@ -941,6 +949,10 @@ module.exports.mintPrepModableMojo = async (event) => {
           "trait_type": "Number"
         },
         {
+          "value": "",
+          "trait_type": "Rarity"
+        },
+        {
           "value": "Bok Choy Hair",
           "trait_type": "Head"
         },
@@ -1033,6 +1045,10 @@ module.exports.mintPrepModableMojo = async (event) => {
         {
           "value": "",
           "trait_type": "Number"
+        },
+        {
+          "value": "",
+          "trait_type": "Rarity"
         },
         {
           "value": "Afro Large Hair",
@@ -1252,30 +1268,53 @@ module.exports.mintPrepModableMojo = async (event) => {
           console.log("0.51 - New mod-able-modjo --> getting LastID from database " + modableMojoData.number);
           isNewModableMojo = true;
 
-          // set the modableMojoData.number = currentId + 1
-//          let scanParams = {
-//            TableName: process.env.DYNAMODB_MODABLEMOJO_NUMBER_TABLE,
-//            Key: {
-//              number: 0,
-//            }, 
-//            AttributesToGet: ["LastID"],
-//            ConsistentRead: true,
-//          };
-//          console.log("0.52 - scanParams: " + JSON.stringify(scanParams));
-//
-//          let tableMetaData = await dynamodb.get(scanParams).promise();
-//          console.log("0.53 - tableMetaData: " + JSON.stringify(tableMetaData));
-//
-//          // Increment lastID by one
-//          currentId = Number(tableMetaData["Item"]["LastID"]);
           newId = currentId + 1;
           modableMojoData.number = newId;
           console.log("0.59 - modableMojoData.number: " +modableMojoData.number);
 
+          // 2023-01-05 - randomize the rarity
+          const RarityList = ['Common', "Rare", "Legendary", "Mystic"];
+          
+          const rarityRandomRoll = Math.random();
+          let rarityValue = "nothing"
+          if (rarityRandomRoll < 0.9) rarityValue = RarityList[0];
+          else if (rarityRandomRoll >= 0.9 && rarityRandomRoll < 0.95) rarityValue = RarityList[1];
+          else if (rarityRandomRoll >= 0.95 && rarityRandomRoll < 0.98) rarityValue = RarityList[2];
+          else if (rarityRandomRoll >= 0.98 && rarityRandomRoll < 1.0) rarityValue = RarityList[3];
+          console.log("0.591 - Show the rarityRandomRoll : " + rarityRandomRoll);
+          console.log("0.592 - Show the Rarity : " + rarityValue);
+
+          // set the rarity
+          modableMojoData.rarity = rarityValue;
+          replaceTraitValue(modableMojoData.attributes, "Rarity", rarityValue); 
+          console.log("0.593 - modableMojoData.rarity: " +modableMojoData.rarity);
+          console.log("0.594 - Show the new modableMojoData with rarity: " + JSON.stringify(modableMojoData)); 
+
         } else if (modableMojoData.number > currentId) {
+          // simple check if the number is out of range
           statusCodeVal = 422; // Unprocessable Entity ERROR
           bodyValArr = { message: "INVALID NUMBER DATA- modableMojoData.number: "+ modableMojoData.number +" GREATER-THAN currentId: "+ currentId };
           console.log("0.59 - modableMojoData.number: " +modableMojoData.number + " GREATER-THAN currentId: "+ currentId);
+        } else {
+          // 2023-01-05 - retrieve the current rarity from the modablemojo_Number_Table
+          let scanParams = {
+            TableName: process.env.DYNAMODB_MODABLEMOJO_NUMBER_TABLE,
+            Key: {
+              number: modableMojoData.number,
+            }, 
+            AttributesToGet: ["rarity"],
+            ConsistentRead: true,
+          };
+          console.log("0.52 - scanParams: " + JSON.stringify(scanParams));
+
+          let tableMetaData = await dynamodb.get(scanParams).promise();
+          console.log("0.53 - tableMetaData: " + JSON.stringify(tableMetaData));
+
+          // set the current rarity
+          modableMojoData.rarity = tableMetaData["Item"]["rarity"];
+          replaceTraitValue(modableMojoData.attributes, "Rarity", tableMetaData["Item"]["rarity"]); 
+          console.log("0.54 - modableMojoData.rarity: " +modableMojoData.rarity);
+          console.log("0.55 - Show the existing modableMojoData with rarity: " + JSON.stringify(modableMojoData)); 
         }
       }
     }
@@ -1424,12 +1463,14 @@ module.exports.mintPrepModableMojo = async (event) => {
                 },
               },
               {
-                //   3 - Put in the new row with the information needed
+                //   3 - Put in the new row with the information needed 
+                //        - 2024-01-05 - added rarity field
                 "Put": {
                   TableName: process.env.DYNAMODB_MODABLEMOJO_NUMBER_TABLE, 
                   Item: {
                     number: modableMojoData.number,
                     uuid: modableMojoData.uuid,
+                    rarity: modableMojoData.rarity,
                   }, 
                 },
                 "ConditionalExpression": "attribute_not_exists(number)",
