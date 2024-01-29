@@ -411,6 +411,149 @@ module.exports.unboxChampion = async (event) => {
 
 //--------------------
 
+module.exports.updateChampion = async (event) => {
+
+  // Update the Champion with stats.
+  // This use uuid to target the specific Champion.
+  // curl -X POST -d '{"id":"1", 
+  //                   "Level": "0-20",
+  //                   "Star Stage": "1-5",
+  //                  }' --url   https://api.hsieh.org/champion/action/update
+
+
+  console.log("0 ----------------");
+  
+  // need to look up the uuid key 
+  // then get the data from the champion table
+  // then update the data based on the data passed in to the function
+  // and then check to see if the data passed in is the correct Attributes.
+
+  const input = JSON.parse(event.body);
+  console.log("input : " + JSON.stringify(input));
+  const uuid = input.id; 
+  
+  let statusCodeVal = 200;
+
+  // for debugging locally
+  // const uuid = "3";
+  console.log("1 ----------------");
+  console.log("uuid : " + uuid);
+  console.log("input : " + JSON.stringify(input));
+
+  var bodyVal = { message: "Not found" };
+
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+  
+  console.log("1.2 -----get the champion values--------");
+  if (statusCodeVal == 200) {
+    var scanParams = {
+      TableName: process.env.DYNAMODB_CHAMPION_TABLE,
+      Key: {
+        uuid: uuid,
+      },
+    };
+    let result = await dynamodb.get(scanParams).promise();
+
+    if (result.Item) {
+      console.log("1.3 ----champion get SUCCESS------------");
+      console.log("Champion - item = " + JSON.stringify(result.Item));
+
+      bodyVal = result.Item;
+    } else {
+      console.log("1.3 ---champion get FAIL-------------");
+      statusCodeVal = 404;
+      bodyVal = { message: "Not found" };
+      return {
+        statusCode: statusCodeVal,
+        body: JSON.stringify(bodyVal),
+      };
+    }
+  }
+
+  console.log("2 -----Update the appropriate Attributes-----------");
+  if (statusCodeVal == 200) {
+    // there needs to be a screening of the trait_type
+    // against the accepted trait_types
+    //
+    const AttributesList = { 
+      "Level": "display_type~number",
+      "Star Stage": "display_type~number",
+    } 
+    console.log("Accepted AttributesList: " + JSON.stringify(AttributesList));
+
+    // loop through the attributes array and find the matching trait_type in the input array
+    // if there is a match then run the replaceTraitValue() function to update the value in body
+    // if there is no match then do nothing.
+    for (const idx in AttributesList) {
+      console.log("2.1 -  Attribute: < " + idx + " >");
+      console.log("2.1 -  input: < " + JSON.stringify(input) + " >");
+      if (idx in input) {
+        console.log("2.1 -  Attribute: < " + idx + " > in input parameters: "+ input[idx]);
+        replaceOrPushNewTraitsValue(bodyVal.attributes, idx, input[idx], AttributesList[idx]);
+      } else {
+        // do nothing
+        console.log("2.1 -  Attribute: " + idx + " NOT in input parameters.");
+        statusCodeVal = 422; // Unprocessable Entity
+      }
+    }
+
+    console.log("2.5 - updated body: " + JSON.stringify(bodyVal));
+
+  }
+
+
+  console.log("3 -----Update the ModableMojoData-----------");
+  if (statusCodeVal == 200) {
+    // Write it into the DynamoDB
+    const putParams = {
+      TableName: process.env.DYNAMODB_CHAMPION_TABLE, 
+      Item: bodyVal, 
+    }
+    await (dynamodb.put(putParams)).promise();
+    bodyVal = { message: "Updated" };
+  }
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyVal),
+  };
+
+
+  function replaceOrPushNewTraitsValue(list, trait, newValue, newTraitValuesStr) {
+    /*
+    console.log("  list: " + JSON.stringify(list));
+    console.log("  trait: " + trait);
+    console.log("  newValue: " + newValue);
+    console.log("  newTraitValuesStr: " + newTraitValuesStr);
+    */
+
+    var count = 0; 
+    list.find((o, idx) => {
+      if (o["trait_type"] === trait) {
+        list[idx]["value"] = newValue;
+        count++;
+      } 
+    });
+    if (count === 0) {
+      let newTraitValues = newTraitValuesStr.split("~");
+      //console.log("   == "+ newTraitValues.toString());
+      var pushObj = { trait_type: trait, value: newValue };
+      for (var i = 0; i < newTraitValues.length; i=i+2)	{
+        pushObj[newTraitValues[i]] = newTraitValues[i+1];
+        //console.log("   == "+ JSON.stringify(pushObj));
+      }
+      list.push(pushObj);
+    };
+  }	
+
+
+}
+
+
+
+
+//--------------------
+
 module.exports.createChampion = async (event, context) => {
 
   console.log("000 - enter createChampion ");

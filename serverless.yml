@@ -69,18 +69,18 @@ functions:
       - httpApi:
           path: /mojo/pfp/{id}
           method: get
-  updateMojoGameStats: 
-    handler: mojo.updateMojoGameStats
+  updateMojo: 
+    handler: mojo.updateMojo
     events:
       - httpApi:
           path: /mojo/action/update
           method: post
-  clearMojoGameStats: 
-    handler: mojo.clearMojoGameStats
-    events:
-      - httpApi:
-          path: /mojo/action/clear/{id}
-          method: put
+            #  clearMojoGameStats: 
+            #    handler: mojo.clearMojoGameStats
+            #    events:
+            #      - httpApi:
+            #          path: /mojo/action/clear/{id}
+            #          method: put
   getModableMojo: 
     handler: mojo.getModableMojoOld
     events:
@@ -219,6 +219,12 @@ functions:
             #      - httpApi:
             #          path: /champion/action/createNotSecure
             #          method: post
+  updateChampion: 
+    handler: champion.updateChampion
+    events:
+      - httpApi:
+          path: /champion/action/update
+          method: post
 
 
 resources:

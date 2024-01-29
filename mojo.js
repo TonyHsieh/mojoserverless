@@ -242,7 +242,148 @@ module.exports.getMojoPfp = async (event) => {
 
 //--------------------
 
-module.exports.updateMojoGameStats = async (event) => {
+module.exports.updateMojo = async (event) => {
+
+  // Update the Mojo with stats.
+  // This use uuid to target the specific Mojo.
+  // curl -X POST -d '{"id":"1", 
+  //                   "Level": 0-20,
+  //                   "Star Stage": 1-5,
+  //                  }' --url   https://api.hsieh.org/mojo/action/update
+
+
+  console.log("0 ----------------");
+  
+  // need to look up the uuid key 
+  // then get the data from the champion table
+  // then update the data based on the data passed in to the function
+  // and then check to see if the data passed in is the correct Attributes.
+
+  const input = JSON.parse(event.body);
+  console.log("input : " + JSON.stringify(input));
+  //const uuid = Number(input.uuid); 
+  const uuid = input.id; 
+  
+  let statusCodeVal = 200;
+
+  // for debugging locally
+  // const uuid = "3";
+  console.log("1 ----------------");
+  console.log("uuid : " + uuid);
+  console.log("input : " + JSON.stringify(input));
+
+  var bodyVal = { message: "Not found" };
+
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+  
+  console.log("1.2 -----get the mojo values--------");
+  if (statusCodeVal == 200) {
+    var scanParams = {
+      TableName: process.env.DYNAMODB_MOJO_TABLE,
+      Key: {
+        uuid: uuid,
+      },
+    };
+    let result = await dynamodb.get(scanParams).promise();
+
+    if (result.Item) {
+      console.log("1.3 ----mojo get SUCCESS------------");
+      console.log("Mojo - item = " + JSON.stringify(result.Item));
+
+      bodyVal = result.Item;
+    } else {
+      console.log("1.3 ---mojo get FAIL-------------");
+      statusCodeVal = 404;
+      bodyVal = { message: "Not found" };
+      return {
+        statusCode: statusCodeVal,
+        body: JSON.stringify(bodyVal),
+      };
+    }
+  }
+
+  console.log("2 -----Update the appropriate Attributes-----------");
+  if (statusCodeVal == 200) {
+    // there needs to be a screening of the trait_type
+    // against the accepted trait_types
+    //
+    const AttributesList = { 
+      "Level": "display_type~number",
+      "Star Stage": "display_type~number",
+    } 
+    console.log("Accepted AttributesList: " + JSON.stringify(AttributesList));
+
+    // loop through the attributes array and find the matching trait_type in the input array
+    // if there is a match then run the replaceTraitValue() function to update the value in body
+    // if there is no match then do nothing.
+    for (const idx in AttributesList) {
+      console.log("2.1 -  Attribute: < " + idx + " >");
+      console.log("2.1 -  input: < " + JSON.stringify(input) + " >");
+      if (idx in input) {
+        console.log("2.1 -  Attribute: < " + idx + " > in input parameters: "+ input[idx]);
+        replaceOrPushNewTraitsValue(bodyVal.attributes, idx, input[idx], AttributesList[idx]);
+      } else {
+        // do nothing
+        console.log("2.1 -  Attribute: " + idx + " NOT in input parameters.");
+        statusCodeVal = 422; // Unprocessable Entity
+      }
+    }
+
+    console.log("2.5 - updated body: " + JSON.stringify(bodyVal));
+
+  }
+
+
+  console.log("3 -----Update the ModableMojoData-----------");
+  if (statusCodeVal == 200) {
+    // Write it into the DynamoDB
+    const putParams = {
+      TableName: process.env.DYNAMODB_MOJO_TABLE, 
+      Item: bodyVal, 
+    }
+    await (dynamodb.put(putParams)).promise();
+    bodyVal = { message: "Updated" };
+  }
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyVal),
+  };
+
+
+  function replaceOrPushNewTraitsValue(list, trait, newValue, newTraitValuesStr) {
+    /*
+    console.log("  list: " + JSON.stringify(list));
+    console.log("  trait: " + trait);
+    console.log("  newValue: " + newValue);
+    console.log("  newTraitValuesStr: " + newTraitValuesStr);
+    */
+
+    var count = 0; 
+    list.find((o, idx) => {
+      if (o["trait_type"] === trait) {
+        list[idx]["value"] = newValue;
+        count++;
+      } 
+    });
+    if (count === 0) {
+      let newTraitValues = newTraitValuesStr.split("~");
+      //console.log("   == "+ newTraitValues.toString());
+      var pushObj = { trait_type: trait, value: newValue };
+      for (var i = 0; i < newTraitValues.length; i=i+2)	{
+        pushObj[newTraitValues[i]] = newTraitValues[i+1];
+        //console.log("   == "+ JSON.stringify(pushObj));
+      }
+      list.push(pushObj);
+    };
+  }	
+
+}
+
+/* 
+ * 2024-01-28 - Not using this anymore
+  
+ module.exports.updateMojoGameStats = async (event) => {
 
 
   // Using the body as part of a POST.
@@ -402,9 +543,11 @@ module.exports.updateMojoGameStats = async (event) => {
   }
     
 }
+*/
 
 //--------------------
-
+/*
+ * 2024-01-28 - Not using this anymore
 module.exports.clearMojoGameStats = async (event) => {
 
   // this will only clear out unprotectedTraits
@@ -502,6 +645,8 @@ module.exports.clearMojoGameStats = async (event) => {
   };
 
 }
+*/
+
 
 // ---------------------
 // 2023-11-15 this is for the old Pumpkin Spice and Fallboy mod-able Mojos.  
@@ -1537,6 +1682,8 @@ module.exports.updateModableMojo = async (event) => {
   //                   "Pose": "something",
   //                   "Animation": "something",
   //                   "Skin": "something",
+  //                   "Level": 0-20,
+  //                   "Star Stage": 1-5,
   //                  }' --url   https://api.hsieh.org/mojo/action/update
 
   console.log("0 ----------------");
@@ -1637,7 +1784,9 @@ module.exports.updateModableMojo = async (event) => {
     "Background",
     "Pose",
     "Animation",
-    "Skin"
+    "Skin",
+    "Level",
+    "Star Stage",
   ];
   console.log("Accepted AttributesList: " + JSON.stringify(AttributesList));
 
@@ -1650,7 +1799,7 @@ module.exports.updateModableMojo = async (event) => {
     const attribute = AttributesList[idx];
     if (attribute in input) {
       console.log("2.1 -  Attribute: " + attribute + " in input parameters: "+ input[attribute]);
-      replaceTraitValue(body.attributes, attribute, input[attribute]);
+      replaceOrPushTraitValue(body.attributes, attribute, input[attribute]);
     } else {
       // do nothing
       console.log("2.1 -  Attribute: " + attribute + " NOT in input parameters.");
@@ -1665,11 +1814,6 @@ module.exports.updateModableMojo = async (event) => {
     body.animation_url = "";
   }
 
-  // TODO: check for the "Level" in the input array
-    
-  // TODO: check for the "Number of Battles" in the input array
-
-
   console.log("2.5 - updated body: " + JSON.stringify(body));
 
   console.log("3 -----Update the ModableMojoData-----------");
@@ -1682,7 +1826,6 @@ module.exports.updateModableMojo = async (event) => {
   await (dynamodb.put(putParams)).promise();
   bodyVal = { message: "Updated" };
 
-
   return {
     statusCode: statusCodeVal,
     body: JSON.stringify(bodyVal),
@@ -1690,12 +1833,22 @@ module.exports.updateModableMojo = async (event) => {
 
 
   //-------
-  function replaceTraitValue (inputList, trait, newValue) {
-    inputList.find((o, idx) => {
-      if (o["trait_type"] == trait) {
-        inputList[idx]["value"] = newValue;
-      };
+  // NOTE: this is slightly dirty hack and this only works with the NUMBER type for Level and Star Stage.. 
+  function replaceOrPushTraitValue(list, trait, newValue) {
+    var count = 0;
+    list.find((o, idx) => {
+      if (o["trait_type"] === trait) {
+        //list[idx] = { trait_type:list[idx].trait_type, value: newValue }
+        list[idx]["value"] = newValue;
+        count++;
+      }
     });
+    if (count === 0) {
+      // this should only push these particular traits
+      if ((trait === "Level") || (trait === "Star Stage")) {
+        list.push({ trait_type: trait, value: newValue, display_type: "number" });
+      }
+    };
   }
-    
+
 }
