@@ -207,6 +207,12 @@ functions:
       - httpApi:
           path: /collectible/beta-chest/metadata/{id}
           method: get
+  getWarBanner: 
+    handler: mojoSeed.getWarBanner
+    events:
+      - httpApi:
+          path: /collectible/warbanner/metadata/{id}
+          method: get
   createChampion: 
     handler: champion.createChampion
     events:

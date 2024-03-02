@@ -1323,3 +1323,48 @@ module.exports.getBetaChest = async (event) => {
   };
 }
 
+//-------------------------------
+module.exports.getWarBanner = async (event) => {
+
+  const uuid = event.pathParameters.id;
+  // for debugging locally 
+  //const uuid = "3";
+  
+  let statusCodeVal = 200;
+  let bodyVal = { message: "Not found" };
+
+//  let mojoImagesURL = "";
+//  console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+//  if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+//    console.log("   Choose PROD mojo URL!");
+//    mojoImagesURL = "https://planetmojo-images-prod.s3.amazonaws.com"; // PRODUCTION
+//  } else {
+//    console.log("   Choose DEV mojo URL!");
+//    mojoImagesURL = "https://planetmojo-images-dev.s3.amazonaws.com"; // DEV
+//  }
+//  console.log("0 =====================");
+//  console.log("Mojo images URL: ", mojoImagesURL);
+
+
+  // The default return response
+  const returnSeedMetaData = {
+    name: "Planet Mojo: War Banner #" + uuid.toString().padStart(4, '0'),
+    description: "The limited edition Planet Mojo War Banners are a Genesis Ecosystem NFT marking the next chapter for Planet Mojo. The War Banners will reveal 6 unique Clan Banners marking the original Clans of Planet Mojo.",
+    //image: "https://planetmojo-images-prod.s3.amazonaws.com/banners/PlanetMojo-WarBanner.jpeg",
+    //animation_url: "https://planetmojo-images-prod.s3.amazonaws.com/banners/PlanetMojo-WarBanner.mp4",
+    image: "PlanetMojo-WarBanner.jpeg",
+    animation_url: "PlanetMojo-WarBanner.mp4",
+    attributes: [
+      { display_type: null, trait_type: "Type", value: "War Banner" }, 
+    ]
+  }
+
+  console.log("0.1 =====================");
+  console.log(JSON.stringify(returnSeedMetaData));
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(returnSeedMetaData),
+  };
+}
+
