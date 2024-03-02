@@ -782,6 +782,64 @@ module.exports.createChampion = async (event, context) => {
         }
       ]
     },
+    "gorilla": {
+      "uuid": "",
+      "name": "Hethora Krell #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 0,
+      "type": "Gorilla",
+      "rarity": "Guardian",
+      "image": "https://planetmojo-images-prod.s3.amazonaws.com/champions/GorillaHethora_Base_",
+      "isSprouted": "1",
+      "animation_url": "https://planetmojo-images-prod.s3.amazonaws.com/champions/GorillaHethora_Base.glb",
+      "description": "Like his fathers before him, Hethora Krell was raised as a monk warrior and bodyguard. He wields his legendary Krell armor and hammer as a guardian of the Primatus Clan.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Primatus"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Guardian"
+        },
+        {
+          "trait_type": "Name",
+          "value": "Hethora Krell"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Male"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Jungle"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Foundation"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Jungle Jade"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Serene Sentinel"
+        },
+        {
+          "trait_type": "Media Type",
+          "value": "3D"
+        }
+      ]
+    },
     "hippo": {
       "uuid": "",
       "name": "Batakamus Rex #",
