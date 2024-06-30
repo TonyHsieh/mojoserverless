@@ -788,7 +788,7 @@ module.exports.createChampion = async (event, context) => {
       "external_url": "https://www.planetmojo.io/champion/",
       "order": 0,
       "type": "Gorilla",
-      "rarity": "Guardian",
+      "rarity": "Mystic",
       "image": "https://planetmojo-images-prod.s3.amazonaws.com/champions/GorillaHethora_Base_",
       "isSprouted": "1",
       "animation_url": "https://planetmojo-images-prod.s3.amazonaws.com/champions/GorillaHethora_Base.glb",
@@ -891,6 +891,64 @@ module.exports.createChampion = async (event, context) => {
         {
           "trait_type": "Pose",
           "value": "Bouncer"
+        }
+      ]
+    },
+    "lion": {
+      "uuid": "",
+      "name": "King Kalahar #",
+      "external_url": "https://www.planetmojo.io/champion/",
+      "order": 0,
+      "type": "Lion",
+      "rarity": "Mystic",
+      "image": "https://planetmojo-images-prod.s3.amazonaws.com/champions/LionKing_Base_",
+      "isSprouted": "1",
+      "animation_url": "https://planetmojo-images-prod.s3.amazonaws.com/champions/LionKing_Base.glb",
+      "description": "The lion legend returns to a world that has passed him by, where beasts bicker over their differences and cynicism trumps pride. Will this \“once and future king\” remain an outdated relic, or will he fulfill his destiny and unite the clans once again to face this ultimate threat.",
+      "attributes": [
+        {
+          "trait_type": "Clan",
+          "value": "Clan Sun Pride"
+        },
+        {
+          "trait_type": "Class",
+          "value": "Commander"
+        },
+        {
+          "trait_type": "Name",
+          "value": "King Kalahar"
+        },
+        //          {
+        //            "trait_type": "Rarity",
+        //            "value": "Mystic"
+        //          },
+        {
+          "trait_type": "Gender",
+          "value": "Male"
+        },
+        {
+          "trait_type": "Biome",
+          "value": "Savannah"
+        },
+        {
+          "trait_type": "Generation",
+          "value": "Foundation"
+        },
+        {
+          "trait_type": "Background",
+          "value": "Imperial Purple"
+        },
+        {
+          "trait_type": "Skin",
+          "value": "Light Armor"
+        },
+        {
+          "trait_type": "Pose",
+          "value": "Sovereign Guardian"
+        },
+        {
+          "trait_type": "Media Type",
+          "value": "3D"
         }
       ]
     },

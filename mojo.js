@@ -1273,7 +1273,7 @@ module.exports.mintPrepModableMojo = async (event) => {
 //    ).replace(/0\./g, '')
   //-----
 
-  const TypeList = ["Custom", "Snowman", "Pumpkin Spice", "Fallboy", "Flower", "Leafy",	"Vine",	"Moss",	"Mummy", "Skeleton", "Pirate", "Dinosaur"];
+  const TypeList = ["Custom", "Samurai Mojo", "Winter Gear - Icy", "Yeti", "Snowman", "Pumpkin Spice", "Fallboy", "Flower", "Leafy",	"Vine",	"Moss",	"Mummy", "Skeleton", "Pirate", "Dinosaur"];
   const ClassList = ["Plant"];
   const SubclassListKeys = Object.keys(SubclassList);
   const GenerationList = ["Genesis"];
