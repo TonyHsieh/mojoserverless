@@ -214,6 +214,12 @@ functions:
       - httpApi:
           path: /collectible/warbanner/metadata/{id}
           method: get
+  getBaseChest: 
+    handler: mojoSeed.getBaseChest
+    events:
+      - httpApi:
+          path: /collectible/base-chest/metadata/{id}
+          method: get
   createChampion: 
     handler: champion.createChampion
     events:

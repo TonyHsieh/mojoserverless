@@ -1368,3 +1368,34 @@ module.exports.getWarBanner = async (event) => {
   };
 }
 
+//-------------------------------
+module.exports.getBaseChest = async (event) => {
+
+  const uuid = event.pathParameters.id;
+  // for debugging locally 
+  //const uuid = "3";
+  
+  let statusCodeVal = 200;
+  let bodyVal = { message: "Not found" };
+
+
+  // The default return response
+  const returnSeedMetaData = {
+    name: "Base Chest #" + uuid.toString().padStart(4, '0'),
+    description: "The limited edition Planet Mojo Base Chest contains a special reward to welcome the Base community to Planet Mojo. Revealing its content unlocks the first ever Planet Mojo NFTs on Base.",
+    image: "https://planetmojo-images-prod.s3.amazonaws.com/chests/BaseChest.png",
+    animation_url: "https://planetmojo-images-prod.s3.amazonaws.com/chests/BaseChest.mp4",
+    attributes: [
+      { display_type: null, trait_type: "Type", value: "Base" }, 
+    ]
+  }
+
+  console.log("0.1 =====================");
+  console.log(JSON.stringify(returnSeedMetaData));
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(returnSeedMetaData),
+  };
+}
+
