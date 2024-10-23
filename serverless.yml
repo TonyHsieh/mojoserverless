@@ -13,6 +13,8 @@ provider:
     DYNAMODB_MODABLEMOJO_TABLE: ${self:service}-modablemojoTable-${sls:stage}
     DYNAMODB_MODABLEMOJO_OLD_TABLE: ${self:service}-modablemojoOldTable-${sls:stage}
     DYNAMODB_MODABLEMOJO_NUMBER_TABLE: ${self:service}-modablemojoNumberTable-${sls:stage}
+    DYNAMODB_MODABLEMOJO_BASE_TABLE: ${self:service}-modablemojoBaseTable-${sls:stage}
+    DYNAMODB_MODABLEMOJO_BASE_NUMBER_TABLE: ${self:service}-modablemojoBaseNumberTable-${sls:stage}
     DYNAMODB_WHITELIST_TABLE: ${self:service}-whitelistTable-${sls:stage}
     DYNAMODB_CLAIM_TABLE: ${self:service}-claimTable-${sls:stage}
     S3_PLANETMOJO_IMAGES: planetmojo-images-${sls:stage}
@@ -38,6 +40,10 @@ provider:
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoOldTable-${sls:stage}/index/*
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoNumberTable-${sls:stage}
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoNumberTable-${sls:stage}/index/*
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoBaseTable-${sls:stage}
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoBaseTable-${sls:stage}/index/*
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoBaseNumberTable-${sls:stage}
+        - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-modablemojoBaseNumberTable-${sls:stage}/index/*
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-whitelistTable-${sls:stage}/index/*
         - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-claimTable-${sls:stage}
@@ -94,11 +100,17 @@ functions:
       - httpApi:
           path: /mod-able-mojo/metadata/v2/{id}
           method: get
+      - httpApi:
+          path: /mod-able-mojo-base/metadata/v2/{id}
+          method: get
   getModableMojosNew: 
     handler: mojo.getModableMojos
     events:
       - httpApi:
           path: /mod-able-mojos/metadata/v2
+          method: post
+      - httpApi:
+          path: /mod-able-mojos-base/metadata/v2
           method: post
   getModableMojoHash: 
     handler: mojo.getModableMojoHash
@@ -106,11 +118,17 @@ functions:
       - httpApi:
           path: /mod-able-mojo/hash/v2/{number}
           method: get
+      - httpApi:
+          path: /mod-able-mojo-base/hash/v2/{number}
+          method: get
   mintPrepModableMojo: 
     handler: mojo.mintPrepModableMojo
     events:
       - httpApi:
           path: /mod-able-mojo/action/mintPrep
+          method: post 
+      - httpApi:
+          path: /mod-able-mojo-base/action/mintPrep
           method: post 
             #  mintPrepModableMojoNotSecure: 
             #    handler: mojo.mintPrepModableMojo
@@ -123,6 +141,9 @@ functions:
     events:
       - httpApi:
           path: /mod-able-mojo/action/update
+          method: post 
+      - httpApi:
+          path: /mod-able-mojo-base/action/update
           method: post 
             #  updateModableMojoNotSecure: 
             #    handler: mojo.updateModableMojo
@@ -214,12 +235,14 @@ functions:
       - httpApi:
           path: /collectible/warbanner/metadata/{id}
           method: get
-  getBaseChest: 
-    handler: mojoSeed.getBaseChest
-    events:
-      - httpApi:
-          path: /collectible/base-chest/metadata/{id}
-          method: get
+            # 2024-10-21 - Unnecessary because chest metadata is shown when
+            #   getting the UNSPROUTED Mod-able Mojo Base metadata
+            #  getBaseChest: 
+            #    handler: mojoSeed.getBaseChest
+            #    events:
+            #      - httpApi:
+            #          path: /collectible/base-chest/metadata/{id}
+            #          method: get
   createChampion: 
     handler: champion.createChampion
     events:
@@ -286,6 +309,28 @@ resources:
           - AttributeName: number 
             KeyType: HASH
         TableName: ${self:service}-modablemojoNumberTable-${sls:stage}
+    ModAbleMojoBaseTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: uuid
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: uuid
+            KeyType: HASH
+        TableName: ${self:service}-modablemojoBaseTable-${sls:stage}
+    ModAbleMojoBaseNumberTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: number 
+            AttributeType: N 
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: number 
+            KeyType: HASH
+        TableName: ${self:service}-modablemojoBaseNumberTable-${sls:stage}
     WhitelistTable:
       Type: AWS::DynamoDB::Table
       Properties:

@@ -1369,7 +1369,11 @@ module.exports.getWarBanner = async (event) => {
 }
 
 //-------------------------------
-module.exports.getBaseChest = async (event) => {
+// 2024-10-21 - Moved to mojo.js/getModableMojo
+//   Unnecessary because chest metadata is shown when
+//     getting the UNSPROUTED Mod-able Mojo Base metadata
+/*
+ module.exports.getBaseChest = async (event) => {
 
   const uuid = event.pathParameters.id;
   // for debugging locally 
@@ -1398,4 +1402,4 @@ module.exports.getBaseChest = async (event) => {
     body: JSON.stringify(returnSeedMetaData),
   };
 }
-
+*/
