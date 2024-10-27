@@ -1938,6 +1938,13 @@ module.exports.mintPrepModableMojo = async (event) => {
           isNewModableMojo = true;
 
           newId = currentId + 1;
+          // 2024-10-23 - Kludge! because David Woodruff someone wrote 4149 in the blockchain contract.  Need to skip it.
+          //   but only for the base type!
+          if ((newId == 4149) && (suffixToken == "base")) {
+            newId = 4150;
+          } 
+          console.log("0.52 - newId: " +newId);
+
           modableMojoData.number = newId;
           console.log("0.59 - modableMojoData.number: " +modableMojoData.number);
 
@@ -2207,6 +2214,264 @@ module.exports.mintPrepModableMojo = async (event) => {
   }
 
 }
+
+//--------------------
+
+module.exports.revealModableMojo = async (event) => {
+
+  // Input from Post
+  // uuid, number, wallet, signature, message 
+
+  const ALCHEMY_API_KEY = "C4tFKEm_iQYtmsas8uqsG2tE1NwbruHE"
+  
+  console.log("0 ----------------");
+  const input = JSON.parse(event.body);
+  console.log("input : " + JSON.stringify(input));
+  const number = Number(input.number);
+  const uuid = input.uuid;
+  const wallet = input.wallet;
+  const signature = input.signature;
+
+  let statusCodeVal = 200;
+
+  // for debugging locally
+  // const uuid = "3";
+  console.log("1 ----------------");
+  console.log("number : " + number);
+  console.log("input : " + JSON.stringify(input));
+
+  let bodyVal = { message: "Not found 0 " };
+  let imagesURL = "";
+
+  
+  console.log("0.1 ----------------");
+
+  // 2024-09-25 - code to determine if it is calling Mod-able Mojo Base or the original 
+  const rawPath = event.rawPath;
+  const invocationRootPath = rawPath.substring(1, rawPath.indexOf('/', (rawPath.indexOf('/') + 1)));
+  const invocationPathTokens = invocationRootPath.split('-'); 
+  const suffixToken = (invocationPathTokens.length > 3) ? invocationPathTokens[3] : "";
+  let DYNAMODB_MODABLEMOJO_TABLE = "";
+  let DYNAMODB_MODABLEMOJO_NUMBER_TABLE = "";
+  let MOJO_CONTRACT_ADDRESS = "";
+  let ALCHEMY_ENDPOINT_URL = "";
+  let bodyImagePath = "";
+  if (suffixToken == "base") {
+    DYNAMODB_MODABLEMOJO_TABLE = process.env.DYNAMODB_MODABLEMOJO_BASE_TABLE;
+    DYNAMODB_MODABLEMOJO_NUMBER_TABLE = process.env.DYNAMODB_MODABLEMOJO_BASE_NUMBER_TABLE;
+    bodyImagePath = "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo-base/";
+
+    console.log("process.env.AWS_LAMBDA_FUNCTION_NAME: ", process.env.AWS_LAMBDA_FUNCTION_NAME);
+    if (process.env.AWS_LAMBDA_FUNCTION_NAME.indexOf("prod") != -1) {
+      console.log("   Choose PROD images!");
+      imagesURL = "planetmojo.io"; // PRODUCTION
+      MOJO_CONTRACT_ADDRESS = "0xA68da97513f8fFf92924a67Cd7bb5A4E1a95fD18"; // PROD = Base
+      ALCHEMY_ENDPOINT_URL = "https://base-mainnet.g.alchemy.com/v2/"; // PROD = Base
+    } else {
+      console.log("   Choose DEV images!");
+      imagesURL = "hsieh.org"; // DEV
+      MOJO_CONTRACT_ADDRESS = "0x4643c3D31Db0986234D644199d9CE4A5F461cD5D"; // DEV = Base Sepolia
+      ALCHEMY_ENDPOINT_URL = "https://base-sepolia.g.alchemy.com/v2/"; // DEV = Base Sepolia: 
+    }
+
+    console.log("0.51 ----- base mojo has contract -----------");
+    console.log("imagesURL : " + imagesURL);
+    console.log("MOJO_CONTRACT_ADDRESS : " + MOJO_CONTRACT_ADDRESS);
+    console.log("ALCHEMY_ENDPOINT_URL : " + ALCHEMY_ENDPOINT_URL);
+    //bodyVal += "imagesURL : " + imagesURL + " | MOJO_CONTRACT_ADDRESS : " + MOJO_CONTRACT_ADDRESS + " | ALCHEMY_ENDPOINT_URL : " + ALCHEMY_ENDPOINT_URL;
+  
+  } else {
+    DYNAMODB_MODABLEMOJO_TABLE = process.env.DYNAMODB_MODABLEMOJO_TABLE;
+    DYNAMODB_MODABLEMOJO_NUMBER_TABLE = process.env.DYNAMODB_MODABLEMOJO_NUMBER_TABLE;
+    bodyImagePath = "https://planetmojo-images-prod.s3.amazonaws.com/mod-able-mojo/";
+
+    // ABORT - there isn't a contract for non Base Mod-Able Mojos.
+    console.log("0.52 ----- non base mojo has no contract ABORT -----------");
+    statusCodeVal = 404;
+    bodyVal = { message: "Not found 1" };
+
+    return {
+      statusCode: statusCodeVal,
+      body: JSON.stringify(bodyVal),
+    };
+     
+  }
+  console.log("invocationRootPath : " + invocationRootPath);  
+  console.log("suffixToken : " + suffixToken);  
+
+  //bodyVal += " | DYNAMODB_MODABLEMOJO_TABLE : " + DYNAMODB_MODABLEMOJO_TABLE + " | DYNAMODB_MODABLEMOJO_NUMBER_TABLE : " + DYNAMODB_MODABLEMOJO_NUMBER_TABLE;
+  
+  // ---------------------- 
+
+  console.log("1.1 -----get the hash--------");
+  const dynamodb = new AWS.DynamoDB.DocumentClient();
+
+  console.log("1.2 -----get the modable mojo--------");
+  var body = {};
+  const scanParams = {
+    TableName: DYNAMODB_MODABLEMOJO_TABLE,
+    Key: {
+      uuid: uuid,
+    },
+  };
+
+  const result = await dynamodb.get(scanParams).promise();
+  if (result != null) {
+    if (result.Item) {
+      console.log("1.3 ---modableMojoData get SUCCESS-------------");
+      console.log("Modable Mojo - item = " + JSON.stringify(result.Item));
+      body = result.Item;
+      bodyVal = result.Item;
+
+    } else {
+      console.log("1.3 ---modableMojoData get FAIL-------------");
+      statusCodeVal = 404;
+      bodyVal = { message: "Not found 3" };
+      return {
+        statusCode: statusCodeVal,
+        body: JSON.stringify(bodyVal),
+      };
+    }
+  }
+
+  console.log("1.5 -----Check for iSprouted value-----------");
+
+  /* // Testing the signature stuff 
+  const message0 = createMessage(uuid, number, wallet);
+  bodyVal += " | message0 = " + message0;
+  const recoveredAddress = ethers.utils.verifyMessage(message0, signature);
+  bodyVal += " | recoveredAddress = " + recoveredAddress;
+  const result0 = recoveredAddress.toLowerCase() === wallet.toLowerCase();
+  bodyVal += " | result0 = " + result0;
+  */ 
+
+  /* // Testing out the ownership crap.
+  const provider0 = new ethers.providers.JsonRpcProvider(ALCHEMY_ENDPOINT_URL + ALCHEMY_API_KEY);
+  bodyVal += " | provider0 = " + provider0;
+  const mojo0 = new ethers.Contract(
+    MOJO_CONTRACT_ADDRESS, 
+    [ "function ownerOf(uint256 tokenId) external view returns(address)" ], 
+    provider0
+  );
+  bodyVal += " | mojo0 = " + mojo0;
+  let owner0 = await mojo0.ownerOf(uuid);
+  bodyVal += " | owner0 = " + owner0;
+  const result0 = owner0.toLowerCase() === wallet.toLowerCase();
+  bodyVal += " | result0 = " + result0;
+ */ 
+
+
+     
+  // 2024-10-02 - if the body.isSprouted is false, then we do the validation checks. 
+  if (body.isSprouted != true) {
+    console.log("1.51 ----- currently not sprouted -----------");
+    //bodyVal += " | body.isSprouted = " + body.isSprouted;
+     
+    if (body.number != number) {
+      console.log("1.52 ----- input number "+ number +" doesn't match body.number "+ body.number+"  -----------");
+      statusCodeVal = 403; // HTTP error code Forbidden 
+      bodyVal = { message: "Invalid number"};
+    } else if(!isValidSignature(uuid, number, wallet, signature)) {
+      statusCodeVal = 422; // HTTP error code Unprocessable Entity
+      bodyVal = { message: "Invalid signature"};
+    /*} else if (!await isValidOwner(uuid, wallet)) { 
+      statusCodeVal = 401; // HTTP error code Unauthorized
+      bodyVal = { message: "You are not the owner of this token"};
+    */
+    } else {
+      // Run the ownership code inline with the code - because calling it didn't seem to work.
+      const provider0 = new ethers.providers.JsonRpcProvider(ALCHEMY_ENDPOINT_URL + ALCHEMY_API_KEY);
+      const mojo0 = new ethers.Contract(
+        MOJO_CONTRACT_ADDRESS, 
+        [ "function ownerOf(uint256 tokenId) external view returns(address)" ], 
+        provider0
+      );
+      let owner0 = await mojo0.ownerOf(uuid);
+      const result0 = owner0.toLowerCase() === wallet.toLowerCase();
+      // -------
+
+
+      // Check if the result0 owner is the same as the wallet.
+      if (!result0) {
+        statusCodeVal = 401; // HTTP error code Unauthorized
+        bodyVal = { message: "You are not the owner of this token"};
+      } else {
+        console.log("1.53 ----- valid signature, owner of this token, and input number "+ number + " matches body.number "+ body.number +" -----------");
+        body.isSprouted = true; // REVEAL
+
+        // update the database.
+        console.log("2.5 - updated body: " + JSON.stringify(body));
+        //bodyVal += " | 2.5 - Updated Sprouted body = " + JSON.stringify(body);
+
+
+        console.log("3 -----Update the ModableMojoData-----------");
+
+        // Write it into the DynamoDB
+        const putParams = {
+          TableName: DYNAMODB_MODABLEMOJO_TABLE,
+          Item: body,
+        }
+        await (dynamodb.put(putParams)).promise();
+        bodyVal = body;
+      }
+    }
+  }
+  
+
+  // 2024-09-25 - Fast testng feedback.
+  //console.log("event : " + JSON.stringify(event));
+  //bodyVal = { ...bodyVal, ...event }; 
+  //bodyVal = { ...bodyVal,  invocationRootPath: invocationRootPath, suffixToken: suffixToken };
+  //bodyVal += " | 3 - Updated Sprouted body in DB = " + body;
+
+  return {
+    statusCode: statusCodeVal,
+    body: JSON.stringify(bodyVal),
+  };
+
+
+  // - internal functions --
+
+  function isValidSignature(tokenId, tokenNumber, walletAddress, signature) {
+    const message = createMessage(tokenId, tokenNumber, walletAddress);
+
+    try {
+      const recoveredAddress = ethers.utils.verifyMessage(message, signature);
+      return recoveredAddress.toLowerCase() === walletAddress.toLowerCase();
+    } catch {
+      return false;
+    }
+  }
+ 
+  /* Some reason it is not working -- 
+  async function isValidOwner(walletAddress, tokenId) {
+    const provider = new ethers.providers.JsonRpcProvider(ALCHEMY_ENDPOINT_URL + ALCHEMY_API_KEY);
+
+    const mojo = new ethers.Contract(
+      MOJO_CONTRACT_ADDRESS, 
+      [ "function ownerOf(uint256 tokenId) external view returns(address)" ], 
+      provider
+    );
+
+    //try {
+      let owner = await mojo.ownerOf(tokenId)
+      return owner.toLowerCase() === walletAddress.toLowerCase();
+    /*}
+    catch {
+      return false;
+    }
+  }
+  */
+
+
+  // Got this function from Hrvoje
+  function createMessage(tokenId, tokenNumber, walletAddress) {
+    return "Welcome to Planet Mojo! Click to sign to reveal your Base Chest " + tokenNumber + " contents. This request will not trigger a blockchain transaction or cost any gas fees. Wallet address: " + walletAddress + " Token ID: " + tokenId; 
+  }
+
+}
+
+
 
 //--------------------
 

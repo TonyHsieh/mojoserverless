@@ -151,6 +151,12 @@ functions:
             #      - httpApi:
             #          path: /mod-able-mojo/action/updateNotSecure
             #          method: post 
+  revealModableMojo: 
+    handler: mojo.revealModableMojo
+    events:
+      - httpApi:
+          path: /mod-able-mojo-base/action/reveal
+          method: post 
   getMojoSeed: 
     handler: mojoSeed.getMojoSeed
     events:
