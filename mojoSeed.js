@@ -2,7 +2,8 @@
 const AWS = require('aws-sdk')
 const ethers = require('ethers')
 const merkleTreeJS = require('merkletreejs')
-const solidityKeccak256 = require("ethers/lib/utils").solidityKeccak256;
+//const solidityKeccak256 = require("ethers/lib/utils").solidityKeccak256;
+//const solidityKeccak256 = require("ethers").solidityKeccak256;
 const keccak256 = require("keccak256");
 
 //-------------------------------
@@ -107,7 +108,8 @@ module.exports.claimMojoSeed = async (event) => {
       //console.log(testArray);
       //const merkleLeaves = testArray.map((x) => 
       const merkleLeaves = leafArray.Items.map((x) => 
-        { return solidityKeccak256(["address"], [x.walletId]) } ); 
+        //{ return solidityKeccak256(["address"], [x.walletId]) } ); 
+        { return ethers.solidityKeccak256(["address"], [x.walletId]) } ); 
       console.log("4 ===================");
       console.log("MerkleLeaves!", merkleLeaves);
 
@@ -127,12 +129,14 @@ module.exports.claimMojoSeed = async (event) => {
       console.log(ethers.constants.HashZero);
       */
       // calculate the MerkleTree
-      const merkleTree = new merkleTreeJS.MerkleTree(merkleLeaves, keccak256, { sort: true, fillDefaultHash: ethers.constants.HashZero });
+      //const merkleTree = new merkleTreeJS.MerkleTree(merkleLeaves, keccak256, { sort: true, fillDefaultHash: ethers.constants.HashZero });
+      const merkleTree = new merkleTreeJS.MerkleTree(merkleLeaves, keccak256, { sort: true, fillDefaultHash: ethers.HashZero });
       console.log("MerkelTree: ", merkleTree);
 
       // calculate the Leaf
       //
-      const leaf = solidityKeccak256(["address"], [walletId]);
+      //const leaf = solidityKeccak256(["address"], [walletId]);
+      const leaf = ethers.solidityKeccak256(["address"], [walletId]);
       console.log("leaf: ", leaf);
 
       // calculate the MerkleProof
@@ -593,7 +597,8 @@ module.exports.sproutMojoSeed = async (event) => {
       sprouterContractAddress = "0xAf76c6F88520Db4aF9a0a643E88A4e4e1537Ad7e"; // DEV
     }
     
-    const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
+    // const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
+    const provider = new ethers.JsonRpcProvider(providerURL + apiKey);
     console.log("Provider: ", providerURL);
     console.log("Sprouter contract: ", sprouterContractAddress);
     const sprouterContract = new ethers.Contract(
@@ -627,7 +632,8 @@ module.exports.sproutMojoSeed = async (event) => {
       mojoContractAddress = "0x7Ed9a5D4Af51AC4D2A3F798a62e75fE79Eccfa95"; // DEV
     }
 
-    const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
+    //const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
+    const provider = new ethers.JsonRpcProvider(providerURL + apiKey);
     console.log("Provider: ", providerURL);
     console.log("Mojo contract: ", mojoContractAddress);
 

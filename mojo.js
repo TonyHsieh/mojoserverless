@@ -3,6 +3,7 @@ const AWS = require('aws-sdk')
 //const Web3 = require('web3')
 //const OpenSeaSDK = require('opensea-js')
 const ethers = require('ethers')
+//import {ethers} from 'ethers'
 
 module.exports.getMojo = async (event) => {
 
@@ -2017,18 +2018,24 @@ module.exports.mintPrepModableMojo = async (event) => {
 
       // ----------
       // NFT calc code from Jure
+
+      // 2024-10-30 - HACK for BigInt
+      BigInt.prototype.toJSON = function() { return this.toString() }
+
       console.log("2.0 - Entering hashing code");
       const rawMojoIdEncodingVersion = 0;
       const rawMojoNumber = modableMojoData.number;
       const rawMetadata = JSON.stringify(modableMojoData); // this shoud be the JSON of the metadata
       console.log("2.1 - Show the rawMojoIdEncodingVersion: " + rawMojoIdEncodingVersion + "\n rawMojoNumber: "+ rawMojoNumber + "\n rawMetadata: " + rawMetadata);
 
-      const mojoIdEncodingVersion = ethers.BigNumber.from(rawMojoIdEncodingVersion);
-      const mojoNumber = ethers.BigNumber.from(rawMojoNumber);
-      const metadataHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(rawMetadata));
-      console.log("2.1 - Show the  metadataHash: " + metadataHash);
+      const mojoIdEncodingVersion = BigInt(rawMojoIdEncodingVersion);
+      console.log("2.11 - Show the mojoIdEncodingVersion: " + mojoIdEncodingVersion);
+      const mojoNumber = BigInt(rawMojoNumber);
+      console.log("2.12 - Show the mojoNumber: " + mojoNumber);
+      const metadataHash = ethers.keccak256(ethers.toUtf8Bytes(rawMetadata));
+      console.log("2.2 - Show the  metadataHash: " + metadataHash);
 
-      const tokenId = ethers.utils.keccak256(ethers.utils.solidityPack(
+      const tokenId = ethers.solidityPackedKeccak256(
         [
           "uint8",
           //"uint64",
@@ -2039,11 +2046,11 @@ module.exports.mintPrepModableMojo = async (event) => {
           //mojoNumber,
           metadataHash
         ]
-      ));
+      );
 
       console.log("2.3 - Show tokenId (hex): " + tokenId); // To get the hex representation
 
-      modableMojoData.uuid = ethers.BigNumber.from(tokenId).toString();
+      modableMojoData.uuid = BigInt(tokenId).toString();
       console.log("2.4 - Show tokenId (dec): " + modableMojoData.uuid);// To get the decimal representation
 
       modableMojoData.external_url += modableMojoData.uuid;
@@ -2219,6 +2226,7 @@ module.exports.mintPrepModableMojo = async (event) => {
 
 module.exports.revealModableMojo = async (event) => {
 
+
   // Input from Post
   // uuid, number, wallet, signature, message 
 
@@ -2231,6 +2239,7 @@ module.exports.revealModableMojo = async (event) => {
   const uuid = input.uuid;
   const wallet = input.wallet;
   const signature = input.signature;
+  const message = input.message;
 
   let statusCodeVal = 200;
 
@@ -2336,51 +2345,48 @@ module.exports.revealModableMojo = async (event) => {
 
   console.log("1.5 -----Check for iSprouted value-----------");
 
-  /* // Testing the signature stuff 
-  const message0 = createMessage(uuid, number, wallet);
-  bodyVal += " | message0 = " + message0;
-  const recoveredAddress = ethers.utils.verifyMessage(message0, signature);
-  bodyVal += " | recoveredAddress = " + recoveredAddress;
-  const result0 = recoveredAddress.toLowerCase() === wallet.toLowerCase();
-  bodyVal += " | result0 = " + result0;
-  */ 
-
-  /* // Testing out the ownership crap.
-  const provider0 = new ethers.providers.JsonRpcProvider(ALCHEMY_ENDPOINT_URL + ALCHEMY_API_KEY);
-  bodyVal += " | provider0 = " + provider0;
-  const mojo0 = new ethers.Contract(
-    MOJO_CONTRACT_ADDRESS, 
-    [ "function ownerOf(uint256 tokenId) external view returns(address)" ], 
-    provider0
-  );
-  bodyVal += " | mojo0 = " + mojo0;
-  let owner0 = await mojo0.ownerOf(uuid);
-  bodyVal += " | owner0 = " + owner0;
-  const result0 = owner0.toLowerCase() === wallet.toLowerCase();
-  bodyVal += " | result0 = " + result0;
- */ 
-
-
      
   // 2024-10-02 - if the body.isSprouted is false, then we do the validation checks. 
   if (body.isSprouted != true) {
     console.log("1.51 ----- currently not sprouted -----------");
     //bodyVal += " | body.isSprouted = " + body.isSprouted;
-     
+   
+    console.log("1.512 ----- validating signature -----------");
+    console.log("1.513 ----- message = " + message);
+    console.log("1.513 ----- signature = " + signature);
+    const recoveredAddress = ethers.verifyMessage(message, signature);
+    console.log("1.513 ----- recoveredAddress = " + recoveredAddress);
+    console.log("1.513 ----- wallet = " + wallet);
+    const isValidSignature = recoveredAddress.toLowerCase() === wallet.toLowerCase();
+    console.log("1.514 ----- isValidSignature = " + isValidSignature);
+
+    /*
+   // Testing out the ownership.
+    const providerXX = new ethers.JsonRpcProvider(ALCHEMY_ENDPOINT_URL + ALCHEMY_API_KEY);
+    console.log("1.5151 ----- providerXX = " + providerXX);
+    const mojoXX = new ethers.Contract(
+      MOJO_CONTRACT_ADDRESS, 
+      [ "function ownerOf(uint256 tokenId) external view returns(address)" ], 
+      providerXX
+    );
+    console.log("1.5152 ----- mojoXX = " + JSON.stringify(mojoXX));
+    let ownerXX = await mojoXX.ownerOf(uuid);
+    console.log("1.5153 ----- ownerXX = " + JSON.stringify(ownerXX));
+    const resultXX = ownerXX.toLowerCase() === wallet.toLowerCase();
+    console.log("1.5154 ----- resultXX = " + resultXX)
+    */ 
+
     if (body.number != number) {
       console.log("1.52 ----- input number "+ number +" doesn't match body.number "+ body.number+"  -----------");
       statusCodeVal = 403; // HTTP error code Forbidden 
       bodyVal = { message: "Invalid number"};
-    } else if(!isValidSignature(uuid, number, wallet, signature)) {
+    //} else if(!isValidSignature(uuid, number, wallet, signature, message)) {
+    } else if(!isValidSignature) {
       statusCodeVal = 422; // HTTP error code Unprocessable Entity
       bodyVal = { message: "Invalid signature"};
-    /*} else if (!await isValidOwner(uuid, wallet)) { 
-      statusCodeVal = 401; // HTTP error code Unauthorized
-      bodyVal = { message: "You are not the owner of this token"};
-    */
     } else {
       // Run the ownership code inline with the code - because calling it didn't seem to work.
-      const provider0 = new ethers.providers.JsonRpcProvider(ALCHEMY_ENDPOINT_URL + ALCHEMY_API_KEY);
+      const provider0 = new ethers.JsonRpcProvider(ALCHEMY_ENDPOINT_URL + ALCHEMY_API_KEY);
       const mojo0 = new ethers.Contract(
         MOJO_CONTRACT_ADDRESS, 
         [ "function ownerOf(uint256 tokenId) external view returns(address)" ], 
@@ -2431,18 +2437,21 @@ module.exports.revealModableMojo = async (event) => {
 
 
   // - internal functions --
-
-  function isValidSignature(tokenId, tokenNumber, walletAddress, signature) {
-    const message = createMessage(tokenId, tokenNumber, walletAddress);
+  /*
+  function isValidSignature(tokenId, tokenNumber, walletAddress, signature, inputMessage) {
+    //const message = createMessage(tokenId, tokenNumber, walletAddress);
+    //const message = createMessage(walletAddress, tokenId, tokenNumber.toString());
 
     try {
-      const recoveredAddress = ethers.utils.verifyMessage(message, signature);
+      const recoveredAddress = ethers.utils.verifyMessage(inputMessage, signature);
+      //const recoveredAddress = ethers.utils.verifyMessage(message, signature);
       return recoveredAddress.toLowerCase() === walletAddress.toLowerCase();
     } catch {
       return false;
     }
   }
- 
+  */ 
+
   /* Some reason it is not working -- 
   async function isValidOwner(walletAddress, tokenId) {
     const provider = new ethers.providers.JsonRpcProvider(ALCHEMY_ENDPOINT_URL + ALCHEMY_API_KEY);
@@ -2465,10 +2474,16 @@ module.exports.revealModableMojo = async (event) => {
 
 
   // Got this function from Hrvoje
+  /*
   function createMessage(tokenId, tokenNumber, walletAddress) {
     return "Welcome to Planet Mojo! Click to sign to reveal your Base Chest " + tokenNumber + " contents. This request will not trigger a blockchain transaction or cost any gas fees. Wallet address: " + walletAddress + " Token ID: " + tokenId; 
   }
-
+  */
+  /*
+  const createMessage = (wallet, uuid, number) => {
+    return `Welcome to Planet Mojo! Click to sign to reveal your Base Chest ${number} contents. This request will not trigger a blockchain transaction or cost any gas fees. Wallet address: ${wallet} Token ID: ${uuid}`;
+  };
+  */ 
 }
 
 

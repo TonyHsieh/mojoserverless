@@ -357,7 +357,8 @@ module.exports.unboxChampion = async (event) => {
       sprouterContractAddress = "0xFb36b258e250516Ef047f806cd6440bd2C14E91e"; // DEV
     }
     
-    const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
+    //const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
+    const provider = new ethers.JsonRpcProvider(providerURL + apiKey);
     console.log("Provider: ", providerURL);
     console.log("Sprouter contract: ", sprouterContractAddress);
     const sprouterContract = new ethers.Contract(
@@ -392,7 +393,8 @@ module.exports.unboxChampion = async (event) => {
       championContractAddress = "0xC8F8299f19d11106bEE8fBdC34f64e8fA9EC0Bf9"; // DEV
     }
     
-    const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
+    //const provider = new ethers.providers.JsonRpcProvider(providerURL + apiKey);
+    const provider = new ethers.JsonRpcProvider(providerURL + apiKey);
     console.log("Provider: ", providerURL);
     console.log("Champion contract: ", championContractAddress);
 
